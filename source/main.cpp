@@ -25,16 +25,14 @@ unsigned int USER_ID;
 std::string MII_NICKNAME;
 std::string ACCOUNT_FILE;
 
-void deinitialize()
-{
+void deinitialize() {
     nn::act::Finalize();
     Mocha_UnmountFS("storage_mlc");
     Mocha_DeInitLibrary();
     WHBLogConsoleFree();
 }
 
-void initialize()
-{
+void initialize() {
     OSScreenInit();
     WHBProcInit();
     // Set up the log console for use.
@@ -61,8 +59,7 @@ void initialize()
     ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/" + std::string(user_id_hex) + "/account.dat";
 }
 
-int main()
-{
+int main() {
     initialize();
 
     VPADStatus input;
@@ -70,24 +67,31 @@ int main()
 
     printMainMenu();
 
-    while (WHBProcIsRunning())
-    {
+    while (WHBProcIsRunning()) {
         // Watch the Wii U GamePad for button presses.
         VPADRead(VPAD_CHAN_0, &input, 1, &error);
         // If the A button is pressed, switch to the Nintendo Network ID account.dat.
-        if (input.trigger & VPAD_BUTTON_A)
-        {
+        if (input.trigger & VPAD_BUTTON_A) {
             switchAccount(NNID_BACKUP, "Nintendo Network ID");
         }
         // If the B button is pressed, switch to the Pretendo Network ID account.dat.
-        else if (input.trigger & VPAD_BUTTON_B)
-        {
+        else if (input.trigger & VPAD_BUTTON_B) {
             switchAccount(PNID_BACKUP, "Pretendo Network ID");
         }
         // If the X button is pressed, unlink the account locally.
-        else if (input.trigger & VPAD_BUTTON_X)
-        {
-            unlinkAccount();
+        else if (input.trigger & VPAD_BUTTON_X) {
+            printWarningMenu();
+            while (WHBProcIsRunning()) {
+                VPADRead(VPAD_CHAN_0, &input, 1, &error);
+                if (input.trigger & VPAD_BUTTON_A) {
+                    unlinkAccount();
+                    break;
+                }
+                else if (input.trigger & VPAD_BUTTON_B) {
+                    printMainMenu();
+                    break;
+                }
+            }
         }
     }
 

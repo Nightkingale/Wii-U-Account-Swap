@@ -9,8 +9,7 @@
 #include "../include/global.h"
 
 
-void printOnScreen(int line, const char* format, ...)
-{
+void printOnScreen(int line, const char* format, ...) {
     char buffer[256];
     va_list args;
     // Format the string into a buffer.
@@ -22,8 +21,7 @@ void printOnScreen(int line, const char* format, ...)
     OSScreenPutFontEx(SCREEN_DRC, 0, line, buffer);
 }
 
-void printMainMenu()
-{
+void printMainMenu() {
     OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
     OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
 
@@ -42,8 +40,7 @@ void printMainMenu()
     OSScreenFlipBuffersEx(SCREEN_DRC);
 }
 
-void printWarningScreen()
-{
+void printWarningMenu() {
     OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
     OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
 

@@ -3,6 +3,6 @@
 
 void printOnScreen(int line, const char* format, ...);
 void printMainMenu();
-void printWarningScreen();
+void printWarningMenu();
 
 #endif // SCREEN_H

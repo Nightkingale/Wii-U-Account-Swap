@@ -15,8 +15,7 @@
 #include "../include/global.h"
 
 
-void switchAccount(const char* backupFile, const char* accountType)
-{
+void switchAccount(const char* backupFile, const char* accountType) {
     WHBLogPrintf("Switching to %s...", accountType);
     WHBLogPrintf("Source: %s", backupFile);
     WHBLogPrintf("%s", ACCOUNT_FILE.c_str());
@@ -27,42 +26,35 @@ void switchAccount(const char* backupFile, const char* accountType)
     WHBLogConsoleDraw();
     // Open the account.dat file and switch it to the specified account.
     FILE *backup = fopen(backupFile, "rb");
-    if (backup == NULL)
-    {
+    if (backup == NULL) {
         WHBLogConsoleSetColor(0x99000000);
         WHBLogPrintf("Error opening %s account backup!", accountType);
         WHBLogConsoleDraw();
     }
-    else
-    {
+    else {
         WHBLogPrintf("%s account backup opened!", accountType);
         WHBLogConsoleDraw();
         char *buffer = (char *)malloc(BUFFER_SIZE);
-        if (buffer == NULL)
-        {
+        if (buffer == NULL) {
             WHBLogConsoleSetColor(0x99000000);
             WHBLogPrint("Error allocating memory!");
             WHBLogConsoleDraw();
         }
-        else
-        {
+        else {
             WHBLogPrint("Memory was allocated successfully!");
             WHBLogConsoleDraw();
             
             FILE *account = fopen(ACCOUNT_FILE.c_str(), "wb");
-            if (account == NULL)
-            {
+            if (account == NULL) {
                 WHBLogConsoleSetColor(0x99000000);
                 WHBLogPrint("Error opening system account.dat file!");
                 WHBLogConsoleDraw();
             }
-            else
-            {
+            else {
                 WHBLogPrint("System account.dat file opened!");
                 WHBLogConsoleDraw();
                 size_t bytesRead = 0;
-                while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, backup)) > 0)
-                {
+                while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, backup)) > 0) {
                     fwrite(buffer, 1, bytesRead, account);
                 }
                 fclose(account);
@@ -70,15 +62,13 @@ void switchAccount(const char* backupFile, const char* accountType)
                 WHBLogPrint("System account.dat file was saved!");
                 // We'll attempt to automatically swap the network using Inkay's configuration.
                 FILE *inkay = fopen(INKAY_CONFIG, "wb");
-                if (inkay == NULL)
-                {
+                if (inkay == NULL) {
                     // If we can't open the file, we will move on.
                     WHBLogPrint("Error opening Inkay config file!");
                     WHBLogPrint("Network will not be automatically swapped.");
                     WHBLogConsoleDraw();
                 }
-                else
-                {
+                else {
                     WHBLogPrint("Inkay config file opened!");
                     WHBLogConsoleDraw();
                     WHBLogPrintf("Swapping network to %s!", accountType);
