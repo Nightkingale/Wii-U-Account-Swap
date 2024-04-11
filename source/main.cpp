@@ -8,14 +8,16 @@
 #include <whb/log.h>
 #include <whb/proc.h>
 
-#include "globals.h"
-#include "screens.h"
-#include "switch.h"
-#include "unlink.h"
+#include "../include/global.h"
+#include "../include/screen.h"
+#include "../include/switch.h"
+#include "../include/unlink.h"
 
 
-const char* accountFile = "storage_mlc:/usr/save/system/act/8000000e/account.dat";
-const char* inkayConfig = "/vol/external01/wiiu/environments/aroma/plugins/config/inkay.json";\
+const char* NNID_BACKUP = "/vol/external01/accounts/nnid_account.dat";
+const char* PNID_BACKUP = "/vol/external01/accounts/pnid_account.dat";
+const char* ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/8000000e/account.dat";
+const char* INKAY_CONFIG = "/vol/external01/wiiu/environments/aroma/plugins/config/inkay.json";\
 const int BUFFER_SIZE = 0x2000;
 
 void deinitialize()
@@ -46,7 +48,7 @@ void initialize()
 int main()
 {
     initialize();
-    
+
     VPADStatus input;
     VPADReadError error;
 
@@ -59,12 +61,12 @@ int main()
         // If the A button is pressed, switch to the Nintendo Network ID account.dat.
         if (input.trigger & VPAD_BUTTON_A)
         {
-            switchAccount("/vol/external01/accounts/nnid_account.dat", "Nintendo Network ID");
+            switchAccount(NNID_BACKUP, "Nintendo Network ID");
         }
         // If the B button is pressed, switch to the Pretendo Network ID account.dat.
         else if (input.trigger & VPAD_BUTTON_B)
         {
-            switchAccount("/vol/external01/accounts/pnid_account.dat", "Pretendo Network ID");
+            switchAccount(PNID_BACKUP, "Pretendo Network ID");
         }
         // If the X button is pressed, unlink the account locally.
         else if (input.trigger & VPAD_BUTTON_X)

@@ -1,9 +1,8 @@
-// screens.h
-#ifndef SCREENS_H
-#define SCREENS_H
+#ifndef SCREEN_H
+#define SCREEN_H
 
 void printOnScreen(int line, const char* format, ...);
 void printMainMenu();
 void printWarningScreen();
 
-#endif // SCREENS_H
+#endif // SCREEN_H

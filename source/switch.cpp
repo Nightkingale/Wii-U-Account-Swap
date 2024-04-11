@@ -12,14 +12,14 @@
 #include <whb/log.h>
 #include <whb/proc.h>
 
-#include "globals.h"
+#include "../include/global.h"
 
 
 void switchAccount(const char* backupFile, const char* accountType)
 {
     WHBLogPrintf("Switching to %s...", accountType);
     WHBLogPrintf("Source: %s", backupFile);
-    WHBLogPrintf("%s", accountFile);
+    WHBLogPrintf("%s", ACCOUNT_FILE);
     WHBLogPrint("----------------------------------------");
     WHBLogConsoleDraw();
 
@@ -49,7 +49,7 @@ void switchAccount(const char* backupFile, const char* accountType)
             WHBLogPrint("Memory was allocated successfully!");
             WHBLogConsoleDraw();
             
-            FILE *account = fopen(accountFile, "wb");
+            FILE *account = fopen(ACCOUNT_FILE, "wb");
             if (account == NULL)
             {
                 WHBLogConsoleSetColor(0x99000000);
@@ -69,7 +69,7 @@ void switchAccount(const char* backupFile, const char* accountType)
                 WHBLogConsoleSetColor(0x00990000);
                 WHBLogPrint("System account.dat file was saved!");
                 // We'll attempt to automatically swap the network using Inkay's configuration.
-                FILE *inkay = fopen(inkayConfig, "wb");
+                FILE *inkay = fopen(INKAY_CONFIG, "wb");
                 if (inkay == NULL)
                 {
                     // If we can't open the file, we will move on.

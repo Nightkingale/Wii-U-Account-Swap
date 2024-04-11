@@ -34,7 +34,7 @@ TARGET		:=	Wii_U_Account_Swap
 BUILD		:=	build
 SOURCES		:=	source
 DATA		:=	data
-INCLUDES	:=	source
+INCLUDES	:=	include
 
 #-------------------------------------------------------------------------------
 # options for code generation

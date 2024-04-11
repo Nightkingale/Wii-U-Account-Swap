@@ -17,7 +17,7 @@
 #include <whb/log.h>
 #include <whb/proc.h>
 
-#include "globals.h"
+#include "../include/global.h"
 
 
 void unlinkAccount() {
@@ -60,12 +60,12 @@ void unlinkAccount() {
     };
 
     WHBLogPrintf("Unlinking: Default settings will be applied.");
-    WHBLogPrintf("%s", accountFile);
+    WHBLogPrintf("%s", ACCOUNT_FILE);
     WHBLogPrint("----------------------------------------");
     WHBLogConsoleDraw();
 
     // Read the entire file into a string.
-    std::ifstream inFile(accountFile);
+    std::ifstream inFile(ACCOUNT_FILE);
     std::string fileContents((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
     inFile.close();
     WHBLogPrint("System account.dat file is in memory!");
@@ -88,7 +88,7 @@ void unlinkAccount() {
     WHBLogConsoleDraw();
 
     // Write the string back to the file.
-    std::ofstream outFile(accountFile);
+    std::ofstream outFile(ACCOUNT_FILE);
     outFile << fileContents;
     outFile.close();
     WHBLogPrint("System account.dat file was saved!");
