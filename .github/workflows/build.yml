@@ -13,12 +13,12 @@ jobs:
         docker run --rm -v ${PWD}:/project builder make
     - uses: actions/upload-artifact@v4
       with:
-        name: vWii_Theme_Injector.rpx
+        name: Wii_U_Account_Swap.rpx
         path: "*.rpx"
         if-no-files-found: error
     - uses: actions/upload-artifact@v4
       with:
-        name: vWii_Theme_Injector.wuhb
+        name: Wii_U_Account_Swap.wuhb
         path: "*.wuhb"
         if-no-files-found: error
 
