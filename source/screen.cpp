@@ -1,10 +1,12 @@
 #include <stdarg.h>
 #include <stdio.h>
+#include <string>
 
 #include <coreinit/screen.h>
 #include <coreinit/time.h>
 #include <coreinit/thread.h>
-#include <nn/act.h>
+
+#include "../include/global.h"
 
 
 void printOnScreen(int line, const char* format, ...)
@@ -33,8 +35,8 @@ void printMainMenu()
     printOnScreen(5, "Press X to unlink your account locally.");
     printOnScreen(6, "Press HOME to exit.");
     printOnScreen(7, "----------------------------------------------------------");
-    nn::act::Initialize(); // Initialize the Nintendo Account library
-    
+    printOnScreen(8, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
+    printOnScreen(9, "%s", ACCOUNT_FILE.c_str());
 
     OSScreenFlipBuffersEx(SCREEN_TV);
     OSScreenFlipBuffersEx(SCREEN_DRC);

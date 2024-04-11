@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include <coreinit/screen.h>
 #include <coreinit/time.h>
 #include <coreinit/thread.h>
@@ -16,12 +18,16 @@
 
 const char* NNID_BACKUP = "/vol/external01/accounts/nnid_account.dat";
 const char* PNID_BACKUP = "/vol/external01/accounts/pnid_account.dat";
-const char* ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/8000000e/account.dat";
-const char* INKAY_CONFIG = "/vol/external01/wiiu/environments/aroma/plugins/config/inkay.json";\
+const char* INKAY_CONFIG = "/vol/external01/wiiu/environments/aroma/plugins/config/inkay.json";
 const int BUFFER_SIZE = 0x2000;
+
+unsigned int USER_ID;
+std::string MII_NICKNAME;
+std::string ACCOUNT_FILE;
 
 void deinitialize()
 {
+    nn::act::Finalize();
     Mocha_UnmountFS("storage_mlc");
     Mocha_DeInitLibrary();
     WHBLogConsoleFree();
@@ -43,6 +49,16 @@ void initialize()
     }
     // Mount the storage device differently depending on Tiramisu or Aroma.
     Mocha_MountFS("storage_mlc", NULL, "/vol/storage_mlc01");
+    
+    nn::act::Initialize();
+    int16_t miiName[256];
+    nn::act::GetMiiName(miiName);
+    MII_NICKNAME = std::string(miiName, miiName + sizeof(miiName) / sizeof(miiName[0]));
+    USER_ID = nn::act::GetPersistentId();
+
+    char user_id_hex[9];
+    sprintf(user_id_hex, "%08x", USER_ID);
+    ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/" + std::string(user_id_hex) + "/account.dat";
 }
 
 int main()

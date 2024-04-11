@@ -60,7 +60,7 @@ void unlinkAccount() {
     };
 
     WHBLogPrintf("Unlinking: Default settings will be applied.");
-    WHBLogPrintf("%s", ACCOUNT_FILE);
+    WHBLogPrintf("%s", ACCOUNT_FILE.c_str());
     WHBLogPrint("----------------------------------------");
     WHBLogConsoleDraw();
 

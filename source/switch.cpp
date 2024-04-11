@@ -19,7 +19,7 @@ void switchAccount(const char* backupFile, const char* accountType)
 {
     WHBLogPrintf("Switching to %s...", accountType);
     WHBLogPrintf("Source: %s", backupFile);
-    WHBLogPrintf("%s", ACCOUNT_FILE);
+    WHBLogPrintf("%s", ACCOUNT_FILE.c_str());
     WHBLogPrint("----------------------------------------");
     WHBLogConsoleDraw();
 
@@ -49,7 +49,7 @@ void switchAccount(const char* backupFile, const char* accountType)
             WHBLogPrint("Memory was allocated successfully!");
             WHBLogConsoleDraw();
             
-            FILE *account = fopen(ACCOUNT_FILE, "wb");
+            FILE *account = fopen(ACCOUNT_FILE.c_str(), "wb");
             if (account == NULL)
             {
                 WHBLogConsoleSetColor(0x99000000);
