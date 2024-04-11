@@ -60,7 +60,7 @@ void unlinkAccount() {
     };
 
     WHBLogPrintf("Unlinking: Default settings will be applied.");
-    WHBLogPrint("----------------------------------------------------------");
+    WHBLogPrint("---------------------------------------------------------");
     WHBLogConsoleDraw();
 
     // Read the entire file into a string.
@@ -94,7 +94,7 @@ void unlinkAccount() {
     WHBLogConsoleDraw();
 
     WHBLogConsoleSetColor(0x00990000);
-    WHBLogPrint("----------------------------------------------------------");
+    WHBLogPrint("---------------------------------------------------------");
     WHBLogPrint("The account.dat was unlinked successfully!");
     WHBLogPrint("Your console will restart in 5 seconds...");
     WHBLogConsoleDraw();

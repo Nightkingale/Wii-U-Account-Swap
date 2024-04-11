@@ -17,7 +17,7 @@
 
 void switchAccount(const char* backupFile, const char* accountType) {
     WHBLogPrintf("Switch: You will be swapped to a %s.", accountType);
-    WHBLogPrint("----------------------------------------------------------");
+    WHBLogPrint("---------------------------------------------------------");
     WHBLogConsoleDraw();
 
     WHBLogPrintf("Switching account.dat to %s.", accountType);
@@ -76,7 +76,7 @@ void switchAccount(const char* backupFile, const char* accountType) {
                     WHBLogPrint("Inkay config file edited.");
                     WHBLogConsoleDraw();
                 }
-                WHBLogPrint("----------------------------------------------------------");
+                WHBLogPrint("---------------------------------------------------------");
                 WHBLogPrint("The account.dat was restored successfully!");
                 WHBLogPrint("Your console will restart in 5 seconds...");
                 WHBLogConsoleDraw();
