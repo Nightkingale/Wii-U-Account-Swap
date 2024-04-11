@@ -30,6 +30,7 @@ void deinitialize() {
     Mocha_UnmountFS("storage_mlc");
     Mocha_DeInitLibrary();
     WHBLogConsoleFree();
+    WHBProcShutdown();
 }
 
 void initialize() {
@@ -42,7 +43,7 @@ void initialize() {
     if (Mocha_InitLibrary() != MOCHA_RESULT_SUCCESS) {
         WHBLogPrint("Mocha_InitLibrary failed!");
         WHBLogConsoleDraw();
-        OSSleepTicks(OSMillisecondsToTicks(3000));
+        OSSleepTicks(OSMillisecondsToTicks(5000));
         deinitialize();
     }
     // Mount the storage device differently depending on Tiramisu or Aroma.
@@ -73,13 +74,15 @@ int main() {
         // If the A button is pressed, switch to the Nintendo Network ID account.dat.
         if (input.trigger & VPAD_BUTTON_A) {
             switchAccount(NNID_BACKUP, "Nintendo Network ID");
+            break;
         }
         // If the B button is pressed, switch to the Pretendo Network ID account.dat.
         else if (input.trigger & VPAD_BUTTON_B) {
             switchAccount(PNID_BACKUP, "Pretendo Network ID");
+            break;
         }
         // If the X button is pressed, unlink the account locally.
-        else if (input.trigger & VPAD_BUTTON_X) {
+        else if (input.trigger & VPAD_BUTTON_MINUS) {
             printWarningMenu();
             while (WHBProcIsRunning()) {
                 VPADRead(VPAD_CHAN_0, &input, 1, &error);
@@ -96,6 +99,5 @@ int main() {
     }
 
     deinitialize();
-    WHBProcShutdown();
     return 0;
 }
