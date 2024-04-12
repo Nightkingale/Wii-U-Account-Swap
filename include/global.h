@@ -16,6 +16,7 @@ extern std::string ACCOUNT_FILE;
 void deinitialize();
 void initialize();
 void printMainMenu();
+void printBackupMenu();
 void printOverwriteMenu(const char* backupPath);
 void backupAccount();
 

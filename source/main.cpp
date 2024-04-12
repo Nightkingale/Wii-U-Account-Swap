@@ -84,11 +84,22 @@ int main() {
         }
         // If the + button is pressed, backup the current account.dat.
         else if (input.trigger & VPAD_BUTTON_PLUS) {
-            backupAccount();
+            printBackupMenu();
+            while (WHBProcIsRunning()) {
+                VPADRead(VPAD_CHAN_0, &input, 1, &error);
+                if (input.trigger & VPAD_BUTTON_A) {
+                    backupAccount();
+                    break;
+                }
+                else if (input.trigger & VPAD_BUTTON_B) {
+                    printMainMenu();
+                    break;
+                }
+            }
         }
         // If the X button is pressed, unlink the account locally.
         else if (input.trigger & VPAD_BUTTON_MINUS) {
-            printWarningMenu();
+            printUnlinkMenu();
             while (WHBProcIsRunning()) {
                 VPADRead(VPAD_CHAN_0, &input, 1, &error);
                 if (input.trigger & VPAD_BUTTON_A) {

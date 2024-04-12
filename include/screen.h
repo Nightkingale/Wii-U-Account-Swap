@@ -3,7 +3,8 @@
 
 void printOnScreen(int line, const char* format, ...);
 void printMainMenu();
-void printWarningMenu();
+void printUnlinkMenu();
+void printBackupMenu();
 void printOverwriteMenu(const char* backupPath);
 
 #endif // SCREEN_H

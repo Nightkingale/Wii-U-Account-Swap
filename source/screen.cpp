@@ -43,7 +43,7 @@ void printMainMenu() {
     OSScreenFlipBuffersEx(SCREEN_DRC);
 }
 
-void printWarningMenu() {
+void printUnlinkMenu() {
     OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
     OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
 
@@ -58,6 +58,31 @@ void printWarningMenu() {
     printOnScreen(8, "You won't be able to use this account on any other Wii U.");
 
     printOnScreen(10, "Press (A) to confirm the unlink or (B) to cancel.");
+    
+    printOnScreen(14, "---------------------------------------------------------");
+    printOnScreen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
+    printOnScreen(16, "%s", ACCOUNT_FILE.c_str());
+
+    OSScreenFlipBuffersEx(SCREEN_TV);
+    OSScreenFlipBuffersEx(SCREEN_DRC);
+}
+
+void printBackupMenu() {
+    OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
+    OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
+
+    printOnScreen(0, "Backup: Please read the following and confirm!");
+    printOnScreen(1, "---------------------------------------------------------");
+    
+    printOnScreen(3, "This will backup your current account.dat file.");
+
+    printOnScreen(5, "The account.dat may contain sensitive personal");
+    printOnScreen(6, "information, such as your e-mail address and encrypted");
+    printOnScreen(7, "cached password (if you have chosen to save it).");
+
+    printOnScreen(9, "Please do not share these backups with anyone else!");
+
+    printOnScreen(11, "Press (A) to confirm the backup or (B) to cancel.");
     
     printOnScreen(14, "---------------------------------------------------------");
     printOnScreen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
