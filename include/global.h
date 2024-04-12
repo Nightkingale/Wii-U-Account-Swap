@@ -3,16 +3,20 @@
 
 #include <string>
 
-extern const char* NNID_BACKUP;
-extern const char* PNID_BACKUP;
+
 extern const char* INKAY_CONFIG;
 extern const int BUFFER_SIZE;
 
 extern unsigned int USER_ID;
+extern std::string NNID_BACKUP;
+extern std::string PNID_BACKUP;
 extern std::string MII_NICKNAME;
 extern std::string ACCOUNT_FILE;
 
 void deinitialize();
 void initialize();
+void printMainMenu();
+void printOverwriteMenu(const char* backupPath);
+void backupAccount();
 
 #endif // GLOBAL_H

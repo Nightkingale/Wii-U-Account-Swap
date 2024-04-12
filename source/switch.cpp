@@ -28,6 +28,9 @@ void switchAccount(const char* backupFile, const char* accountType) {
         WHBLogConsoleSetColor(0x99000000);
         WHBLogPrintf("Error opening %s account backup!", accountType);
         WHBLogConsoleDraw();
+        WHBLogPrint("Have you made a backup of this account yet?");
+        // Wait 5 seconds, then go back to the menu.
+        OSSleepTicks(OSMillisecondsToTicks(5000));
     }
     else {
         WHBLogPrintf("%s account backup opened.", accountType);
@@ -56,7 +59,6 @@ void switchAccount(const char* backupFile, const char* accountType) {
                     fwrite(buffer, 1, bytesRead, account);
                 }
                 fclose(account);
-                WHBLogConsoleSetColor(0x00990000);
                 WHBLogPrint("System account.dat file restored.");
                 // We'll attempt to automatically swap the network using Inkay's configuration.
                 FILE *inkay = fopen(INKAY_CONFIG, "wb");
@@ -69,13 +71,14 @@ void switchAccount(const char* backupFile, const char* accountType) {
                 else {
                     WHBLogPrint("Inkay config file opened.");
                     WHBLogConsoleDraw();
-                    WHBLogPrintf("Swapping network to %s!", accountType);
+                    WHBLogPrintf("Swapping network to %s.", accountType);
                     const char *inkayContent = "{\"storageitems\":{\"connect_to_network\":%d}}";
                     fprintf(inkay, inkayContent, strcmp(accountType, "Pretendo Network ID") == 0 ? 1 : 0);
                     fclose(inkay);
                     WHBLogPrint("Inkay config file edited.");
                     WHBLogConsoleDraw();
                 }
+                WHBLogConsoleSetColor(0x00990000);
                 WHBLogPrint("---------------------------------------------------------");
                 WHBLogPrint("The account.dat was restored successfully!");
                 WHBLogPrint("Your console will restart in 5 seconds...");
@@ -84,9 +87,10 @@ void switchAccount(const char* backupFile, const char* accountType) {
             free(buffer);
         }
         fclose(backup);
+        OSSleepTicks(OSMillisecondsToTicks(5000));
+        OSForceFullRelaunch();
+        SYSLaunchMenu();
+        deinitialize();
     }
-    OSSleepTicks(OSMillisecondsToTicks(5000));
-    OSForceFullRelaunch();
-    SYSLaunchMenu();
-    deinitialize();
+    printMainMenu();
 }

@@ -30,9 +30,10 @@ void printMainMenu() {
     
     printOnScreen(3, "Press (A) to switch to Nintendo Network ID.");
     printOnScreen(4, "Press (B) to switch to Pretendo Network ID.");
-    printOnScreen(5, "Press (-) to unlink your account locally.");
-    
-    printOnScreen(7, "Press (HOME) to exit.");
+    printOnScreen(5, "Press (+) to backup your current account.");
+    printOnScreen(6, "Press (-) to unlink your account locally.");
+
+    printOnScreen(8, "Press (HOME) to exit.");
    
     printOnScreen(14, "---------------------------------------------------------");
     printOnScreen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
@@ -57,6 +58,27 @@ void printWarningMenu() {
     printOnScreen(8, "You won't be able to use this account on any other Wii U.");
 
     printOnScreen(10, "Press (A) to confirm the unlink or (B) to cancel.");
+    
+    printOnScreen(14, "---------------------------------------------------------");
+    printOnScreen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
+    printOnScreen(16, "%s", ACCOUNT_FILE.c_str());
+
+    OSScreenFlipBuffersEx(SCREEN_TV);
+    OSScreenFlipBuffersEx(SCREEN_DRC);
+}
+
+void printOverwriteMenu(const char* backupPath) {
+    OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
+    OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
+
+    printOnScreen(0, "Backup: A backup file already exists!");
+    printOnScreen(1, "---------------------------------------------------------");
+    
+    printOnScreen(3, "The backup file already exists!");
+    printOnScreen(4, "%s", backupPath);
+    printOnScreen(5, "Would you like to overwrite it?");
+
+    printOnScreen(7, "Press (A) to overwrite the backup or (B) to cancel.");
     
     printOnScreen(14, "---------------------------------------------------------");
     printOnScreen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);

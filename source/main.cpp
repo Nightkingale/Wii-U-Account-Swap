@@ -16,12 +16,12 @@
 #include "../include/unlink.h"
 
 
-const char* NNID_BACKUP = "/vol/external01/accounts/nnid_account.dat";
-const char* PNID_BACKUP = "/vol/external01/accounts/pnid_account.dat";
 const char* INKAY_CONFIG = "/vol/external01/wiiu/environments/aroma/plugins/config/inkay.json";
 const int BUFFER_SIZE = 0x2000;
 
 unsigned int USER_ID;
+std::string NNID_BACKUP;
+std::string PNID_BACKUP;
 std::string MII_NICKNAME;
 std::string ACCOUNT_FILE;
 
@@ -58,6 +58,9 @@ void initialize() {
     char user_id_hex[9];
     sprintf(user_id_hex, "%08x", USER_ID);
     ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/" + std::string(user_id_hex) + "/account.dat";
+
+    NNID_BACKUP = "/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/nnid_account.dat";
+    PNID_BACKUP = "/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/pnid_account.dat";
 }
 
 int main() {
@@ -73,13 +76,15 @@ int main() {
         VPADRead(VPAD_CHAN_0, &input, 1, &error);
         // If the A button is pressed, switch to the Nintendo Network ID account.dat.
         if (input.trigger & VPAD_BUTTON_A) {
-            switchAccount(NNID_BACKUP, "Nintendo Network ID");
-            break;
+            switchAccount(NNID_BACKUP.c_str(), "Nintendo Network ID");
         }
         // If the B button is pressed, switch to the Pretendo Network ID account.dat.
         else if (input.trigger & VPAD_BUTTON_B) {
-            switchAccount(PNID_BACKUP, "Pretendo Network ID");
-            break;
+            switchAccount(PNID_BACKUP.c_str(), "Pretendo Network ID");
+        }
+        // If the + button is pressed, backup the current account.dat.
+        else if (input.trigger & VPAD_BUTTON_PLUS) {
+            backupAccount();
         }
         // If the X button is pressed, unlink the account locally.
         else if (input.trigger & VPAD_BUTTON_MINUS) {
