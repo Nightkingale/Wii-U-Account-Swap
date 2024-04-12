@@ -88,7 +88,7 @@ void backupAccount() {
             std::string backupPath;
             WHBLogPrint("account.dat file read in memory.");
             WHBLogConsoleDraw();
-            if (content.find("nintendo") == std::string::npos) {
+            if (content.find("nintendo") != std::string::npos) {
                 backupPath = NNID_BACKUP;
                 WHBLogPrint("Nintendo Network ID detected.");
                 WHBLogConsoleDraw();
