@@ -25,11 +25,17 @@ std::string MII_NICKNAME;
 std::string ACCOUNT_FILE;
 
 void deinitialize() {
-    nn::act::Finalize();
-    Mocha_UnmountFS("storage_mlc");
-    Mocha_DeInitLibrary();
-    WHBLogConsoleFree();
-    WHBProcShutdown();
+    // This prevents hangs when called twice.
+    static bool isDeinitialized = false;
+
+    if (isDeinitialized) {
+        nn::act::Finalize();
+        Mocha_UnmountFS("storage_mlc");
+        Mocha_DeInitLibrary();
+        WHBLogConsoleFree();
+        WHBProcShutdown();
+        isDeinitialized = true;
+    }
 }
 
 void initialize() {
