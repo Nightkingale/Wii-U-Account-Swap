@@ -15,6 +15,29 @@
 #include "../include/global.h"
 
 
+void handleCleanup(FILE* backup, char* buffer, bool isError = false) {
+    // Wait 5 seconds.
+    OSSleepTicks(OSMillisecondsToTicks(5000));
+    // Re-enable the HOME Button.
+    OSEnableHomeButtonMenu(1);
+    // Free the buffer.
+    if (buffer != NULL) {
+        free(buffer);
+        buffer = NULL;
+    }
+    // Close the backup file.
+    if (backup != NULL) {
+        fclose(backup);
+        backup = NULL;
+    }
+    // If there was an error, deinitialize the program.
+    if (isError) {
+        // Print the main menu.
+        WHBLogPrint("---------------------------------------------------------");
+        printMainMenu();
+    }
+}
+
 void switchAccount(const char* backupFile, const char* accountType) {
     // Disable the HOME Button temporarily.
     OSEnableHomeButtonMenu(0);
@@ -33,8 +56,8 @@ void switchAccount(const char* backupFile, const char* accountType) {
         WHBLogPrintf("Error opening %s account backup!", accountType);
         WHBLogPrint("Have you made a backup of this account yet?");
         WHBLogConsoleDraw();
-        // Wait 5 seconds, then go back to the menu.
-        OSSleepTicks(OSMillisecondsToTicks(5000));
+        handleCleanup(backup, NULL, true);
+        return;
     }
     else {
         // Open the account.dat file for writing.
@@ -45,6 +68,8 @@ void switchAccount(const char* backupFile, const char* accountType) {
             WHBLogConsoleSetColor(0x99000000);
             WHBLogPrint("Error allocating memory!");
             WHBLogConsoleDraw();
+            handleCleanup(backup, buffer, true);
+            return;
         }
         else {
             WHBLogPrint("Memory was allocated successfully.");
@@ -55,6 +80,8 @@ void switchAccount(const char* backupFile, const char* accountType) {
                 WHBLogConsoleSetColor(0x99000000);
                 WHBLogPrint("Error opening system account.dat file!");
                 WHBLogConsoleDraw();
+                handleCleanup(backup, buffer, true);
+                return;
             }
             else {
                 WHBLogPrint("System account.dat file opened.");
@@ -84,24 +111,18 @@ void switchAccount(const char* backupFile, const char* accountType) {
                     WHBLogPrint("Inkay config file edited.");
                     WHBLogConsoleDraw();
                 }
+                // Inform the user that the switch was successful.
                 WHBLogConsoleSetColor(0x00990000);
                 WHBLogPrint("---------------------------------------------------------");
                 WHBLogPrint("The account.dat was restored successfully!");
                 WHBLogPrint("Your console will restart in 5 seconds...");
                 WHBLogConsoleDraw();
-                WHBLogPrint("---------------------------------------------------------");
             }
         }
-        // Free the buffer and close the backup file.
-        free(buffer);
-        fclose(backup);
-        OSSleepTicks(OSMillisecondsToTicks(5000));
-        // Re-enable the HOME Button.
-        OSEnableHomeButtonMenu(1);
-        // Soft reset the console.
+        // Clean-up and exit.
+        handleCleanup(backup, buffer, false);
         OSForceFullRelaunch();
         SYSLaunchMenu();
         deinitialize();
     }
-    printMainMenu();
 }

@@ -20,6 +20,33 @@
 
 bool backupConfirm = false;
 
+void handleCleanup(FILE* account, FILE* backup, char* buffer, bool isError = false) {
+    // Wait 5 seconds.
+    OSSleepTicks(OSMillisecondsToTicks(5000));
+    // Re-enable the HOME Button.
+    OSEnableHomeButtonMenu(1);
+    // Free the buffer.
+    if (buffer != NULL) {
+        free(buffer);
+        buffer = NULL;
+    }
+    // Close the account file.
+    if (account != NULL) {
+        fclose(account);
+        account = NULL;
+    }
+    // Close the backup file.
+    if (backup != NULL) {
+        fclose(backup);
+        backup = NULL;
+    }
+    // If there was an error, print the main menu.
+    if (isError) {
+        WHBLogPrint("---------------------------------------------------------");
+        printMainMenu();
+    }
+}
+
 void writeBackup(FILE* account, const std::string& backupPath, char* buffer) {
     // Create the directories if they don't exist.
     std::filesystem::path dirPath = std::filesystem::path(backupPath).remove_filename();
@@ -31,6 +58,7 @@ void writeBackup(FILE* account, const std::string& backupPath, char* buffer) {
         WHBLogPrintf("Error opening backup file.");
         WHBLogPrintf("%s", backupPath.c_str());
         WHBLogConsoleDraw();
+        handleCleanup(account, backup, buffer, true);
         return;
     }
     // Print the backup path to the screen.
@@ -69,8 +97,8 @@ void backupAccount() {
         WHBLogConsoleSetColor(0x99000000);
         WHBLogPrintf("Error opening system account.dat file!");
         WHBLogConsoleDraw();
-        // Wait 5 seconds, then go back to the menu.
-        OSSleepTicks(OSMillisecondsToTicks(5000));
+        handleCleanup(account, NULL, NULL, true);
+        return;
     }
     else {
         WHBLogPrintf("System account.dat file opened.");
@@ -82,7 +110,8 @@ void backupAccount() {
             WHBLogConsoleSetColor(0x99000000);
             WHBLogPrint("Error allocating memory!");
             WHBLogConsoleDraw();
-            OSSleepTicks(OSMillisecondsToTicks(5000));
+            handleCleanup(account, NULL, buffer, true);
+            return;
         }
         else {
             WHBLogPrint("Memory was allocated successfully.");
@@ -111,8 +140,7 @@ void backupAccount() {
                 WHBLogPrint("Network ID detection failed!");
                 WHBLogPrint("Is this user a local-only account?");
                 WHBLogConsoleDraw();
-                // Wait 5 seconds, then go back to the menu.
-                OSSleepTicks(OSMillisecondsToTicks(5000));
+                handleCleanup(account, NULL, buffer, true);
             }
             if (networkAccountFound) {
                 // Check if the backup file exists.
@@ -141,21 +169,12 @@ void backupAccount() {
                 }
             }
         }
-        // Write the backup file.
+       // Write the backup file.
         if (backupConfirm) {
             writeBackup(account, backupPath, buffer);
         }
-        // Close the account.dat file.
-        fclose(account);
-        free(buffer);
-        // Wait 5 seconds, then go back to the menu.
-        if (backupConfirm) {
-            OSSleepTicks(OSMillisecondsToTicks(5000));
-        }
-        // Re-enable the HOME Button.
-        OSEnableHomeButtonMenu(1);
-        // Print the main menu to the screen.
-        printMainMenu();
+        // Handle cleanup
+        handleCleanup(account, NULL, buffer, !backupConfirm);
         }
     }
 }
