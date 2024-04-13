@@ -63,7 +63,7 @@ void switchAccount(const char* backupFile, const char* accountType) {
                 fclose(account);
                 WHBLogPrint("System account.dat file restored.");
                 // We'll attempt to automatically swap the network using Inkay's configuration.
-                FILE *inkay = fopen(INKAY_CONFIG, "wb");
+                FILE *inkay = fopen(INKAY_CONFIG.c_str(), "wb");
                 if (inkay == NULL) {
                     // If we can't open the file, we will move on.
                     WHBLogPrint("The Inkay config file wasn't found!");

@@ -16,13 +16,13 @@
 #include "../include/unlink.h"
 
 
-const char* INKAY_CONFIG = "/vol/external01/wiiu/environments/aroma/plugins/config/inkay.json";
 const int BUFFER_SIZE = 0x2000;
 unsigned int USER_ID;
 std::string NNID_BACKUP;
 std::string PNID_BACKUP;
 std::string MII_NICKNAME;
 std::string ACCOUNT_FILE;
+std::string INKAY_CONFIG;
 
 void deinitialize() {
     // This prevents hangs when called twice.
@@ -46,6 +46,7 @@ void initialize() {
     WHBLogConsoleSetColor(0x00009900);
     // Initialize the Mocha library.
     if (Mocha_InitLibrary() != MOCHA_RESULT_SUCCESS) {
+        WHBLogConsoleSetColor(0x99000000);
         WHBLogPrint("Mocha_InitLibrary failed!");
         WHBLogConsoleDraw();
         OSSleepTicks(OSMillisecondsToTicks(5000));
@@ -64,8 +65,12 @@ void initialize() {
     sprintf(user_id_hex, "%08x", USER_ID);
     ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/" + std::string(user_id_hex) + "/account.dat";
     // Set the backup file paths.
-    NNID_BACKUP = "/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/nnid_account.dat";
-    PNID_BACKUP = "/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/pnid_account.dat";
+    NNID_BACKUP = "fs:/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/nnid_account.dat";
+    PNID_BACKUP = "fs:/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/pnid_account.dat";
+    // Set the Inkay configuration file path.
+    char environmentPathBuffer[0x100];
+    Mocha_GetEnvironmentPath(environmentPathBuffer, sizeof(environmentPathBuffer));
+    INKAY_CONFIG = std::string(environmentPathBuffer) + std::string("/plugins/config/inkay.json");
 }
 
 int main() {
