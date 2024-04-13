@@ -28,7 +28,7 @@ void deinitialize() {
     // This prevents hangs when called twice.
     static bool isDeinitialized = false;
 
-    if (isDeinitialized) {
+    if (!isDeinitialized) {
         nn::act::Finalize();
         Mocha_UnmountFS("storage_mlc");
         Mocha_DeInitLibrary();
