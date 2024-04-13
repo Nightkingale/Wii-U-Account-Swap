@@ -58,18 +58,17 @@ void unlinkAccount() {
         {"MiiImageLastModifiedDate", "Sat, 01 Jan 2000 00:00:00 GMT"},
         {"IsCommitted", "1"}
     };
-
+    // Inform the user that the unlink process has started.
+    WHBLogConsoleSetColor(0x00009900);
     WHBLogPrintf("Unlinking: Default settings will be applied.");
     WHBLogPrint("---------------------------------------------------------");
     WHBLogConsoleDraw();
-
     // Read the entire file into a string.
     std::ifstream inFile(ACCOUNT_FILE);
     std::string fileContents((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
     inFile.close();
     WHBLogPrint("System account.dat file read in memory.");
     WHBLogConsoleDraw();
-
     // Process each line in the string.
     std::istringstream iss(fileContents);
     std::string line;
@@ -85,20 +84,20 @@ void unlinkAccount() {
     }
     WHBLogPrint("Account file in memory patched.");
     WHBLogConsoleDraw();
-
     // Write the string back to the file.
     std::ofstream outFile(ACCOUNT_FILE);
     outFile << fileContents;
     outFile.close();
     WHBLogPrint("System account.dat file written.");
     WHBLogConsoleDraw();
-
+    // Inform the user that the unlink was successful.
     WHBLogConsoleSetColor(0x00990000);
     WHBLogPrint("---------------------------------------------------------");
     WHBLogPrint("The account.dat was unlinked successfully!");
     WHBLogPrint("Your console will restart in 5 seconds...");
     WHBLogConsoleDraw();
-    
+    WHBLogPrint("---------------------------------------------------------");
+    // Wait 5 seconds, then soft reboot the console.
     OSSleepTicks(OSMillisecondsToTicks(5000));
     OSForceFullRelaunch();
     SYSLaunchMenu();

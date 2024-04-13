@@ -16,6 +16,7 @@
 
 
 void switchAccount(const char* backupFile, const char* accountType) {
+    WHBLogConsoleSetColor(0x00009900);
     WHBLogPrintf("Switch: You will be swapped to a %s.", accountType);
     WHBLogPrint("---------------------------------------------------------");
     WHBLogConsoleDraw();
@@ -27,12 +28,13 @@ void switchAccount(const char* backupFile, const char* accountType) {
     if (backup == NULL) {
         WHBLogConsoleSetColor(0x99000000);
         WHBLogPrintf("Error opening %s account backup!", accountType);
-        WHBLogConsoleDraw();
         WHBLogPrint("Have you made a backup of this account yet?");
+        WHBLogConsoleDraw();
         // Wait 5 seconds, then go back to the menu.
         OSSleepTicks(OSMillisecondsToTicks(5000));
     }
     else {
+        // Open the account.dat file for writing.
         WHBLogPrintf("%s account backup opened.", accountType);
         WHBLogConsoleDraw();
         char *buffer = (char *)malloc(BUFFER_SIZE);
@@ -64,11 +66,12 @@ void switchAccount(const char* backupFile, const char* accountType) {
                 FILE *inkay = fopen(INKAY_CONFIG, "wb");
                 if (inkay == NULL) {
                     // If we can't open the file, we will move on.
-                    WHBLogPrint("Error opening Inkay config file!");
+                    WHBLogPrint("The Inkay config file wasn't found!");
                     WHBLogPrint("Network will not be automatically swapped.");
                     WHBLogConsoleDraw();
                 }
                 else {
+                    // Write the network configuration to the file.
                     WHBLogPrint("Inkay config file opened.");
                     WHBLogConsoleDraw();
                     WHBLogPrintf("Swapping network to %s.", accountType);
@@ -83,11 +86,14 @@ void switchAccount(const char* backupFile, const char* accountType) {
                 WHBLogPrint("The account.dat was restored successfully!");
                 WHBLogPrint("Your console will restart in 5 seconds...");
                 WHBLogConsoleDraw();
+                WHBLogPrint("---------------------------------------------------------");
             }
-            free(buffer);
         }
+        // Free the buffer and close the backup file.
+        free(buffer);
         fclose(backup);
         OSSleepTicks(OSMillisecondsToTicks(5000));
+        // Soft reset the console.
         OSForceFullRelaunch();
         SYSLaunchMenu();
         deinitialize();

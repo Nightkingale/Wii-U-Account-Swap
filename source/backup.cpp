@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
@@ -17,30 +18,31 @@
 #include "../include/global.h"
 
 
+bool backupConfirm = false;
+
 void writeBackup(FILE* account, const std::string& backupPath, char* buffer) {
+    // Create the directories if they don't exist.
+    std::filesystem::path dirPath = std::filesystem::path(backupPath).remove_filename();
+    std::filesystem::create_directories(dirPath);
+    // Open the backup file for writing.
     FILE *backup = fopen(backupPath.c_str(), "wb");
     if (backup == NULL) {
         WHBLogConsoleSetColor(0x99000000);
-        WHBLogPrintf("Error opening backup file.", backupPath.c_str());
+        WHBLogPrintf("Error opening backup file.");
+        WHBLogPrintf("%s", backupPath.c_str());
         WHBLogConsoleDraw();
         return;
     }
-
+    // Print the backup path to the screen.
     WHBLogPrintf("%s", backupPath.c_str());
     WHBLogConsoleDraw();
-
     // Open the backup file and write the account data to it.
+    rewind(account); // Move the file pointer to the beginning.
     size_t bytesRead = 0;
     while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, account)) > 0) {
-        size_t written = fwrite(buffer, 1, bytesRead, backup);
-        if (written != bytesRead) {
-            WHBLogConsoleSetColor(0x99000000);
-            WHBLogPrintf("Error writing to backup file.", backupPath.c_str());
-            WHBLogConsoleDraw();
-            return;
-        }
+        fwrite(buffer, 1, bytesRead, backup);
     }
-
+    // Close the backup file.
     fclose(backup);
     WHBLogPrintf("Backup account.dat written.", backupPath);
     WHBLogConsoleDraw();
@@ -50,6 +52,7 @@ void writeBackup(FILE* account, const std::string& backupPath, char* buffer) {
     WHBLogPrint("The account.dat was backed up successfully!");
     WHBLogPrint("The main menu will apppear in 5 seconds...");
     WHBLogConsoleDraw();
+    WHBLogPrint("---------------------------------------------------------");
     fclose(backup);
 }
 
@@ -59,6 +62,7 @@ void backupAccount() {
     WHBLogPrint("---------------------------------------------------------");
     WHBLogConsoleDraw();
     // Check if the account.dat file exists.
+    std::string backupPath;
     FILE *account = fopen(ACCOUNT_FILE.c_str(), "rb");
     if (account == NULL) {
         WHBLogConsoleSetColor(0x99000000);
@@ -77,6 +81,7 @@ void backupAccount() {
             WHBLogConsoleSetColor(0x99000000);
             WHBLogPrint("Error allocating memory!");
             WHBLogConsoleDraw();
+            OSSleepTicks(OSMillisecondsToTicks(5000));
         }
         else {
             WHBLogPrint("Memory was allocated successfully.");
@@ -85,47 +90,69 @@ void backupAccount() {
             size_t bytesRead = 0;
             while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, account)) > 0) {
                 content.append(buffer, bytesRead);
-            std::string backupPath;
             WHBLogPrint("account.dat file read in memory.");
             WHBLogConsoleDraw();
-            if (content.find("nintendo") != std::string::npos) {
+            bool networkAccountFound = false;
+            if (content.find("account.nintendo.net") != std::string::npos) {
                 backupPath = NNID_BACKUP;
                 WHBLogPrint("Nintendo Network ID detected.");
                 WHBLogConsoleDraw();
+                networkAccountFound = true;
             }
-            else {
+            else if (content.find("pretendo-cdn.b-cdn.net") != std::string::npos){
                 backupPath = PNID_BACKUP;
                 WHBLogPrint("Pretendo Network ID detected.");
                 WHBLogConsoleDraw();
-            }
-            // Check if the backup file exists.
-            WHBLogPrintf("Opening backup account.dat for writing.", backupPath.c_str());
-            WHBLogConsoleDraw();
-            std::ifstream ifile(backupPath);
-            if (ifile) {
-                printOverwriteMenu(backupPath.c_str());
-
-                VPADStatus input;
-                VPADReadError error;
-
-                while (WHBProcIsRunning()) {
-                    VPADRead(VPAD_CHAN_0, &input, 1, &error);
-                    if (input.trigger == VPAD_BUTTON_A) {
-                        writeBackup(account, backupPath, buffer);
-                        break;
-                    }
-                    else if (input.trigger == VPAD_BUTTON_B) {
-                        break;
-                    }
-                }
+                networkAccountFound = true;
             }
             else {
-                writeBackup(account, backupPath, buffer);
+                WHBLogConsoleSetColor(0x99000000);
+                WHBLogPrint("Network ID detection failed!");
+                WHBLogPrint("Is this user a local-only account?");
+                WHBLogConsoleDraw();
+                // Wait 5 seconds, then go back to the menu.
+                OSSleepTicks(OSMillisecondsToTicks(5000));
+            }
+            if (networkAccountFound) {
+                // Check if the backup file exists.
+                WHBLogPrintf("Opening backup account.dat for writing.", backupPath.c_str());
+                WHBLogConsoleDraw();
+                std::ifstream ifile(backupPath);
+                if (ifile) {
+                    printOverwriteMenu(backupPath.c_str());
+
+                    VPADStatus input;
+                    VPADReadError error;
+                    backupConfirm = false;
+
+                    while (WHBProcIsRunning()) {
+                        VPADRead(VPAD_CHAN_0, &input, 1, &error);
+                        if (input.trigger == VPAD_BUTTON_A) {
+                            backupConfirm = true;
+                            break;
+                        }
+                        else if (input.trigger == VPAD_BUTTON_B) {
+                            break;
+                        }
+                    }
+                }
+                else {
+                    backupConfirm = true;
+                }
             }
         }
+        // Write the backup file.
+        if (backupConfirm) {
+            writeBackup(account, backupPath, buffer);
+        }
+        // Close the account.dat file.
         fclose(account);
         free(buffer);
-        OSSleepTicks(OSMillisecondsToTicks(5000));
+        // Wait 5 seconds, then go back to the menu.
+        if (backupConfirm) {
+            OSSleepTicks(OSMillisecondsToTicks(5000));
+        }
+        // Print the main menu to the screen.
         printMainMenu();
         }
     }

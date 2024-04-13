@@ -18,7 +18,6 @@
 
 const char* INKAY_CONFIG = "/vol/external01/wiiu/environments/aroma/plugins/config/inkay.json";
 const int BUFFER_SIZE = 0x2000;
-
 unsigned int USER_ID;
 std::string NNID_BACKUP;
 std::string PNID_BACKUP;
@@ -48,29 +47,28 @@ void initialize() {
     }
     // Mount the storage device differently depending on Tiramisu or Aroma.
     Mocha_MountFS("storage_mlc", NULL, "/vol/storage_mlc01");
-    
+    // Grab the user's Mii name and persistent ID.
     nn::act::Initialize();
     int16_t miiName[256];
     nn::act::GetMiiName(miiName);
     MII_NICKNAME = std::string(miiName, miiName + sizeof(miiName) / sizeof(miiName[0]));
     USER_ID = nn::act::GetPersistentId();
-
+    // Set the account file path.
     char user_id_hex[9];
     sprintf(user_id_hex, "%08x", USER_ID);
     ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/" + std::string(user_id_hex) + "/account.dat";
-
+    // Set the backup file paths.
     NNID_BACKUP = "/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/nnid_account.dat";
     PNID_BACKUP = "/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/pnid_account.dat";
 }
 
 int main() {
     initialize();
-
+    // Initialize variables for the Wii U GamePad.
     VPADStatus input;
     VPADReadError error;
-
+    // Print the main menu to the screen.
     printMainMenu();
-
     while (WHBProcIsRunning()) {
         // Watch the Wii U GamePad for button presses.
         VPADRead(VPAD_CHAN_0, &input, 1, &error);
@@ -113,7 +111,7 @@ int main() {
             }
         }
     }
-
+    // Deinitialize the program and exit.
     deinitialize();
     return 0;
 }
