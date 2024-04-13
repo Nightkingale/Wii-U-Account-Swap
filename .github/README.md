@@ -36,5 +36,6 @@ I hope that I am able to express my thanks as much as possible to those who made
 * [GaryOderNichts](https://github.com/GaryOderNichts), for assisting me with obtaining user information such as the Mii name and the persistent ID.
 * [Lazr1026](https://github.com/Lazr1026), for helping me figure out all of the logistics for the tool, and also stress testing it.
 * [Maschell](https://github.com/Maschell), for all of his work on the Aroma environment.
+* [NinStar](https://gbatemp.net/members/ninstar.419618/), who discovered over on [GBAtemp](https://gbatemp.net/threads/deleting-wii-u-user-without-nid-password.493387/page-5) the default values for a local user.
 * [Pretendo Network](https://github.com/PretendoNetwork/), for their amazing open-source Nintendo Network replacement servers. This release is dedicated to their hard work, especially now that Nintendo Network is ultimately discontinued.
     * You can donate to them [here](https://pretendo.network/account/upgrade) and support their endeavors, especially since they're gaining more traction after the recent shutdown.
