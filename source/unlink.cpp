@@ -102,7 +102,7 @@ void unlinkAccount() {
     OSSleepTicks(OSMillisecondsToTicks(5000));
     // Re-enable the HOME Button.
     OSEnableHomeButtonMenu(1);
+    deinitialize();
     OSForceFullRelaunch();
     SYSLaunchMenu();
-    deinitialize();
 }

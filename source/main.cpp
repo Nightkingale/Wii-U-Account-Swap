@@ -33,7 +33,6 @@ void deinitialize() {
         Mocha_UnmountFS("storage_mlc");
         Mocha_DeInitLibrary();
         WHBLogConsoleFree();
-        WHBProcShutdown();
         isDeinitialized = true;
     }
 }

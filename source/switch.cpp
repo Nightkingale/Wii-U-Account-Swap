@@ -30,7 +30,7 @@ void handleCleanup(FILE* backup, char* buffer, bool isError = false) {
         fclose(backup);
         backup = NULL;
     }
-    // If there was an error, deinitialize the program.
+    // If there was an error, return to the menu.
     if (isError) {
         // Print the main menu.
         WHBLogPrint("---------------------------------------------------------");
@@ -108,6 +108,7 @@ void switchAccount(const char* backupFile, const char* accountType) {
                     const char *inkayContent = "{\"storageitems\":{\"connect_to_network\":%d}}";
                     fprintf(inkay, inkayContent, strcmp(accountType, "Pretendo Network ID") == 0 ? 1 : 0);
                     fclose(inkay);
+                    inkay = NULL;
                     WHBLogPrint("Inkay config file edited.");
                     WHBLogConsoleDraw();
                 }
@@ -121,8 +122,8 @@ void switchAccount(const char* backupFile, const char* accountType) {
         }
         // Clean-up and exit.
         handleCleanup(backup, buffer, false);
+        deinitialize();
         OSForceFullRelaunch();
         SYSLaunchMenu();
-        deinitialize();
     }
 }
