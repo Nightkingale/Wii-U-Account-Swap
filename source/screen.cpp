@@ -25,7 +25,7 @@ void printMainMenu() {
     OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
     OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
 
-    printOnScreen(0, "Wii U Account Swap (v1.0.0)                  Nightkingale");
+    printOnScreen(0, "Wii U Account Swap (v1.0.0-rc1)              Nightkingale");
     printOnScreen(1, "---------------------------------------------------------");
     
     printOnScreen(3, "Press (A) to switch to Nintendo Network ID.");
