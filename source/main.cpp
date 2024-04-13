@@ -81,6 +81,7 @@ int main() {
     // Print the main menu to the screen.
     printMainMenu();
     while (WHBProcIsRunning()) {
+        printMainMenu();
         // Watch the Wii U GamePad for button presses.
         VPADRead(VPAD_CHAN_0, &input, 1, &error);
         // If the A button is pressed, switch to the Nintendo Network ID account.dat.
@@ -93,8 +94,8 @@ int main() {
         }
         // If the + button is pressed, backup the current account.dat.
         else if (input.trigger & VPAD_BUTTON_PLUS) {
-            printBackupMenu();
             while (WHBProcIsRunning()) {
+                printBackupMenu();
                 VPADRead(VPAD_CHAN_0, &input, 1, &error);
                 if (input.trigger & VPAD_BUTTON_A) {
                     backupAccount();
@@ -108,8 +109,8 @@ int main() {
         }
         // If the X button is pressed, unlink the account locally.
         else if (input.trigger & VPAD_BUTTON_MINUS) {
-            printUnlinkMenu();
             while (WHBProcIsRunning()) {
+                printUnlinkMenu();
                 VPADRead(VPAD_CHAN_0, &input, 1, &error);
                 if (input.trigger & VPAD_BUTTON_A) {
                     unlinkAccount();

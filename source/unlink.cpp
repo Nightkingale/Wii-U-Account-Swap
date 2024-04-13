@@ -58,6 +58,8 @@ void unlinkAccount() {
         {"MiiImageLastModifiedDate", "Sat, 01 Jan 2000 00:00:00 GMT"},
         {"IsCommitted", "1"}
     };
+    // Disable the HOME Button temporarily.
+    OSEnableHomeButtonMenu(0);
     // Inform the user that the unlink process has started.
     WHBLogConsoleSetColor(0x00009900);
     WHBLogPrintf("Unlinking: Default settings will be applied.");
@@ -99,6 +101,8 @@ void unlinkAccount() {
     WHBLogPrint("---------------------------------------------------------");
     // Wait 5 seconds, then soft reboot the console.
     OSSleepTicks(OSMillisecondsToTicks(5000));
+    // Re-enable the HOME Button.
+    OSEnableHomeButtonMenu(1);
     OSForceFullRelaunch();
     SYSLaunchMenu();
     deinitialize();

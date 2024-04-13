@@ -16,6 +16,9 @@
 
 
 void switchAccount(const char* backupFile, const char* accountType) {
+    // Disable the HOME Button temporarily.
+    OSEnableHomeButtonMenu(0);
+    // Print the account type and the switch message.
     WHBLogConsoleSetColor(0x00009900);
     WHBLogPrintf("Switch: You will be swapped to a %s.", accountType);
     WHBLogPrint("---------------------------------------------------------");
@@ -93,6 +96,8 @@ void switchAccount(const char* backupFile, const char* accountType) {
         free(buffer);
         fclose(backup);
         OSSleepTicks(OSMillisecondsToTicks(5000));
+        // Re-enable the HOME Button.
+        OSEnableHomeButtonMenu(1);
         // Soft reset the console.
         OSForceFullRelaunch();
         SYSLaunchMenu();

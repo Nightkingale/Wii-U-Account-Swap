@@ -57,6 +57,9 @@ void writeBackup(FILE* account, const std::string& backupPath, char* buffer) {
 }
 
 void backupAccount() {
+    // Disable the HOME Button temporarily.
+    OSEnableHomeButtonMenu(0);
+    // Inform the user that the backup process has started.
     WHBLogConsoleSetColor(0x00009900);
     WHBLogPrintf("Backup: A Network ID backup will be created.");
     WHBLogPrint("---------------------------------------------------------");
@@ -119,13 +122,12 @@ void backupAccount() {
                 WHBLogConsoleDraw();
                 std::ifstream ifile(backupPath);
                 if (ifile) {
-                    printOverwriteMenu(backupPath.c_str());
-
                     VPADStatus input;
                     VPADReadError error;
                     backupConfirm = false;
 
                     while (WHBProcIsRunning()) {
+                        printOverwriteMenu(backupPath.c_str());
                         VPADRead(VPAD_CHAN_0, &input, 1, &error);
                         if (input.trigger == VPAD_BUTTON_A) {
                             backupConfirm = true;
@@ -152,6 +154,8 @@ void backupAccount() {
         if (backupConfirm) {
             OSSleepTicks(OSMillisecondsToTicks(5000));
         }
+        // Re-enable the HOME Button.
+        OSEnableHomeButtonMenu(1);
         // Print the main menu to the screen.
         printMainMenu();
         }
