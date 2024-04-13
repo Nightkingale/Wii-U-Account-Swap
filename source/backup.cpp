@@ -57,8 +57,6 @@ void writeBackup(FILE* account, const std::string& backupPath, char* buffer) {
 }
 
 void backupAccount() {
-    // Disable the HOME Button temporarily.
-    OSEnableHomeButtonMenu(0);
     // Inform the user that the backup process has started.
     WHBLogConsoleSetColor(0x00009900);
     WHBLogPrintf("Backup: A Network ID backup will be created.");

@@ -95,6 +95,8 @@ int main() {
         // If the + button is pressed, backup the current account.dat.
         else if (input.trigger & VPAD_BUTTON_PLUS) {
             while (WHBProcIsRunning()) {
+                // Disable the HOME Button temporarily.
+                OSEnableHomeButtonMenu(0);
                 printBackupMenu();
                 VPADRead(VPAD_CHAN_0, &input, 1, &error);
                 if (input.trigger & VPAD_BUTTON_A) {
@@ -102,6 +104,8 @@ int main() {
                     break;
                 }
                 else if (input.trigger & VPAD_BUTTON_B) {
+                    // Re-enable the HOME Button.
+                    OSEnableHomeButtonMenu(1);
                     printMainMenu();
                     break;
                 }
@@ -110,6 +114,8 @@ int main() {
         // If the X button is pressed, unlink the account locally.
         else if (input.trigger & VPAD_BUTTON_MINUS) {
             while (WHBProcIsRunning()) {
+                // Disable the HOME Button temporarily.
+                OSEnableHomeButtonMenu(0);
                 printUnlinkMenu();
                 VPADRead(VPAD_CHAN_0, &input, 1, &error);
                 if (input.trigger & VPAD_BUTTON_A) {
@@ -117,6 +123,8 @@ int main() {
                     break;
                 }
                 else if (input.trigger & VPAD_BUTTON_B) {
+                    // Re-enable the HOME Button.
+                    OSEnableHomeButtonMenu(1);
                     printMainMenu();
                     break;
                 }
