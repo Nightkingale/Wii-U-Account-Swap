@@ -37,3 +37,4 @@ I hope that I am able to express my thanks as much as possible to those who made
 * [Lazr1026](https://github.com/Lazr1026), for helping me figure out all of the logistics for the tool, and also stress testing it.
 * [Maschell](https://github.com/Maschell), for all of his work on the Aroma environment.
 * [Pretendo Network](https://github.com/PretendoNetwork/), for their amazing open-source Nintendo Network replacement servers. This release is dedicated to their hard work, especially now that Nintendo Network is ultimately discontinued.
+    * You can donate to them [here](https://pretendo.network/account/upgrade) and support their endeavors, especially since they're gaining more traction after the recent shutdown.
