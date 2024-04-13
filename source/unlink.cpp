@@ -65,15 +65,15 @@ void unlinkAccount() {
     WHBLogPrint("---------------------------------------------------------");
     WHBLogConsoleDraw();
     // Read the entire file into a string.
-    std::ifstream inFile(ACCOUNT_FILE);
-    std::string fileContents((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
-    inFile.close();
+    std::ifstream accountInput(ACCOUNT_FILE);
+    std::string fileContents((std::istreambuf_iterator<char>(accountInput)), std::istreambuf_iterator<char>());
+    accountInput.close();
     WHBLogPrint("System account.dat file read in memory.");
     WHBLogConsoleDraw();
     // Process each line in the string.
-    std::istringstream iss(fileContents);
+    std::istringstream fileContentStream(fileContents);
     std::string line;
-    while (std::getline(iss, line)) {
+    while (std::getline(fileContentStream, line)) {
         size_t pos = line.find('=');
         if (pos != std::string::npos) {
             std::string key = line.substr(0, pos);
@@ -86,9 +86,9 @@ void unlinkAccount() {
     WHBLogPrint("Account file in memory patched.");
     WHBLogConsoleDraw();
     // Write the string back to the file.
-    std::ofstream outFile(ACCOUNT_FILE);
-    outFile << fileContents;
-    outFile.close();
+    std::ofstream accountOutput(ACCOUNT_FILE);
+    accountOutput << fileContents;
+    accountOutput.close();
     WHBLogPrint("System account.dat file written.");
     WHBLogConsoleDraw();
     // Inform the user that the unlink was successful.
