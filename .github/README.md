@@ -2,11 +2,11 @@
 
 A tool to manage a user's account.dat, particularly for Network IDs.
 
-Wii U Account Swap is an elaborate tool that allows the management of a Wii U user's `account.dat` file, located in `storage_mlc:/usr/save/system/act/[PERSISTENT_ID]`. This allows you to create a backup of (and of course, swap between) both a Nintendo Network ID and Pretendo Network ID. An unlinking feature is also provided for convienence, which will *locally* remove the currently attached Network ID from a user, all without deleting the user or Network ID itself.
+Wii U Account Swap is an elaborate tool that allows the management of a Wii U user's `account.dat` file, located in `storage_mlc:/usr/save/system/act/[PERSISTENT_ID]/`. This allows you to create a backup of (and of course, swap between) both a Nintendo Network ID and Pretendo Network ID. An unlinking feature is also provided for convienence, which will *locally* remove the currently attached Network ID from a user, all without deleting the user or Network ID itself.
 
-Theoretically, this swap would limit needing two user accounts to use both services, especially if you want to use the same Network ID username on both. That being said, there are likely side effects of utilizing this (such as possibly losing access to purchased Nintendo eShop content while on Pretendo Network). This still needs to be investigated further. 
+Theoretically, this swap would limit needing two user accounts to use both services. That being said, there are likely side effects of utilizing this (such as possibly losing access to purchased Nintendo eShop content while on Pretendo Network). This still needs to be investigated further. 
 
-In the meanwhile, I'd still suggest using two seperate users if possible, per Pretendo Network's recommendation.
+Note that if you're trying to use a Pretendo Network ID with the same username as an existing Nintendo Network ID, this tool makes it possible. You will not be able to do the same on a Nintendo 3DS, however, without a similar tool on there, such as [FriendsAccountSwitcher.gm9](https://github.com/MatthewL246/pretendo-docker/blob/main/console-files/FriendsAccountSwitcher.gm9) by [MatthewL246](https://github.com/MatthewL246).
 
 **Please be aware that an `account.dat` that's linked to a Network ID will have sensitive personal information on it. This includes both e-mail addresses and encrypted cached passwords (if you chose to save them). These will all be stored on your SD Card if you choose to back them up, so please do not share them with anybody!**
 
@@ -36,6 +36,6 @@ I hope that I am able to express my thanks as much as possible to those who made
 * [GaryOderNichts](https://github.com/GaryOderNichts), for assisting me with obtaining user information such as the Mii name and the persistent ID.
 * [Lazr1026](https://github.com/Lazr1026), for helping me figure out all of the logistics for the tool, and also stress testing it.
 * [Maschell](https://github.com/Maschell), for all of his work on the Aroma environment.
-* [NinStar](https://gbatemp.net/members/ninstar.419618/), who discovered over on [GBAtemp](https://gbatemp.net/threads/deleting-wii-u-user-without-nid-password.493387/page-5) the default values for a local user.
-* [Pretendo Network](https://github.com/PretendoNetwork/), for their amazing open-source Nintendo Network replacement servers. This release is dedicated to their hard work, especially now that Nintendo Network is ultimately discontinued.
+* [NinStar](https://github.com/ninstar), who discovered over on [GBAtemp](https://gbatemp.net/threads/deleting-wii-u-user-without-nid-password.493387/page-5) the default values for a local user.
+* [Pretendo Network](https://github.com/PretendoNetwork/), for their amazing open-source Nintendo Network replacement servers, as well as for the support I've received from their developers after pitching this idea. This release is dedicated to their hard work!
     * You can donate to them [here](https://pretendo.network/account/upgrade) and support their endeavors, especially since they're gaining more traction after the recent shutdown.
