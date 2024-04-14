@@ -15,7 +15,16 @@ void printMainMenu() {
     OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
     OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
 
-    printOnScreen(0, "Wii U Account Swap (v1.0.0-rc1)              Nightkingale");
+    std::stringstream versionLine; // Create a stringstream to format the version line.
+    versionLine << "Wii U Account Swap (" << VERSION_NUMBER << ")";
+    int currentLength = versionLine.str().length();
+    int numSpaces = 56 - currentLength - 11; // 11 is the length of " Nightkingale"
+    for (int i = 0; i < numSpaces; i++) {
+        versionLine << ' '; // Add spaces to format the version line.
+    }
+    versionLine << "Nightkingale";
+
+    printOnScreen(0, versionLine.str().c_str());
     printOnScreen(1, "---------------------------------------------------------");
     
     printOnScreen(3, "Press (A) to switch to Nintendo Network ID.");
