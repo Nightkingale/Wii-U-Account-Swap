@@ -36,6 +36,8 @@ SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
 ICON		:=	assets/icon.png
+TV_SPLASH	:=	assets/tv_splash.png
+DRC_SPLASH	:=	assets/drc_splash.png
 
 # Be verbose by default.
 V ?= 1
