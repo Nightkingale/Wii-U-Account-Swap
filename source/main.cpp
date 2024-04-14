@@ -13,7 +13,7 @@
 #include "../include/unlink.hpp"
 #include "../include/utils.hpp"
 
-const std::string VERSION_NUMBER = "v1.0.0-rc1"; // The current version number of the program.
+const std::string VERSION_NUMBER = "v1.0.0"; // The current version number of the program.
 const int BUFFER_SIZE = 0x2000; // The buffer size allocated for reading and writing files.
 
 unsigned int USER_ID; // The current user persistant ID.
