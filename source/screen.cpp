@@ -6,7 +6,7 @@
 #include <coreinit/time.h>
 #include <coreinit/thread.h>
 
-#include "../include/global.h"
+#include "../include/global.hpp"
 
 
 void printOnScreen(int line, const char* format, ...) {

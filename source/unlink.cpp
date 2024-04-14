@@ -17,7 +17,7 @@
 #include <whb/log.h>
 #include <whb/proc.h>
 
-#include "../include/global.h"
+#include "../include/global.hpp"
 
 
 void unlinkAccount() {

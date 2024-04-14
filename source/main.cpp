@@ -10,10 +10,10 @@
 #include <whb/log.h>
 #include <whb/proc.h>
 
-#include "../include/global.h"
-#include "../include/screen.h"
-#include "../include/switch.h"
-#include "../include/unlink.h"
+#include "../include/global.hpp"
+#include "../include/screen.hpp"
+#include "../include/switch.hpp"
+#include "../include/unlink.hpp"
 
 
 const int BUFFER_SIZE = 0x2000;
