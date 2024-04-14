@@ -8,7 +8,7 @@ Theoretically, this swap would limit needing two user accounts to use both servi
 
 Note that if you're trying to use a Pretendo Network ID with the same username as an existing Nintendo Network ID, this tool makes it possible. You will not be able to do the same on a Nintendo 3DS, however, without a similar tool on there, such as [FriendsAccountSwitcher.gm9](https://github.com/MatthewL246/pretendo-docker/blob/main/console-files/FriendsAccountSwitcher.gm9) by [MatthewL246](https://github.com/MatthewL246).
 
-**Please be aware that an `account.dat` that's linked to a Network ID will have sensitive personal information on it. This includes both e-mail addresses and encrypted cached passwords (if you chose to save them). These will all be stored on your SD Card if you choose to back them up, so please do not share them with anybody!**
+**Please be aware that an `account.dat` that's linked to a Network ID will have sensitive personal information in it. This includes both e-mail addresses and encrypted cached passwords (if you chose to save them). These will all be stored on your SD Card if you choose to back them up, so please do not share them with anybody!**
 
 ## Installation
 A Wii U homebrew file will be bundled with each release. It should be placed on your SD card, particularly in `wiiu/apps/`.
