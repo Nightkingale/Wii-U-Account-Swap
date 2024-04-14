@@ -37,6 +37,9 @@ DATA		:=	data
 INCLUDES	:=	include
 ICON		:=	assets/icon.png
 
+# Be verbose by default.
+V ?= 1
+
 #-------------------------------------------------------------------------------
 # options for code generation
 #-------------------------------------------------------------------------------
@@ -139,7 +142,7 @@ all: $(BUILD)
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	@$(MAKE) -C $(BUILD) -f $(CURDIR)/Makefile  V=$(V)
 
 #-------------------------------------------------------------------------------
 clean:
