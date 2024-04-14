@@ -17,10 +17,11 @@
 #include <whb/log.h>
 #include <whb/proc.h>
 
-#include "../include/global.hpp"
-
+#include "../include/main.hpp"
+#include "../include/utils.hpp"
 
 void unlinkAccount() {
+    // The default values to apply to the account.dat file.
     std::map<std::string, std::string> defaultValues = {
         {"IsMiiUpdated", "1"},
         {"AccountId", ""},
@@ -64,12 +65,14 @@ void unlinkAccount() {
     WHBLogPrintf("Unlinking: Default settings will be applied.");
     WHBLogPrint("---------------------------------------------------------");
     WHBLogConsoleDraw();
+
     // Read the entire file into a string.
     std::ifstream accountInput(ACCOUNT_FILE);
     std::string fileContents((std::istreambuf_iterator<char>(accountInput)), std::istreambuf_iterator<char>());
     accountInput.close();
     WHBLogPrint("System account.dat file read in memory.");
     WHBLogConsoleDraw();
+
     // Process each line in the string.
     std::istringstream fileContentStream(fileContents);
     std::string line;
@@ -83,14 +86,17 @@ void unlinkAccount() {
         }
         fileContents += line + "\n";
     }
+
     WHBLogPrint("Account file in memory patched.");
     WHBLogConsoleDraw();
+
     // Write the string back to the file.
     std::ofstream accountOutput(ACCOUNT_FILE);
     accountOutput << fileContents;
     accountOutput.close();
     WHBLogPrint("System account.dat file written.");
     WHBLogConsoleDraw();
+
     // Inform the user that the unlink was successful.
     WHBLogConsoleSetColor(0x00990000);
     WHBLogPrint("---------------------------------------------------------");
@@ -98,8 +104,10 @@ void unlinkAccount() {
     WHBLogPrint("Your console will restart in 5 seconds...");
     WHBLogConsoleDraw();
     WHBLogPrint("---------------------------------------------------------");
+
     // Wait 5 seconds, then soft reboot the console.
     OSSleepTicks(OSMillisecondsToTicks(5000));
+
     // Re-enable the HOME Button.
     OSEnableHomeButtonMenu(1);
     deinitialize();

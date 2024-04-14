@@ -1,6 +1,8 @@
-#ifndef UNLINK_H
-#define UNLINK_H
+#ifndef UNLINK_HPP
+#define UNLINK_HPP
+
 
 void unlinkAccount();
 
-#endif // UNLINK_H
+
+#endif

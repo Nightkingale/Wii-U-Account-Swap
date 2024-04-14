@@ -1,3 +1,4 @@
+#include <iomanip>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string>
@@ -6,20 +7,9 @@
 #include <coreinit/time.h>
 #include <coreinit/thread.h>
 
-#include "../include/global.hpp"
+#include "../include/main.hpp"
+#include "../include/utils.hpp"
 
-
-void printOnScreen(int line, const char* format, ...) {
-    char buffer[256];
-    va_list args;
-    // Format the string into a buffer.
-    va_start(args, format);
-    vsnprintf(buffer, sizeof(buffer), format, args);
-    va_end(args);
-    // Print the string to the screen.
-    OSScreenPutFontEx(SCREEN_TV, 0, line, buffer);
-    OSScreenPutFontEx(SCREEN_DRC, 0, line, buffer);
-}
 
 void printMainMenu() {
     OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);

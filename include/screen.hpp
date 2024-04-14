@@ -1,10 +1,14 @@
-#ifndef SCREEN_H
-#define SCREEN_H
+#ifndef SCREEN_HPP
+#define SCREEN_HPP
 
-void printOnScreen(int line, const char* format, ...);
+
 void printMainMenu();
+
 void printUnlinkMenu();
+
 void printBackupMenu();
+
 void printOverwriteMenu(const char* backupPath);
 
-#endif // SCREEN_H
+
+#endif
