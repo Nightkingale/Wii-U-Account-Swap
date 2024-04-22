@@ -91,7 +91,7 @@ void writeBackup(FILE* account, const std::string& backupPath, char* buffer) {
     WHBLogConsoleSetColor(0x00990000);
     WHBLogPrint("---------------------------------------------------------");
     WHBLogPrint("The account.dat was backed up successfully!");
-    WHBLogPrint("The main menu will apppear in 5 seconds...");
+    WHBLogPrint("The main menu will appear in 5 seconds...");
     WHBLogConsoleDraw();
     WHBLogPrint("---------------------------------------------------------");
     fclose(backup);
