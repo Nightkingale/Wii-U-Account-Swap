@@ -4,8 +4,6 @@
 #include <string>
 
 
-extern const std::string VERSION_NUMBER;
-
 extern const int BUFFER_SIZE;
 
 extern unsigned int USER_ID;

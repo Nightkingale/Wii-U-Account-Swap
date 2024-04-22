@@ -16,6 +16,7 @@ TOPDIR ?= $(CURDIR)
 APP_NAME		:= Wii U Account Swap
 APP_SHORTNAME	:= Wii U Account Swap
 APP_AUTHOR		:= Nightkingale
+APP_VERSION		:= v1.0.0
 
 include $(DEVKITPRO)/wut/share/wut_rules
 
@@ -49,7 +50,7 @@ CFLAGS	:=	-Wall -Wextra -Wundef -Wshadow -Wpointer-arith -Wcast-align \
 			-O2 -fipa-pta -pipe -ffunction-sections \
 			$(MACHDEP)
 
-CFLAGS	+=	$(INCLUDE) -D__WIIU__ -D__WUT__
+CFLAGS	+=	$(INCLUDE) -D__WIIU__ -D__WUT__ -DAPP_VERSION=\"$(APP_VERSION)\"
 
 CXXFLAGS	:= $(CFLAGS)
 
@@ -144,7 +145,7 @@ all: $(BUILD)
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@$(MAKE) -C $(BUILD) -f $(CURDIR)/Makefile  V=$(V)
+	@$(MAKE) -C $(BUILD) -f $(CURDIR)/Makefile V=$(V)
 
 #-------------------------------------------------------------------------------
 clean:

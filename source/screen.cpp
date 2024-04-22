@@ -16,7 +16,7 @@ void printMainMenu() {
     OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
 
     std::stringstream versionLine; // Create a stringstream to format the version line.
-    versionLine << "Wii U Account Swap (" << VERSION_NUMBER << ")";
+    versionLine << "Wii U Account Swap (" << APP_VERSION << ")";
     int currentLength = versionLine.str().length();
     int numSpaces = 56 - currentLength - 11; // 11 is the length of " Nightkingale"
     for (int i = 0; i < numSpaces; i++) {
