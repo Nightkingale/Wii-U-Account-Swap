@@ -2,7 +2,7 @@
 #define UNLINK_HPP
 
 
-void unlinkAccount();
+void unlink_account();
 
 
 #endif

@@ -20,9 +20,10 @@
 #include "../include/main.hpp"
 #include "../include/utils.hpp"
 
-void unlinkAccount() {
+
+void unlink_account() {
     // The default values to apply to the account.dat file.
-    std::map<std::string, std::string> defaultValues = {
+    std::map<std::string, std::string> default_values = {
         {"IsMiiUpdated", "1"},
         {"AccountId", ""},
         {"BirthYear", "0"},
@@ -67,33 +68,33 @@ void unlinkAccount() {
     WHBLogConsoleDraw();
 
     // Read the entire file into a string.
-    std::ifstream accountInput(ACCOUNT_FILE);
-    std::string fileContents((std::istreambuf_iterator<char>(accountInput)), std::istreambuf_iterator<char>());
-    accountInput.close();
+    std::ifstream account_input(ACCOUNT_FILE);
+    std::string file_contents((std::istreambuf_iterator<char>(account_input)), std::istreambuf_iterator<char>());
+    account_input.close();
     WHBLogPrint("System account.dat file read in memory.");
     WHBLogConsoleDraw();
 
     // Process each line in the string.
-    std::istringstream fileContentStream(fileContents);
+    std::istringstream file_contentstream(file_contents);
     std::string line;
-    while (std::getline(fileContentStream, line)) {
+    while (std::getline(file_contentstream, line)) {
         size_t pos = line.find('=');
         if (pos != std::string::npos) {
             std::string key = line.substr(0, pos);
-            if (defaultValues.count(key) > 0) {
-                line = key + "=" + defaultValues[key];
+            if (default_values.count(key) > 0) {
+                line = key + "=" + default_values[key];
             }
         }
-        fileContents += line + "\n";
+        file_contents += line + "\n";
     }
 
     WHBLogPrint("Account file in memory patched.");
     WHBLogConsoleDraw();
 
     // Write the string back to the file.
-    std::ofstream accountOutput(ACCOUNT_FILE);
-    accountOutput << fileContents;
-    accountOutput.close();
+    std::ofstream account_output(ACCOUNT_FILE);
+    account_output << file_contents;
+    account_output.close();
     WHBLogPrint("System account.dat file written.");
     WHBLogConsoleDraw();
 

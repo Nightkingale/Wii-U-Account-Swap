@@ -20,9 +20,9 @@
 #include "../include/screen.hpp"
 
 
-bool backupConfirm = false;
+bool backup_confirm = false;
 
-void handleCleanup(FILE* account, FILE* backup, char* buffer, bool isError = false) {
+void handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = false) {
     // Wait 5 seconds.
     OSSleepTicks(OSMillisecondsToTicks(5000));
 
@@ -48,30 +48,31 @@ void handleCleanup(FILE* account, FILE* backup, char* buffer, bool isError = fal
     }
 
     // If there was an error, print the main menu.
-    if (isError) {
+    if (is_error) {
         WHBLogPrint("---------------------------------------------------------");
-        printMainMenu();
+        print_main_menu();
     }
 }
 
-void writeBackup(FILE* account, const std::string& backupPath, char* buffer) {
+
+void write_backup(FILE* account, const std::string& backup_path, char* buffer) {
     // Create the directories if they don't exist.
-    std::filesystem::path dirPath = std::filesystem::path(backupPath).remove_filename();
+    std::filesystem::path dirPath = std::filesystem::path(backup_path).remove_filename();
     std::filesystem::create_directories(dirPath);
     
     // Open the backup file for writing.
-    FILE *backup = fopen(backupPath.c_str(), "wb");
+    FILE *backup = fopen(backup_path.c_str(), "wb");
     if (backup == NULL) {
         WHBLogConsoleSetColor(0x99000000);
         WHBLogPrintf("Error opening backup file.");
-        WHBLogPrintf("%s", backupPath.c_str());
+        WHBLogPrintf("%s", backup_path.c_str());
         WHBLogConsoleDraw();
-        handleCleanup(account, backup, buffer, true);
+        handle_cleanup(account, backup, buffer, true);
         return;
     }
 
     // Print the backup path to the screen.
-    WHBLogPrintf("%s", backupPath.c_str());
+    WHBLogPrintf("%s", backup_path.c_str());
     WHBLogConsoleDraw();
 
     // Open the backup file and write the account data to it.
@@ -84,7 +85,7 @@ void writeBackup(FILE* account, const std::string& backupPath, char* buffer) {
 
     // Close the backup file.
     fclose(backup);
-    WHBLogPrintf("Backup account.dat written.", backupPath);
+    WHBLogPrintf("Backup account.dat written.", backup_path);
     WHBLogConsoleDraw();
 
     // Wait 5 seconds, then go back to the menu.
@@ -97,7 +98,8 @@ void writeBackup(FILE* account, const std::string& backupPath, char* buffer) {
     fclose(backup);
 }
 
-void backupAccount() {
+
+void backup_account() {
     // Inform the user that the backup process has started.
     WHBLogConsoleSetColor(0x00009900);
     WHBLogPrintf("Backup: A Network ID backup will be created.");
@@ -105,13 +107,13 @@ void backupAccount() {
     WHBLogConsoleDraw();
 
     // Check if the account.dat file exists.
-    std::string backupPath;
+    std::string backup_path;
     FILE *account = fopen(ACCOUNT_FILE.c_str(), "rb");
     if (account == NULL) {
         WHBLogConsoleSetColor(0x99000000);
         WHBLogPrintf("Error opening system account.dat file!");
         WHBLogConsoleDraw();
-        handleCleanup(account, NULL, NULL, true);
+        handle_cleanup(account, NULL, NULL, true);
         return;
 
     } else {
@@ -124,7 +126,7 @@ void backupAccount() {
             WHBLogConsoleSetColor(0x99000000);
             WHBLogPrint("Error allocating memory!");
             WHBLogConsoleDraw();
-            handleCleanup(account, NULL, buffer, true);
+            handle_cleanup(account, NULL, buffer, true);
             return;
 
         } else {
@@ -139,45 +141,45 @@ void backupAccount() {
             WHBLogPrint("account.dat file read in memory.");
             WHBLogConsoleDraw();
 
-            bool networkAccountFound = false;
+            bool network_account_found = false;
             if (content.find("account.nintendo.net") != std::string::npos) {
-                backupPath = NNID_BACKUP;
+                backup_path = NNID_BACKUP;
                 WHBLogPrint("Nintendo Network ID detected.");
                 WHBLogConsoleDraw();
-                networkAccountFound = true;
+                network_account_found = true;
 
             } else if (content.find("pretendo-cdn.b-cdn.net") != std::string::npos) {
-                backupPath = PNID_BACKUP;
+                backup_path = PNID_BACKUP;
                 WHBLogPrint("Pretendo Network ID detected.");
                 WHBLogConsoleDraw();
-                networkAccountFound = true;
+                network_account_found = true;
 
             } else {
                 WHBLogConsoleSetColor(0x99000000);
                 WHBLogPrint("Network ID detection failed!");
                 WHBLogPrint("Is this user a local-only account?");
                 WHBLogConsoleDraw();
-                handleCleanup(account, NULL, buffer, true);
+                handle_cleanup(account, NULL, buffer, true);
             }
 
-            if (networkAccountFound) {
+            if (network_account_found) {
                 // Check if the backup file exists.
-                WHBLogPrintf("Opening backup account.dat for writing.", backupPath.c_str());
+                WHBLogPrintf("Opening backup account.dat for writing.", backup_path.c_str());
                 WHBLogConsoleDraw();
 
-                std::ifstream ifile(backupPath);
+                std::ifstream ifile(backup_path);
                 if (ifile) {
                     VPADStatus input;
                     VPADReadError error;
 
-                    backupConfirm = false;
+                    backup_confirm = false;
 
                     while (WHBProcIsRunning()) {
-                        printOverwriteMenu(backupPath.c_str());
+                        print_overwrite_menu(backup_path.c_str());
                         VPADRead(VPAD_CHAN_0, &input, 1, &error);
 
                         if (input.trigger == VPAD_BUTTON_A) {
-                            backupConfirm = true;
+                            backup_confirm = true;
                             break;
                         } else if (input.trigger == VPAD_BUTTON_B) {
                             break;
@@ -185,16 +187,16 @@ void backupAccount() {
                     }
 
                 } else {
-                    backupConfirm = true;
+                    backup_confirm = true;
                 }
             }
         }
         // Write the backup file.
-        if (backupConfirm) {
-            writeBackup(account, backupPath, buffer);
+        if (backup_confirm) {
+            write_backup(account, backup_path, buffer);
         }
 
         // Handle cleanup
-        handleCleanup(account, NULL, buffer, !backupConfirm);
+        handle_cleanup(account, NULL, buffer, !backup_confirm);
         }
 }

@@ -17,7 +17,7 @@
 #include "../include/utils.hpp"
 
 
-void handleCleanup(FILE* backup, char* buffer, bool isError = false) {
+void handle_cleanup(FILE* backup, char* buffer, bool is_error = false) {
     // Wait 5 seconds.
     OSSleepTicks(OSMillisecondsToTicks(5000));
 
@@ -37,14 +37,15 @@ void handleCleanup(FILE* backup, char* buffer, bool isError = false) {
     }
     
     // If there was an error, return to the menu.
-    if (isError) {
+    if (is_error) {
         // Print the main menu.
         WHBLogPrint("---------------------------------------------------------");
-        printMainMenu();
+        print_main_menu();
     }
 }
 
-void switchAccount(const char* backupFile, const char* accountType) {
+
+void switch_account(const char* backupFile, const char* accountType) {
     // Disable the HOME Button temporarily.
     OSEnableHomeButtonMenu(0);
 
@@ -64,7 +65,7 @@ void switchAccount(const char* backupFile, const char* accountType) {
         WHBLogPrintf("Error opening %s account backup!", accountType);
         WHBLogPrint("Have you made a backup of this account yet?");
         WHBLogConsoleDraw();
-        handleCleanup(backup, NULL, true);
+        handle_cleanup(backup, NULL, true);
         return;
     }
     else {
@@ -77,7 +78,7 @@ void switchAccount(const char* backupFile, const char* accountType) {
             WHBLogConsoleSetColor(0x99000000);
             WHBLogPrint("Error allocating memory!");
             WHBLogConsoleDraw();
-            handleCleanup(backup, buffer, true);
+            handle_cleanup(backup, buffer, true);
             return;
 
         } else {
@@ -89,7 +90,7 @@ void switchAccount(const char* backupFile, const char* accountType) {
                 WHBLogConsoleSetColor(0x99000000);
                 WHBLogPrint("Error opening system account.dat file!");
                 WHBLogConsoleDraw();
-                handleCleanup(backup, buffer, true);
+                handle_cleanup(backup, buffer, true);
                 return;
 
             } else {
@@ -135,7 +136,7 @@ void switchAccount(const char* backupFile, const char* accountType) {
             }
         }
         // Clean-up and exit.
-        handleCleanup(backup, buffer, false);
+        handle_cleanup(backup, buffer, false);
         deinitialize();
 
         OSForceFullRelaunch();

@@ -11,7 +11,7 @@
 #include "../include/utils.hpp"
 
 
-void printMainMenu() {
+void print_main_menu() {
     OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
     OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
 
@@ -24,89 +24,92 @@ void printMainMenu() {
     }
     versionLine << "Nightkingale";
 
-    printOnScreen(0, versionLine.str().c_str());
-    printOnScreen(1, "---------------------------------------------------------");
+    print_on_screen(0, versionLine.str().c_str());
+    print_on_screen(1, "---------------------------------------------------------");
     
-    printOnScreen(3, "Press (A) to switch to Nintendo Network ID.");
-    printOnScreen(4, "Press (B) to switch to Pretendo Network ID.");
-    printOnScreen(5, "Press (+) to backup your current account.");
-    printOnScreen(6, "Press (-) to unlink your account locally.");
+    print_on_screen(3, "Press (A) to switch to Nintendo Network ID.");
+    print_on_screen(4, "Press (B) to switch to Pretendo Network ID.");
+    print_on_screen(5, "Press (+) to backup your current account.");
+    print_on_screen(6, "Press (-) to unlink your account locally.");
 
-    printOnScreen(8, "Press (HOME) to exit.");
+    print_on_screen(8, "Press (HOME) to exit.");
    
-    printOnScreen(14, "---------------------------------------------------------");
-    printOnScreen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
-    printOnScreen(16, "%s", ACCOUNT_FILE.c_str());
+    print_on_screen(14, "---------------------------------------------------------");
+    print_on_screen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
+    print_on_screen(16, "%s", ACCOUNT_FILE.c_str());
 
     OSScreenFlipBuffersEx(SCREEN_TV);
     OSScreenFlipBuffersEx(SCREEN_DRC);
 }
 
-void printUnlinkMenu() {
+
+void print_unlink_menu() {
     OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
     OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
 
-    printOnScreen(0, "Unlinking: Please read the following and confirm!");
-    printOnScreen(1, "---------------------------------------------------------");
+    print_on_screen(0, "Unlinking: Please read the following and confirm!");
+    print_on_screen(1, "---------------------------------------------------------");
     
-    printOnScreen(3, "This will unlink your Network ID from this user.");
-    printOnScreen(4, "You can reattach this account to any user on this Wii U,");
-    printOnScreen(5, "or attach a new account to this user.");
+    print_on_screen(3, "This will unlink your Network ID from this user.");
+    print_on_screen(4, "You can reattach this account to any user on this Wii U,");
+    print_on_screen(5, "or attach a new account to this user.");
 
-    printOnScreen(7, "However, this unlink will not take place on the server.");
-    printOnScreen(8, "You won't be able to use this account on any other Wii U.");
+    print_on_screen(7, "However, this unlink will not take place on the server.");
+    print_on_screen(8, "You won't be able to use this account on any other Wii U.");
 
-    printOnScreen(10, "Press (A) to confirm the unlink or (B) to cancel.");
+    print_on_screen(10, "Press (A) to confirm the unlink or (B) to cancel.");
     
-    printOnScreen(14, "---------------------------------------------------------");
-    printOnScreen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
-    printOnScreen(16, "%s", ACCOUNT_FILE.c_str());
+    print_on_screen(14, "---------------------------------------------------------");
+    print_on_screen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
+    print_on_screen(16, "%s", ACCOUNT_FILE.c_str());
 
     OSScreenFlipBuffersEx(SCREEN_TV);
     OSScreenFlipBuffersEx(SCREEN_DRC);
 }
 
-void printBackupMenu() {
+
+void print_backup_menu() {
     OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
     OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
 
-    printOnScreen(0, "Backup: Please read the following and confirm!");
-    printOnScreen(1, "---------------------------------------------------------");
+    print_on_screen(0, "Backup: Please read the following and confirm!");
+    print_on_screen(1, "---------------------------------------------------------");
     
-    printOnScreen(3, "This will backup your current account.dat file.");
+    print_on_screen(3, "This will backup your current account.dat file.");
 
-    printOnScreen(5, "The account.dat may contain sensitive personal");
-    printOnScreen(6, "information, such as your e-mail address and encrypted");
-    printOnScreen(7, "cached password (if you have chosen to save it).");
+    print_on_screen(5, "The account.dat may contain sensitive personal");
+    print_on_screen(6, "information, such as your e-mail address and encrypted");
+    print_on_screen(7, "cached password (if you have chosen to save it).");
 
-    printOnScreen(9, "Please do not share these backups with anyone else!");
+    print_on_screen(9, "Please do not share these backups with anyone else!");
 
-    printOnScreen(11, "Press (A) to confirm the backup or (B) to cancel.");
+    print_on_screen(11, "Press (A) to confirm the backup or (B) to cancel.");
     
-    printOnScreen(14, "---------------------------------------------------------");
-    printOnScreen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
-    printOnScreen(16, "%s", ACCOUNT_FILE.c_str());
+    print_on_screen(14, "---------------------------------------------------------");
+    print_on_screen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
+    print_on_screen(16, "%s", ACCOUNT_FILE.c_str());
 
     OSScreenFlipBuffersEx(SCREEN_TV);
     OSScreenFlipBuffersEx(SCREEN_DRC);
 }
 
-void printOverwriteMenu(const char* backupPath) {
+
+void print_overwrite_menu(const char* backup_path) {
     OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
     OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
 
-    printOnScreen(0, "Backup: A backup file already exists!");
-    printOnScreen(1, "---------------------------------------------------------");
+    print_on_screen(0, "Backup: A backup file already exists!");
+    print_on_screen(1, "---------------------------------------------------------");
     
-    printOnScreen(3, "The backup file already exists!");
-    printOnScreen(4, "%s", backupPath);
-    printOnScreen(5, "Would you like to overwrite it?");
+    print_on_screen(3, "The backup file already exists!");
+    print_on_screen(4, "%s", backup_path);
+    print_on_screen(5, "Would you like to overwrite it?");
 
-    printOnScreen(7, "Press (A) to overwrite the backup or (B) to cancel.");
+    print_on_screen(7, "Press (A) to overwrite the backup or (B) to cancel.");
     
-    printOnScreen(14, "---------------------------------------------------------");
-    printOnScreen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
-    printOnScreen(16, "%s", ACCOUNT_FILE.c_str());
+    print_on_screen(14, "---------------------------------------------------------");
+    print_on_screen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
+    print_on_screen(16, "%s", ACCOUNT_FILE.c_str());
 
     OSScreenFlipBuffersEx(SCREEN_TV);
     OSScreenFlipBuffersEx(SCREEN_DRC);

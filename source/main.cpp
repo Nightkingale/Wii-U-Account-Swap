@@ -31,22 +31,22 @@ int main() {
     VPADReadError error;
 
     // Print the main menu to the screen.
-    printMainMenu();
+    print_main_menu();
 
     while (WHBProcIsRunning()) {
-        printMainMenu();
+        print_main_menu();
 
         // Watch the Wii U GamePad for button presses.
         VPADRead(VPAD_CHAN_0, &input, 1, &error);
 
         // If the A button is pressed, switch to the Nintendo Network ID account.dat.
         if (input.trigger & VPAD_BUTTON_A) {
-            switchAccount(NNID_BACKUP.c_str(), "Nintendo Network ID");
+            switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID");
         }
 
         // If the B button is pressed, switch to the Pretendo Network ID account.dat.
         else if (input.trigger & VPAD_BUTTON_B) {
-            switchAccount(PNID_BACKUP.c_str(), "Pretendo Network ID");
+            switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID");
         }
 
         // If the + button is pressed, backup the current account.dat.
@@ -54,19 +54,19 @@ int main() {
             while (WHBProcIsRunning()) {
                 // Disable the HOME Button temporarily.
                 OSEnableHomeButtonMenu(0);
-                printBackupMenu();
+                print_backup_menu();
 
                 VPADRead(VPAD_CHAN_0, &input, 1, &error);
 
                 if (input.trigger & VPAD_BUTTON_A) {
-                    backupAccount();
+                    backup_account();
                     break;
                 }
 
                 else if (input.trigger & VPAD_BUTTON_B) {
                     // Re-enable the HOME Button.
                     OSEnableHomeButtonMenu(1);
-                    printMainMenu();
+                    print_main_menu();
                     break;
                 }
             }
@@ -77,19 +77,19 @@ int main() {
             while (WHBProcIsRunning()) {
                 // Disable the HOME Button temporarily.
                 OSEnableHomeButtonMenu(0);
-                printUnlinkMenu();
+                print_unlink_menu();
                 
                 VPADRead(VPAD_CHAN_0, &input, 1, &error);
                 
                 if (input.trigger & VPAD_BUTTON_A) {
-                    unlinkAccount();
+                    unlink_account();
                     break;
                 }
 
                 else if (input.trigger & VPAD_BUTTON_B) {
                     // Re-enable the HOME Button.
                     OSEnableHomeButtonMenu(1);
-                    printMainMenu();
+                    print_main_menu();
                     break;
                 }
             }

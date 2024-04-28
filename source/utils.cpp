@@ -13,7 +13,8 @@
 
 #include "../include/main.hpp"
 
-void printOnScreen(int line, const char* format, ...) {
+
+void print_on_screen(int line, const char* format, ...) {
     char buffer[256];
     va_list args;
 
@@ -27,6 +28,7 @@ void printOnScreen(int line, const char* format, ...) {
     OSScreenPutFontEx(SCREEN_DRC, 0, line, buffer);
 }
 
+
 void deinitialize() {
     // This prevents hangs when called twice.
     static bool isDeinitialized = false;
@@ -39,6 +41,7 @@ void deinitialize() {
         isDeinitialized = true;
     }
 }
+
 
 void initialize() {
     OSScreenInit();

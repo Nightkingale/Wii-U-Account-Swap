@@ -2,13 +2,10 @@
 #define SCREEN_HPP
 
 
-void printMainMenu();
-
-void printUnlinkMenu();
-
-void printBackupMenu();
-
-void printOverwriteMenu(const char* backupPath);
+void print_main_menu();
+void print_unlink_menu();
+void print_backup_menu();
+void print_overwrite_menu(const char* backup_path);
 
 
 #endif
