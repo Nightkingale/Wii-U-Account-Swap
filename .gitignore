@@ -1,5 +1,10 @@
-/.vscode
+# Compilation
 /build
+
+# Distribution
 *.elf
 *.rpx
 *.wuhb
+
+# Visual Studio Code
+/.vscode
