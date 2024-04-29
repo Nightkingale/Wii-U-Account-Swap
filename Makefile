@@ -13,12 +13,16 @@ TOPDIR ?= $(CURDIR)
 # APP_SHORTNAME sets the short name of the application
 # APP_AUTHOR sets the author of the application
 #-------------------------------------------------------------------------------
-APP_NAME		:= Wii U Account Swap
-APP_SHORTNAME	:= Wii U Account Swap
-APP_AUTHOR		:= Nightkingale
-APP_VERSION		:= v1.0.0
+APP_NAME		:=  Wii U Account Swap
+APP_SHORTNAME	:=  Wii U Account Swap
+APP_AUTHOR		:=  Nightkingale
 
 include $(DEVKITPRO)/wut/share/wut_rules
+
+#-------------------------------------------------------------------------------
+# APP_VERSION sets the version of the application
+#-------------------------------------------------------------------------------
+APP_VERSION 	:= 	v1.0.0
 
 #-------------------------------------------------------------------------------
 # TARGET is the name of the output
