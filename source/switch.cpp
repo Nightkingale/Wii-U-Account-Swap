@@ -18,10 +18,7 @@
 
 
 void handle_cleanup(FILE* backup, char* buffer, bool is_error = false) {
-    // Wait 5 seconds.
     OSSleepTicks(OSMillisecondsToTicks(5000));
-
-    // Re-enable the HOME Button.
     OSEnableHomeButtonMenu(1);
     
     // Free the buffer.

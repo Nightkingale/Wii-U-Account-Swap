@@ -16,6 +16,7 @@
 #include <whb/proc.h>
 
 #include "backup.hpp"
+#include "input.hpp"
 #include "main.hpp"
 #include "screen.hpp"
 
@@ -23,10 +24,7 @@
 bool backup_confirm = false;
 
 void handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = false) {
-    // Wait 5 seconds.
     OSSleepTicks(OSMillisecondsToTicks(5000));
-
-    // Re-enable the HOME Button.
     OSEnableHomeButtonMenu(1);
 
     // Free the buffer.
@@ -47,7 +45,6 @@ void handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = f
         backup = NULL;
     }
 
-    // If there was an error, print the main menu.
     if (is_error) {
         WHBLogPrint("---------------------------------------------------------");
         print_main_menu();
@@ -143,18 +140,21 @@ void backup_account() {
 
             bool network_account_found = false;
             if (content.find("account.nintendo.net") != std::string::npos) {
+                // Nintendo Network ID is linked to the account.
                 backup_path = NNID_BACKUP;
                 WHBLogPrint("Nintendo Network ID detected.");
                 WHBLogConsoleDraw();
                 network_account_found = true;
 
             } else if (content.find("pretendo-cdn.b-cdn.net") != std::string::npos) {
+                // Pretendo Network ID is linked to the account.
                 backup_path = PNID_BACKUP;
                 WHBLogPrint("Pretendo Network ID detected.");
                 WHBLogConsoleDraw();
                 network_account_found = true;
 
             } else {
+                // The check failed, domain not accounted for?
                 WHBLogConsoleSetColor(0x99000000);
                 WHBLogPrint("Network ID detection failed!");
                 WHBLogPrint("Is this user a local-only account?");
@@ -193,7 +193,6 @@ void backup_account() {
             write_backup(account, backup_path, buffer);
         }
 
-        // Handle cleanup
         handle_cleanup(account, NULL, buffer, !backup_confirm);
-        }
+    }
 }

@@ -106,10 +106,7 @@ void unlink_account() {
     WHBLogConsoleDraw();
     WHBLogPrint("---------------------------------------------------------");
 
-    // Wait 5 seconds, then soft reboot the console.
     OSSleepTicks(OSMillisecondsToTicks(5000));
-
-    // Re-enable the HOME Button.
     OSEnableHomeButtonMenu(1);
     deinitialize();
     OSForceFullRelaunch();

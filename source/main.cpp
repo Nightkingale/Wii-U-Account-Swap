@@ -84,7 +84,7 @@ int main() {
             }
         }
     }
-    // Deinitialize the program and exit.
+
     deinitialize();
     return 0;
 }
