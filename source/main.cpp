@@ -7,6 +7,7 @@
 #include <whb/proc.h>
 
 #include "backup.hpp"
+#include "graphics.hpp"
 #include "main.hpp"
 #include "screen.hpp"
 #include "switch.hpp"
@@ -24,8 +25,10 @@ std::string INKAY_CONFIG; // The path to the Inkay configuration file.
 
 
 int main() {
-    initialize();
+    new_graphics(); // Shows the work-in-progress GUI. Press X to continue to the main menu.
 
+    initialize();
+    
     // Initialize variables for the Wii U GamePad.
     VPADStatus input;
     VPADReadError error;

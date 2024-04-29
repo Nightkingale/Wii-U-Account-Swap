@@ -61,7 +61,7 @@ CXXFLAGS	:= $(CFLAGS)
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-g $(ARCH) $(RPXSPECS) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lmocha -lwut
+LIBS	:= -lSDL2 -lSDL2_ttf -lfreetype -lharfbuzz -lfreetype -lpng -lbz2 -lz -lmocha -lwut
 
 #-------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level
@@ -177,6 +177,18 @@ $(OFILES_SRC)	: $(HFILES_BIN)
 # you need a rule like this for each extension you use as binary data
 #-------------------------------------------------------------------------------
 %.bin.o	%_bin.h :	%.bin
+#-------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@$(bin2o)
+
+#-------------------------------------------------------------------------------
+%.ttf.o	%_ttf.h :	%.ttf
+#-------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@$(bin2o)
+
+#-------------------------------------------------------------------------------
+%.bdf.o	%_bdf.h :	%.bdf
 #-------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)
