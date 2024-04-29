@@ -17,8 +17,8 @@
 #include <whb/log.h>
 #include <whb/proc.h>
 
-#include "../include/main.hpp"
-#include "../include/utils.hpp"
+#include "main.hpp"
+#include "utils.hpp"
 
 
 void unlink_account() {

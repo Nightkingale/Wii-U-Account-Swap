@@ -6,12 +6,12 @@
 #include <vpad/input.h>
 #include <whb/proc.h>
 
-#include "../include/backup.hpp"
-#include "../include/main.hpp"
-#include "../include/screen.hpp"
-#include "../include/switch.hpp"
-#include "../include/unlink.hpp"
-#include "../include/utils.hpp"
+#include "backup.hpp"
+#include "main.hpp"
+#include "screen.hpp"
+#include "switch.hpp"
+#include "unlink.hpp"
+#include "utils.hpp"
 
 const int BUFFER_SIZE = 0x2000; // The buffer size allocated for reading and writing files.
 

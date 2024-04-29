@@ -7,8 +7,8 @@
 #include <coreinit/time.h>
 #include <coreinit/thread.h>
 
-#include "../include/main.hpp"
-#include "../include/utils.hpp"
+#include "main.hpp"
+#include "utils.hpp"
 
 
 void print_main_menu() {

@@ -11,7 +11,7 @@
 #include <whb/log.h>
 #include <whb/proc.h>
 
-#include "../include/main.hpp"
+#include "main.hpp"
 
 
 void print_on_screen(int line, const char* format, ...) {

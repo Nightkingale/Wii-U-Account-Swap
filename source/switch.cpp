@@ -12,9 +12,9 @@
 #include <whb/log.h>
 #include <whb/proc.h>
 
-#include "../include/main.hpp"
-#include "../include/screen.hpp"
-#include "../include/utils.hpp"
+#include "main.hpp"
+#include "screen.hpp"
+#include "utils.hpp"
 
 
 void handle_cleanup(FILE* backup, char* buffer, bool is_error = false) {

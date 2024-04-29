@@ -15,9 +15,9 @@
 #include <whb/log.h>
 #include <whb/proc.h>
 
-#include "../include/backup.hpp"
-#include "../include/main.hpp"
-#include "../include/screen.hpp"
+#include "backup.hpp"
+#include "main.hpp"
+#include "screen.hpp"
 
 
 bool backup_confirm = false;
