@@ -7,6 +7,8 @@
 #include <coreinit/thread.h>
 #include <mocha/mocha.h>
 #include <nn/act.h>
+#include <padscore/kpad.h>
+#include <vpad/input.h>
 #include <whb/log_console.h>
 #include <whb/log.h>
 #include <whb/proc.h>
@@ -39,6 +41,8 @@ void deinitialize() {
         Mocha_DeInitLibrary();
         WHBLogConsoleFree();
         isDeinitialized = true;
+        VPADShutdown();
+        KPADShutdown();
     }
 }
 
@@ -46,6 +50,9 @@ void deinitialize() {
 void initialize() {
     OSScreenInit();
     WHBProcInit();
+    VPADInit();
+    KPADInit();
+    WPADEnableURCC(1);
 
     // Set up the log console for use.
     WHBLogConsoleInit();

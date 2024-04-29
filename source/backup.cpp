@@ -169,19 +169,16 @@ void backup_account() {
 
                 std::ifstream ifile(backup_path);
                 if (ifile) {
-                    VPADStatus input;
-                    VPADReadError error;
-
                     backup_confirm = false;
 
                     while (WHBProcIsRunning()) {
                         print_overwrite_menu(backup_path.c_str());
-                        VPADRead(VPAD_CHAN_0, &input, 1, &error);
+                        int button = read_input();
 
-                        if (input.trigger == VPAD_BUTTON_A) {
+                        if (button == VPAD_BUTTON_A) {
                             backup_confirm = true;
                             break;
-                        } else if (input.trigger == VPAD_BUTTON_B) {
+                        } else if (button == VPAD_BUTTON_B) {
                             break;
                         }
                     }

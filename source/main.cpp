@@ -1,12 +1,15 @@
+#include <cstring>
 #include <sstream>
 
 #include <coreinit/screen.h>
 #include <coreinit/time.h>
 #include <coreinit/thread.h>
+#include <padscore/kpad.h>
 #include <vpad/input.h>
 #include <whb/proc.h>
 
 #include "backup.hpp"
+#include "input.hpp"
 #include "main.hpp"
 #include "screen.hpp"
 #include "switch.hpp"
@@ -26,45 +29,33 @@ std::string INKAY_CONFIG; // The path to the Inkay configuration file.
 int main() {
     initialize();
 
-    // Initialize variables for the Wii U GamePad.
-    VPADStatus input;
-    VPADReadError error;
-
-    // Print the main menu to the screen.
-    print_main_menu();
-
     while (WHBProcIsRunning()) {
         print_main_menu();
 
-        // Watch the Wii U GamePad for button presses.
-        VPADRead(VPAD_CHAN_0, &input, 1, &error);
+        int button = read_input(); // Watch the controllers for input.
 
-        // If the A button is pressed, switch to the Nintendo Network ID account.dat.
-        if (input.trigger & VPAD_BUTTON_A) {
+        if (button == VPAD_BUTTON_A)
+            // Press (A) to switch to Nintendo Network ID.
             switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID");
-        }
 
-        // If the B button is pressed, switch to the Pretendo Network ID account.dat.
-        else if (input.trigger & VPAD_BUTTON_B) {
+        else if (button == VPAD_BUTTON_B)
+            // Press (B) to switch to Pretendo Network ID.
             switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID");
-        }
 
-        // If the + button is pressed, backup the current account.dat.
-        else if (input.trigger & VPAD_BUTTON_PLUS) {
+        else if (button == VPAD_BUTTON_PLUS) {
+            // Press (+) to backup the current account.
             while (WHBProcIsRunning()) {
-                // Disable the HOME Button temporarily.
                 OSEnableHomeButtonMenu(0);
                 print_backup_menu();
 
-                VPADRead(VPAD_CHAN_0, &input, 1, &error);
+                button = read_input();
 
-                if (input.trigger & VPAD_BUTTON_A) {
+                if (button == VPAD_BUTTON_A) {
                     backup_account();
                     break;
                 }
 
-                else if (input.trigger & VPAD_BUTTON_B) {
-                    // Re-enable the HOME Button.
+                else if (button == VPAD_BUTTON_B) {
                     OSEnableHomeButtonMenu(1);
                     print_main_menu();
                     break;
@@ -72,22 +63,20 @@ int main() {
             }
         }
 
-        // If the X button is pressed, unlink the account locally.
-        else if (input.trigger & VPAD_BUTTON_MINUS) {
+        else if (button == VPAD_BUTTON_MINUS) {
+            // Press (-) to unlink the current account.
             while (WHBProcIsRunning()) {
-                // Disable the HOME Button temporarily.
                 OSEnableHomeButtonMenu(0);
                 print_unlink_menu();
                 
-                VPADRead(VPAD_CHAN_0, &input, 1, &error);
+                button = read_input();
                 
-                if (input.trigger & VPAD_BUTTON_A) {
+                if (button == VPAD_BUTTON_A) {
                     unlink_account();
                     break;
                 }
 
-                else if (input.trigger & VPAD_BUTTON_B) {
-                    // Re-enable the HOME Button.
+                else if (button == VPAD_BUTTON_B) {
                     OSEnableHomeButtonMenu(1);
                     print_main_menu();
                     break;
