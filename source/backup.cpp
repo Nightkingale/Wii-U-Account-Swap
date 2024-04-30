@@ -1,26 +1,25 @@
-#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 
 #include <coreinit/launch.h>
 #include <coreinit/screen.h>
-#include <coreinit/time.h>
 #include <coreinit/thread.h>
+#include <coreinit/time.h>
 #include <mocha/mocha.h>
 #include <sysapp/launch.h>
 #include <vpad/input.h>
-#include <whb/log_console.h>
 #include <whb/log.h>
+#include <whb/log_console.h>
 #include <whb/proc.h>
 
-#include "backup.hpp"
 #include "input.hpp"
 #include "main.hpp"
 #include "screen.hpp"
 
 
 bool backup_confirm = false;
+
 
 void handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = false) {
     OSSleepTicks(OSMillisecondsToTicks(5000));
@@ -75,9 +74,8 @@ void write_backup(FILE* account, const std::string& backup_path, char* buffer) {
     rewind(account); // Move the file pointer to the beginning.
 
     size_t bytesRead = 0;
-    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, account)) > 0) {
+    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, account)) > 0)
         fwrite(buffer, 1, bytesRead, backup);
-    }
 
     // Close the backup file.
     fclose(backup);

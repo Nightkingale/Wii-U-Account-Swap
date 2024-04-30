@@ -3,8 +3,6 @@
 #include <padscore/kpad.h>
 #include <vpad/input.h>
 
-#include "input.hpp"
-
 
 int read_input() {
     VPADStatus vpad_input;

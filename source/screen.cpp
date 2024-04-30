@@ -4,11 +4,25 @@
 #include <string>
 
 #include <coreinit/screen.h>
-#include <coreinit/time.h>
 #include <coreinit/thread.h>
+#include <coreinit/time.h>
 
 #include "main.hpp"
-#include "utils.hpp"
+
+
+void print_on_screen(int line, const char* format, ...) {
+    char buffer[256];
+    va_list args;
+
+    // Format the string into a buffer.
+    va_start(args, format);
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+
+    // Print the string to the screen.
+    OSScreenPutFontEx(SCREEN_TV, 0, line, buffer);
+    OSScreenPutFontEx(SCREEN_DRC, 0, line, buffer);
+}
 
 
 void print_main_menu() {
@@ -17,11 +31,12 @@ void print_main_menu() {
 
     std::stringstream versionLine; // Create a stringstream to format the version line.
     versionLine << "Wii U Account Swap (" << APP_VERSION << ")";
+    
     int currentLength = versionLine.str().length();
     int numSpaces = 56 - currentLength - 11; // 11 is the length of " Nightkingale"
-    for (int i = 0; i < numSpaces; i++) {
+
+    for (int i = 0; i < numSpaces; i++)
         versionLine << ' '; // Add spaces to format the version line.
-    }
     versionLine << "Nightkingale";
 
     print_on_screen(0, versionLine.str().c_str());

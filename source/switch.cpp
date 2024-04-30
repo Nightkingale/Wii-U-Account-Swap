@@ -3,17 +3,16 @@
 
 #include <coreinit/launch.h>
 #include <coreinit/screen.h>
-#include <coreinit/time.h>
 #include <coreinit/thread.h>
+#include <coreinit/time.h>
 #include <mocha/mocha.h>
 #include <sysapp/launch.h>
-#include <whb/log_console.h>
 #include <whb/log.h>
+#include <whb/log_console.h>
 #include <whb/proc.h>
 
 #include "main.hpp"
 #include "screen.hpp"
-#include "utils.hpp"
 
 
 void handle_cleanup(FILE* backup, char* buffer, bool is_error = false) {
@@ -94,9 +93,8 @@ void switch_account(const char* backupFile, const char* accountType) {
                 WHBLogConsoleDraw();
 
                 size_t bytesRead = 0;
-                while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, backup)) > 0) {
+                while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, backup)) > 0)
                     fwrite(buffer, 1, bytesRead, account);
-                }
                 fclose(account);
 
                 WHBLogPrint("System account.dat file restored.");

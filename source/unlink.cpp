@@ -12,12 +12,11 @@
 #include <coreinit/thread.h>
 #include <mocha/mocha.h>
 #include <sysapp/launch.h>
-#include <whb/log_console.h>
 #include <whb/log.h>
+#include <whb/log_console.h>
 #include <whb/proc.h>
 
 #include "main.hpp"
-#include "utils.hpp"
 
 
 void unlink_account() {
@@ -80,9 +79,8 @@ void unlink_account() {
         size_t pos = line.find('=');
         if (pos != std::string::npos) {
             std::string key = line.substr(0, pos);
-            if (default_values.count(key) > 0) {
+            if (default_values.count(key) > 0)
                 line = key + "=" + default_values[key];
-            }
         }
         file_contents += line + "\n";
     }
