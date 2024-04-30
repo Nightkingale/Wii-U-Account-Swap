@@ -1,11 +1,10 @@
+#include <cstring>
+#include <cstdlib>
 #include <map>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <vector>
-
-#include <stdlib.h>
-#include <string.h>
 
 #include <coreinit/launch.h>
 #include <coreinit/screen.h>

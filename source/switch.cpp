@@ -1,6 +1,5 @@
+#include <cstring>
 #include <iostream>
-
-#include <string.h>
 
 #include <coreinit/launch.h>
 #include <coreinit/screen.h>

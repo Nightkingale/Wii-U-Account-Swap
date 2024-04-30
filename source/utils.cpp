@@ -1,5 +1,5 @@
-#include <stdarg.h>
-#include <stdio.h>
+#include <cstdarg>
+#include <cstdio>
 #include <string>
 
 #include <coreinit/screen.h>
