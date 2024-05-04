@@ -4,14 +4,17 @@
 #include <string>
 
 
-extern const int BUFFER_SIZE;
-extern unsigned int USER_ID;
+const int BUFFER_SIZE = 0x2000; // The buffer size allocated for reading and writing files.
 
-extern std::string NNID_BACKUP;
-extern std::string PNID_BACKUP;
-extern std::string MII_NICKNAME;
-extern std::string ACCOUNT_FILE;
-extern std::string INKAY_CONFIG;
+extern unsigned int USER_ID; // The current user persistant ID.
+extern std::string NNID_BACKUP; // The backup path to the Nintendo Network ID account.dat.
+extern std::string PNID_BACKUP; // The backup path to the Pretendo Network ID account.dat.
+extern std::string MII_NICKNAME; // The current user's Mii nickname.
+extern std::string ACCOUNT_FILE; // The path to the current account.dat.
+extern std::string INKAY_CONFIG; // The path to the Inkay configuration file.
+
+
+void deinitialize();
 
 
 #endif

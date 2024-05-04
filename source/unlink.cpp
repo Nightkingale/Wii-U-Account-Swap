@@ -1,11 +1,10 @@
+#include <cstring>
+#include <cstdlib>
 #include <map>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <vector>
-
-#include <stdlib.h>
-#include <string.h>
 
 #include <coreinit/launch.h>
 #include <coreinit/screen.h>
@@ -13,12 +12,11 @@
 #include <coreinit/thread.h>
 #include <mocha/mocha.h>
 #include <sysapp/launch.h>
-#include <whb/log_console.h>
 #include <whb/log.h>
+#include <whb/log_console.h>
 #include <whb/proc.h>
 
 #include "main.hpp"
-#include "utils.hpp"
 
 
 void unlink_account() {
@@ -81,9 +79,8 @@ void unlink_account() {
         size_t pos = line.find('=');
         if (pos != std::string::npos) {
             std::string key = line.substr(0, pos);
-            if (default_values.count(key) > 0) {
+            if (default_values.count(key) > 0)
                 line = key + "=" + default_values[key];
-            }
         }
         file_contents += line + "\n";
     }
@@ -106,10 +103,7 @@ void unlink_account() {
     WHBLogConsoleDraw();
     WHBLogPrint("---------------------------------------------------------");
 
-    // Wait 5 seconds, then soft reboot the console.
     OSSleepTicks(OSMillisecondsToTicks(5000));
-
-    // Re-enable the HOME Button.
     OSEnableHomeButtonMenu(1);
     deinitialize();
     OSForceFullRelaunch();
