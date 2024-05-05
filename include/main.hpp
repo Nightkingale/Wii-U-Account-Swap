@@ -14,6 +14,7 @@ extern std::string ACCOUNT_FILE; // The path to the current account.dat.
 extern std::string INKAY_CONFIG; // The path to the Inkay configuration file.
 
 
+void get_user_information();
 void deinitialize();
 
 

@@ -12,19 +12,6 @@
 #include "main.hpp"
 
 
-void get_user_information() {
-    // Grab the user's Mii name and persistent ID.
-    nn::act::Initialize();
-    int16_t miiName[256];
-    nn::act::GetMiiName(miiName);
-    MII_NICKNAME = std::string(miiName, miiName + sizeof(miiName) / sizeof(miiName[0]));
-    USER_ID = nn::act::GetPersistentId();
-
-    // Set the account file path.
-    char user_id_hex[9];
-    sprintf(user_id_hex, "%08x", USER_ID);
-    ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/" + std::string(user_id_hex) + "/account.dat";
-}
 
 void draw_background(SDL_Renderer* renderer, int r, int g, int b, int a) {
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
