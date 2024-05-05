@@ -84,7 +84,6 @@ void deinitialize() {
             SDL_DestroyWindow(window);
 
         SDL_Quit();
-        WHBProcShutdown();
 
         is_deinitialized = true;
     }
@@ -175,12 +174,14 @@ int main() {
             switch (selected_option) {
                 case 0:
                     if (switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID")) {
+                        deinitialize();
                         OSForceFullRelaunch();
                         SYSLaunchMenu();
                     }
                     break;
                 case 1:
                     if (switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID")) {
+                        deinitialize();
                         OSForceFullRelaunch();
                         SYSLaunchMenu();
                     }
@@ -206,6 +207,7 @@ int main() {
 
                         if (button == VPAD_BUTTON_A) {
                             if (unlink_account()) {
+                                deinitialize();
                                 OSForceFullRelaunch();
                                 SYSLaunchMenu();
                             }
@@ -219,5 +221,6 @@ int main() {
     }
 
     deinitialize();
+    WHBProcShutdown();
     return 0;
 }
