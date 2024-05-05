@@ -135,9 +135,9 @@ void switch_account(const char* backup_file, const char* account_type) {
         }
         // Clean-up and exit.
         handle_cleanup(backup, account_type, buffer, false);
-        deinitialize();
 
         OSForceFullRelaunch();
         SYSLaunchMenu();
+        deinitialize();
     }
 }

@@ -105,7 +105,8 @@ void unlink_account() {
 
     OSSleepTicks(OSMillisecondsToTicks(5000));
     OSEnableHomeButtonMenu(1);
-    deinitialize();
+
     OSForceFullRelaunch();
     SYSLaunchMenu();
+    deinitialize();
 }

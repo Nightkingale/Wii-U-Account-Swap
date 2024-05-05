@@ -10,6 +10,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <sndcore2/core.h>
+#include <sysapp/launch.h>
 #include <vpad/input.h>
 #include <whb/log.h>
 #include <whb/log_console.h>
@@ -75,12 +76,16 @@ void deinitialize() {
             SDL_DestroyRenderer(renderer);
         if (window != nullptr)
             SDL_DestroyWindow(window);
+
+        SDL_Quit();
+        WHBProcShutdown();
+
         is_deinitialized = true;
     }
 }
 
 
-void initialize_program() {
+bool initialize_program() {
     WHBProcInit();
     VPADInit();
     KPADInit();
@@ -93,16 +98,14 @@ void initialize_program() {
 
     // Initialize the Mocha library.
     if (Mocha_InitLibrary() != MOCHA_RESULT_SUCCESS) {
-        WHBLogConsoleSetColor(0x99000000);
-        WHBLogPrint("Mocha_InitLibrary failed!");
-        WHBLogConsoleDraw();
-        OSSleepTicks(OSMillisecondsToTicks(5000));
-        deinitialize();
+        return false;
     }
 
     // Mount the storage device differently depending on Tiramisu or Aroma.
     Mocha_MountFS("storage_mlc", NULL, "/vol/storage_mlc01");
     get_user_information();
+
+    return true;
 }
 
 
@@ -114,89 +117,93 @@ bool initialize_graphics() {
     const int SCREEN_HEIGHT = 1080;
 
     window = SDL_CreateWindow("Wii U Account Swap", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-    if (window == NULL)
+    if (!window)
         return false;
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL)
+    if (!renderer)
         return false;
 
     return true;
 }
 
 
-int main() {
-    bool is_initialized = false;
-    initialize_program();
-
-    if (!initialize_graphics()) {
+bool check_initialization(bool condition, const char* error_message) {
+    if (!condition) {
         WHBLogConsoleSetColor(0x99000000);
-        WHBLogPrint("Failed to initialize SDL2!");
+        WHBLogPrint(error_message);
         WHBLogConsoleDraw();
         OSSleepTicks(OSMillisecondsToTicks(5000));
-    } else {
-        is_initialized = true;
+        SYSLaunchMenu();
+        return true;
     }
+    return false;
+}
 
-    if (is_initialized) {
-        int selected_option = 0;
-        const int NUM_OPTIONS = 4;
-        OSEnableHomeButtonMenu(1);
-        
-        while (WHBProcIsRunning()) {
+
+int main() {
+    bool error_occurred = false;
+
+    error_occurred = check_initialization(initialize_program(), "Error initializing program!") ||
+        check_initialization(initialize_graphics(), "Error initializing graphics!");
+
+    int selected_option = 0;
+    const int NUM_OPTIONS = 4;
+
+    while (WHBProcIsRunning()) {
+        if (!error_occurred)
             draw_menu_screen(selected_option);
 
-            int button = read_input(); // Watch the controllers for input.
+        int button = read_input(); // Watch the controllers for input.
 
-            if (button == VPAD_BUTTON_UP) {
-                selected_option--;
-                if (selected_option < 0) {
-                    selected_option = NUM_OPTIONS - 1;
-                }
-            } else if (button == VPAD_BUTTON_DOWN) {
-                selected_option++;
-                if (selected_option >= NUM_OPTIONS) {
-                    selected_option = 0;
-                }
-            } else if (button == VPAD_BUTTON_A) {
-                switch (selected_option) {
-                    case 0:
-                        switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID");
-                        break;
-                    case 1:
-                        switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID");
-                        break;
-                    case 2:
-                        while (WHBProcIsRunning()) {
-                            draw_backup_menu();
-                            button = read_input();
+        if (button == VPAD_BUTTON_UP) {
+            selected_option--;
+            if (selected_option < 0) {
+                selected_option = NUM_OPTIONS - 1;
+            }
+        } else if (button == VPAD_BUTTON_DOWN) {
+            selected_option++;
+            if (selected_option >= NUM_OPTIONS) {
+                selected_option = 0;
+            }
+        } else if (button == VPAD_BUTTON_A) {
+            switch (selected_option) {
+                case 0:
+                    switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID");
+                    break;
+                case 1:
+                    switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID");
+                    break;
+                case 2:
+                    while (WHBProcIsRunning()) {
+                        draw_backup_menu();
+                        button = read_input();
 
-                            if (button == VPAD_BUTTON_A) {
-                                break;
-                            } else if (button == VPAD_BUTTON_B) {
-                                break;
-                            }
+                        if (button == VPAD_BUTTON_A) {
+                            backup_account();
+                            break;
+                        } else if (button == VPAD_BUTTON_B) {
+                            break;
                         }
-                        break;
-                    case 3:
-                        while (WHBProcIsRunning()) {
-                            draw_unlink_menu();
-                            button = read_input();
+                    }
+                    break;
+                case 3:
+                    while (WHBProcIsRunning()) {
+                        draw_unlink_menu();
+                        button = read_input();
 
-                            if (button == VPAD_BUTTON_A) {
-                                break;
-                            } else if (button == VPAD_BUTTON_B) {
-                                break;
-                            }
+                        if (button == VPAD_BUTTON_A) {
+                            unlink_account();
+                            break;
+                        } else if (button == VPAD_BUTTON_B) {
+                            break;
                         }
-                        break;
-                }
+                    }
+                    break;
             }
         }
     }
 
     deinitialize();
-    SDL_Quit();
-
     return 0;
 }
