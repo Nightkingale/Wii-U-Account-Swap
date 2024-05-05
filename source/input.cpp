@@ -23,44 +23,32 @@ int read_input() {
     const int vpad_buttons[] = {
         VPAD_BUTTON_A,
         VPAD_BUTTON_B,
-        VPAD_BUTTON_X,
         VPAD_BUTTON_UP,
-        VPAD_BUTTON_DOWN,
-        VPAD_BUTTON_PLUS,
-        VPAD_BUTTON_MINUS
+        VPAD_BUTTON_DOWN
     };
 
     // Wii Remote buttons.
     const int wpad_buttons[] = {
         WPAD_BUTTON_A,
         WPAD_BUTTON_B,
-        WPAD_BUTTON_1,
         WPAD_BUTTON_UP,
-        WPAD_BUTTON_DOWN,
-        WPAD_BUTTON_PLUS,
-        WPAD_BUTTON_MINUS
+        WPAD_BUTTON_DOWN
     };
 
     // Wii Classic Controller buttons.
     const int wpad_classic_buttons[] = {
         WPAD_CLASSIC_BUTTON_A,
         WPAD_CLASSIC_BUTTON_B,
-        WPAD_CLASSIC_BUTTON_X,
         WPAD_CLASSIC_BUTTON_UP,
-        WPAD_CLASSIC_BUTTON_DOWN,
-        WPAD_CLASSIC_BUTTON_PLUS,
-        WPAD_CLASSIC_BUTTON_MINUS
+        WPAD_CLASSIC_BUTTON_DOWN
     };
 
     // Wii U Pro Controller buttons.
     const int wpad_pro_buttons[] = {
         WPAD_PRO_BUTTON_A,
         WPAD_PRO_BUTTON_B,
-        WPAD_PRO_BUTTON_X,
         WPAD_PRO_BUTTON_UP,
-        WPAD_PRO_BUTTON_DOWN,
-        WPAD_PRO_BUTTON_PLUS,
-        WPAD_PRO_BUTTON_MINUS
+        WPAD_PRO_BUTTON_DOWN
     };
 
     // Iterate over all 4 KPAD channels and check for button presses.
