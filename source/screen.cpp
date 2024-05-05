@@ -9,7 +9,6 @@
 #include <vpad/input.h>
 
 #include <fa-solid-900_ttf.h>
-#include <ter-u32b_bdf.h>
 #include "input.hpp"
 #include "main.hpp"
 #include "unlink.hpp"
