@@ -69,6 +69,7 @@ void deinitialize() {
         WHBLogConsoleFree();
         VPADShutdown();
         KPADShutdown();
+        AXQuit();
 
         if (renderer != nullptr)
             SDL_DestroyRenderer(renderer);
@@ -84,7 +85,6 @@ void initialize_program() {
     VPADInit();
     KPADInit();
     AXInit();
-    AXQuit();
     WPADEnableURCC(1);
 
     // Set up the log console for use.
@@ -126,7 +126,7 @@ bool initialize_graphics() {
 
 
 int main() {
-    bool is_running = true;
+    bool is_initialized = false;
     initialize_program();
 
     if (initialize_graphics()) {
@@ -134,60 +134,63 @@ int main() {
         WHBLogPrint("Failed to initialize SDL2!");
         WHBLogConsoleDraw();
         OSSleepTicks(OSMillisecondsToTicks(5000));
-        is_running = false;
+    } else {
+        is_initialized = true;
     }
 
-    int selected_option = 0;
-    const int NUM_OPTIONS = 4;
-    OSEnableHomeButtonMenu(1);
+    if (is_initialized) {
+        int selected_option = 0;
+        const int NUM_OPTIONS = 4;
+        OSEnableHomeButtonMenu(1);
+        
+        while (WHBProcIsRunning()) {
+            draw_menu_screen(selected_option);
 
-    while (is_running) {
-        draw_menu_screen(selected_option);
+            int button = read_input(); // Watch the controllers for input.
 
-        int button = read_input(); // Watch the controllers for input.
+            if (button == VPAD_BUTTON_UP) {
+                selected_option--;
+                if (selected_option < 0) {
+                    selected_option = NUM_OPTIONS - 1;
+                }
+            } else if (button == VPAD_BUTTON_DOWN) {
+                selected_option++;
+                if (selected_option >= NUM_OPTIONS) {
+                    selected_option = 0;
+                }
+            } else if (button == VPAD_BUTTON_A) {
+                switch (selected_option) {
+                    case 0:
+                        switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID");
+                        break;
+                    case 1:
+                        switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID");
+                        break;
+                    case 2:
+                        while (WHBProcIsRunning()) {
+                            draw_backup_menu();
+                            button = read_input();
 
-        if (button == VPAD_BUTTON_UP) {
-            selected_option--;
-            if (selected_option < 0) {
-                selected_option = NUM_OPTIONS - 1;
-            }
-        } else if (button == VPAD_BUTTON_DOWN) {
-            selected_option++;
-            if (selected_option >= NUM_OPTIONS) {
-                selected_option = 0;
-            }
-        } else if (button == VPAD_BUTTON_A) {
-            switch (selected_option) {
-                case 0:
-                    switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID");
-                    break;
-                case 1:
-                    switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID");
-                    break;
-                case 2:
-                    while (is_running) {
-                        draw_backup_menu();
-                        button = read_input();
-
-                        if (button == VPAD_BUTTON_A) {
-                            break;
-                        } else if (button == VPAD_BUTTON_B) {
-                            break;
+                            if (button == VPAD_BUTTON_A) {
+                                break;
+                            } else if (button == VPAD_BUTTON_B) {
+                                break;
+                            }
                         }
-                    }
-                    break;
-                case 3:
-                    while (is_running) {
-                        draw_unlink_menu();
-                        button = read_input();
+                        break;
+                    case 3:
+                        while (WHBProcIsRunning()) {
+                            draw_unlink_menu();
+                            button = read_input();
 
-                        if (button == VPAD_BUTTON_A) {
-                            break;
-                        } else if (button == VPAD_BUTTON_B) {
-                            break;
+                            if (button == VPAD_BUTTON_A) {
+                                break;
+                            } else if (button == VPAD_BUTTON_B) {
+                                break;
+                            }
                         }
-                    }
-                    break;
+                        break;
+                }
             }
         }
     }
