@@ -88,10 +88,10 @@ void deinitialize() {
 
 bool initialize_program() {
     WHBProcInit();
-    VPADInit();
-    KPADInit();
-    AXInit();
-    WPADEnableURCC(1);
+    VPADInit(); // Wii U GamePad support.
+    KPADInit(); // External controller support.
+    WPADEnableURCC(1); // Allow Pro Controller input.
+    AXInit(); // Disable playing audio.
 
     // Set up the log console for use.
     WHBLogConsoleInit();
