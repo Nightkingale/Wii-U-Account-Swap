@@ -1,11 +1,13 @@
 #ifndef SCREEN_HPP
 #define SCREEN_HPP
 
+#include <SDL2/SDL.h>
 
-void print_main_menu();
-void print_unlink_menu();
-void print_backup_menu();
-void print_overwrite_menu(const char* backup_path);
+
+void draw_menu_screen(int selected_menu_item);
+void draw_unlink_menu();
+void draw_backup_menu();
+void draw_overwrite_menu(const char* backup_path);
 
 
 #endif

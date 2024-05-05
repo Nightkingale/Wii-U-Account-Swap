@@ -1,131 +1,168 @@
-#include <iomanip>
-#include <cstdarg>
-#include <cstdio>
 #include <string>
 
-#include <coreinit/screen.h>
-#include <coreinit/thread.h>
-#include <coreinit/time.h>
+#include <coreinit/debug.h>
+#include <coreinit/memory.h>
+#include <nn/act.h>
+#include <padscore/kpad.h>
+#include <SDL2/SDL_ttf.h>
+#include <vpad/input.h>
 
+#include <fa-solid-900_ttf.h>
+#include <ter-u32b_bdf.h>
+#include "input.hpp"
 #include "main.hpp"
+#include "unlink.hpp"
 
 
-void print_on_screen(int line, const char* format, ...) {
-    char buffer[256];
-    va_list args;
-
-    // Format the string into a buffer.
-    va_start(args, format);
-    vsnprintf(buffer, sizeof(buffer), format, args);
-    va_end(args);
-
-    // Print the string to the screen.
-    OSScreenPutFontEx(SCREEN_TV, 0, line, buffer);
-    OSScreenPutFontEx(SCREEN_DRC, 0, line, buffer);
+void draw_background(int r, int g, int b, int a) {
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_RenderClear(renderer);
 }
 
-
-void print_main_menu() {
-    OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
-    OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
-
-    std::stringstream versionLine; // Create a stringstream to format the version line.
-    versionLine << "Wii U Account Swap (" << APP_VERSION << ")";
-    
-    int currentLength = versionLine.str().length();
-    int numSpaces = 56 - currentLength - 11; // 11 is the length of " Nightkingale"
-
-    for (int i = 0; i < numSpaces; i++)
-        versionLine << ' '; // Add spaces to format the version line.
-    versionLine << "Nightkingale";
-
-    print_on_screen(0, versionLine.str().c_str());
-    print_on_screen(1, "---------------------------------------------------------");
-    
-    print_on_screen(3, "Press (A) to switch to Nintendo Network ID.");
-    print_on_screen(4, "Press (B) to switch to Pretendo Network ID.");
-    print_on_screen(5, "Press (+) to backup your current account.");
-    print_on_screen(6, "Press (-) to unlink your account locally.");
-
-    print_on_screen(8, "Press (HOME) to exit.");
-   
-    print_on_screen(14, "---------------------------------------------------------");
-    print_on_screen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
-    print_on_screen(16, "%s", ACCOUNT_FILE.c_str());
-
-    OSScreenFlipBuffersEx(SCREEN_TV);
-    OSScreenFlipBuffersEx(SCREEN_DRC);
+void draw_rectangle(int x, int y, int w, int h, int r, int g, int b, int a) {
+    SDL_Rect rect = {x, y, w, h};
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_RenderFillRect(renderer, &rect);
 }
 
+void draw_text(const char* text, int x, int y, int size, SDL_Color color = {255, 255, 255, 255}) {
+    void* font_data = nullptr;
+    uint32_t font_size = 0;
+    OSGetSharedData(OS_SHAREDDATATYPE_FONT_STANDARD, 0, &font_data, &font_size);
 
-void print_unlink_menu() {
-    OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
-    OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
+    TTF_Font* font = TTF_OpenFontRW(SDL_RWFromMem((void*)font_data, font_size), 1, size);
+    if (font == NULL) {
+        return;
+    }
 
-    print_on_screen(0, "Unlinking: Please read the following and confirm!");
-    print_on_screen(1, "---------------------------------------------------------");
-    
-    print_on_screen(3, "This will unlink your Network ID from this user.");
-    print_on_screen(4, "You can reattach this account to any user on this Wii U,");
-    print_on_screen(5, "or attach a new account to this user.");
+    SDL_Surface* surface = TTF_RenderText_Blended(font, text, color);
+    if (surface == NULL) {
+        TTF_CloseFont(font);
+        return;
+    }
 
-    print_on_screen(7, "However, this unlink will not take place on the server.");
-    print_on_screen(8, "You won't be able to use this account on any other Wii U.");
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    if (texture == NULL) {
+        SDL_FreeSurface(surface);
+        TTF_CloseFont(font);
+        return;
+    }
 
-    print_on_screen(10, "Press (A) to confirm the unlink or (B) to cancel.");
-    
-    print_on_screen(14, "---------------------------------------------------------");
-    print_on_screen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
-    print_on_screen(16, "%s", ACCOUNT_FILE.c_str());
+    SDL_Rect rect = {x, y, surface->w, surface->h};
+    SDL_RenderCopy(renderer, texture, NULL, &rect);
 
-    OSScreenFlipBuffersEx(SCREEN_TV);
-    OSScreenFlipBuffersEx(SCREEN_DRC);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
+    TTF_CloseFont(font);
 }
 
+int get_text_width(const char* text, int size) {
+    void* font_data = nullptr;
+    uint32_t font_size = 0;
+    OSGetSharedData(OS_SHAREDDATATYPE_FONT_STANDARD, 0, &font_data, &font_size);
 
-void print_backup_menu() {
-    OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
-    OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
+    TTF_Font* font = TTF_OpenFontRW(SDL_RWFromMem((void*)font_data, font_size), 1, size);
+    if (font == NULL) {
+        return 0;
+    }
 
-    print_on_screen(0, "Backup: Please read the following and confirm!");
-    print_on_screen(1, "---------------------------------------------------------");
-    
-    print_on_screen(3, "This will backup your current account.dat file.");
+    int width = 0;
+    int height = 0;
+    TTF_SizeText(font, text, &width, &height);
 
-    print_on_screen(5, "The account.dat may contain sensitive personal");
-    print_on_screen(6, "information, such as your e-mail address and encrypted");
-    print_on_screen(7, "cached password (if you have chosen to save it).");
-
-    print_on_screen(9, "Please do not share these backups with anyone else!");
-
-    print_on_screen(11, "Press (A) to confirm the backup or (B) to cancel.");
-    
-    print_on_screen(14, "---------------------------------------------------------");
-    print_on_screen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
-    print_on_screen(16, "%s", ACCOUNT_FILE.c_str());
-
-    OSScreenFlipBuffersEx(SCREEN_TV);
-    OSScreenFlipBuffersEx(SCREEN_DRC);
+    TTF_CloseFont(font);
+    return width;
 }
 
+void draw_screen_bars() {
+    draw_rectangle(0, 0, 1920, 90, 125, 0, 125, 255);
+    draw_text("Wii U Account Swap", 64, 10, 50);
+    draw_text(APP_VERSION, 64 + get_text_width("Wii U Account Swap", 50) + 16, 10, 50, {176, 176, 176, 255});
+    draw_text("Nightkingale", 1920 - 64 - get_text_width("Nightkingale", 50), 10, 50);
 
-void print_overwrite_menu(const char* backup_path) {
-    OSScreenClearBufferEx(SCREEN_TV, 0x4A198500);
-    OSScreenClearBufferEx(SCREEN_DRC, 0x4A198500);
+    draw_rectangle(0, 940, 1920, 140, 125, 0, 125, 255);
+    draw_text("Current User: ", 64, 955, 40);
+    draw_text(MII_NICKNAME.c_str(), 64 + get_text_width("Current User: ", 40), 955, 40, {176, 176, 176, 255});
+    draw_text(ACCOUNT_FILE.c_str(), 64, 1005, 40);
+}
 
-    print_on_screen(0, "Backup: A backup file already exists!");
-    print_on_screen(1, "---------------------------------------------------------");
+void draw_confirm_button(const char* text) {
+    draw_rectangle(64, 760, 896, 100, 100, 100, 255, 255);
+    draw_rectangle(69, 765, 886, 90, 0, 0, 0, 255);
+    draw_text(text, 93, 780, 50);
+}
+
+void draw_menu_screen(int selected_menu_item) {
+    draw_background(16, 16, 16, 255);
+    draw_screen_bars();
+
+    const char* menu_options[] = {
+        "Switch to Nintendo Network ID",
+        "Switch to Pretendo Network ID",
+        "Backup Current Account",
+        "Unlink Network ID (Local-Only)"
+    };
+    const int NUM_MENU_ITEMS = sizeof(menu_options) / sizeof(menu_options[0]);
+
+    for (int i = 0; i < NUM_MENU_ITEMS; i++) {
+        if (i == selected_menu_item) {
+            // Draw black rectangle with blue border behind selected option
+            draw_rectangle(64, 135 + i * 120, 1797, 110, 100, 100, 255, 255); // blue border
+            draw_rectangle(69, 140 + i * 120, 1787, 100, 0, 0, 0, 255); // black rectangle
+        }
+        draw_text(menu_options[i], 93, 160 + i * 120, 50);
+    }
+
+    SDL_RenderPresent(renderer);
+}
+
+void draw_unlink_menu() {
+    draw_background(16, 16, 16, 255);
+    draw_screen_bars();
+
+    draw_text("Unlinking: Please read the following and confirm!", 64, 160, 50, {176, 176, 176, 255});
+
+    draw_text("This will unlink your Network ID from this user.", 64, 270, 50);
+    draw_text("You can reattach this account to any user on this Wii U,", 64, 330, 50);
+    draw_text("or attach a new account to this user.", 64, 390, 50);
+
+    draw_text("However, this unlink will not take place on the server.", 64, 510, 50);
+    draw_text("You won't be able to use this account on any other Wii U.", 64, 570, 50);
     
-    print_on_screen(3, "The backup file already exists!");
-    print_on_screen(4, "%s", backup_path);
-    print_on_screen(5, "Would you like to overwrite it?");
+    draw_confirm_button("Confirm Unlink");
 
-    print_on_screen(7, "Press (A) to overwrite the backup or (B) to cancel.");
-    
-    print_on_screen(14, "---------------------------------------------------------");
-    print_on_screen(15, "Current User: %s (%x)", MII_NICKNAME.c_str(), USER_ID);
-    print_on_screen(16, "%s", ACCOUNT_FILE.c_str());
+    SDL_RenderPresent(renderer);
+}
 
-    OSScreenFlipBuffersEx(SCREEN_TV);
-    OSScreenFlipBuffersEx(SCREEN_DRC);
+void draw_backup_menu() {
+    draw_background(16, 16, 16, 255);
+    draw_screen_bars();
+
+    draw_text("Backup: Please read the following and confirm!", 64, 160, 50, {176, 176, 176, 255});
+
+    draw_text("This will backup your current account.dat file.", 64, 270, 50);
+    draw_text("The account.dat may contain sensitive personal", 64, 330, 50);
+    draw_text("information, such as your e-mail address and encrypted", 64, 390, 50);
+    draw_text("cached password (if you have chosen to save it).", 64, 450, 50);
+
+    draw_text("Please do not share these backups with anyone else!", 64, 560, 50);
+
+    draw_confirm_button("Confirm Backup");
+
+    SDL_RenderPresent(renderer);
+}
+
+void draw_overwrite_menu(const char* backup_path) {
+    draw_background(16, 16, 16, 255);
+    draw_screen_bars();
+
+    draw_text("Backup: Please read the following and confirm!", 64, 160, 50);
+
+    draw_text("This will overwrite the existing backup file:", 64, 270, 50);
+    draw_text(backup_path, 64, 330, 50);
+    draw_text("Are you sure you want to overwrite this file?", 64, 390, 50);
+
+    draw_confirm_button("Confirm Overwrite");
+
+    SDL_RenderPresent(renderer);
 }

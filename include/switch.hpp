@@ -2,7 +2,7 @@
 #define SWITCH_HPP
 
 
-void switch_account(const char* backupFile, const char* accountType);
+void switch_account(const char* backup_file, const char* account_type);
 
 
 #endif

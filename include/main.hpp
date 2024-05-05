@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include <SDL2/SDL.h>
+
 
 const int BUFFER_SIZE = 0x2000; // The buffer size allocated for reading and writing files.
 
@@ -12,6 +14,9 @@ extern std::string PNID_BACKUP; // The backup path to the Pretendo Network ID ac
 extern std::string MII_NICKNAME; // The current user's Mii nickname.
 extern std::string ACCOUNT_FILE; // The path to the current account.dat.
 extern std::string INKAY_CONFIG; // The path to the Inkay configuration file.
+
+extern SDL_Window* window; // Global window variable.
+extern SDL_Renderer* renderer; // Global renderer variable;
 
 
 void get_user_information();

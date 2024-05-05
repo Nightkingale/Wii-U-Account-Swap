@@ -7,13 +7,15 @@
 #include <mocha/mocha.h>
 #include <nn/act.h>
 #include <padscore/kpad.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <sndcore2/core.h>
 #include <vpad/input.h>
 #include <whb/log.h>
 #include <whb/log_console.h>
 #include <whb/proc.h>
 
 #include "backup.hpp"
-#include "graphics.hpp"
 #include "input.hpp"
 #include "main.hpp"
 #include "screen.hpp"
@@ -27,6 +29,9 @@ std::string PNID_BACKUP; // The backup path to the Pretendo Network ID account.d
 std::string MII_NICKNAME; // The current user's Mii nickname.
 std::string ACCOUNT_FILE; // The path to the current account.dat.
 std::string INKAY_CONFIG; // The path to the Inkay configuration file.
+
+SDL_Window* window = nullptr; // Global window variable.
+SDL_Renderer* renderer = nullptr; // Global renderer variable.
 
 
 void get_user_information() {
@@ -64,16 +69,22 @@ void deinitialize() {
         WHBLogConsoleFree();
         VPADShutdown();
         KPADShutdown();
+
+        if (renderer != nullptr)
+            SDL_DestroyRenderer(renderer);
+        if (window != nullptr)
+            SDL_DestroyWindow(window);
         is_deinitialized = true;
     }
 }
 
 
-void initialize() {
-    OSScreenInit();
+void initialize_program() {
     WHBProcInit();
     VPADInit();
     KPADInit();
+    AXInit();
+    AXQuit();
     WPADEnableURCC(1);
 
     // Set up the log console for use.
@@ -95,66 +106,94 @@ void initialize() {
 }
 
 
-int main() {
-    new_graphics(); // Shows the work-in-progress GUI. Press X to continue to the main menu.
-    initialize();
+bool initialize_graphics() {
+    SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
 
-    while (WHBProcIsRunning()) {
-        print_main_menu();
+    const int SCREEN_WIDTH = 1920;
+    const int SCREEN_HEIGHT = 1080;
+
+    window = SDL_CreateWindow("Wii U Account Swap", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+    if (window == NULL)
+        return false;
+
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (renderer == NULL)
+        return false;
+
+    return true;
+}
+
+
+int main() {
+    bool is_running = true;
+    initialize_program();
+
+    if (initialize_graphics()) {
+        WHBLogConsoleSetColor(0x99000000);
+        WHBLogPrint("Failed to initialize SDL2!");
+        WHBLogConsoleDraw();
+        OSSleepTicks(OSMillisecondsToTicks(5000));
+        is_running = false;
+    }
+
+    int selected_option = 0;
+    const int NUM_OPTIONS = 4;
+    OSEnableHomeButtonMenu(1);
+
+    while (is_running) {
+        draw_menu_screen(selected_option);
 
         int button = read_input(); // Watch the controllers for input.
 
-        if (button == VPAD_BUTTON_A)
-            // Press (A) to switch to Nintendo Network ID.
-            switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID");
-
-        else if (button == VPAD_BUTTON_B)
-            // Press (B) to switch to Pretendo Network ID.
-            switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID");
-
-        else if (button == VPAD_BUTTON_PLUS) {
-            // Press (+) to backup the current account.
-            while (WHBProcIsRunning()) {
-                OSEnableHomeButtonMenu(0);
-                print_backup_menu();
-
-                button = read_input();
-
-                if (button == VPAD_BUTTON_A) {
-                    backup_account();
-                    break;
-                }
-
-                else if (button == VPAD_BUTTON_B) {
-                    OSEnableHomeButtonMenu(1);
-                    print_main_menu();
-                    break;
-                }
+        if (button == VPAD_BUTTON_UP) {
+            selected_option--;
+            if (selected_option < 0) {
+                selected_option = NUM_OPTIONS - 1;
             }
-        }
-
-        else if (button == VPAD_BUTTON_MINUS) {
-            // Press (-) to unlink the current account.
-            while (WHBProcIsRunning()) {
-                OSEnableHomeButtonMenu(0);
-                print_unlink_menu();
-                
-                button = read_input();
-                
-                if (button == VPAD_BUTTON_A) {
-                    unlink_account();
+        } else if (button == VPAD_BUTTON_DOWN) {
+            selected_option++;
+            if (selected_option >= NUM_OPTIONS) {
+                selected_option = 0;
+            }
+        } else if (button == VPAD_BUTTON_A) {
+            switch (selected_option) {
+                case 0:
+                    switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID");
                     break;
-                }
-
-                else if (button == VPAD_BUTTON_B) {
-                    OSEnableHomeButtonMenu(1);
-                    print_main_menu();
+                case 1:
+                    switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID");
                     break;
-                }
+                case 2:
+                    while (is_running) {
+                        draw_backup_menu();
+                        button = read_input();
+
+                        if (button == VPAD_BUTTON_A) {
+                            break;
+                        } else if (button == VPAD_BUTTON_B) {
+                            break;
+                        }
+                    }
+                    break;
+                case 3:
+                    while (is_running) {
+                        draw_unlink_menu();
+                        button = read_input();
+
+                        if (button == VPAD_BUTTON_A) {
+                            break;
+                        } else if (button == VPAD_BUTTON_B) {
+                            break;
+                        }
+                    }
+                    break;
             }
         }
     }
 
     deinitialize();
+    SDL_Quit();
+
     return 0;
 }

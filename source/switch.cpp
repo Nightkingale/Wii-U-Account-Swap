@@ -15,7 +15,7 @@
 #include "screen.hpp"
 
 
-void handle_cleanup(FILE* backup, char* buffer, bool is_error = false) {
+void handle_cleanup(FILE* backup, const char* account_type, char* buffer, bool is_error = false) {
     OSSleepTicks(OSMillisecondsToTicks(5000));
     OSEnableHomeButtonMenu(1);
     
@@ -35,37 +35,41 @@ void handle_cleanup(FILE* backup, char* buffer, bool is_error = false) {
     if (is_error) {
         // Print the main menu.
         WHBLogPrint("---------------------------------------------------------");
-        print_main_menu();
+
+        if (strcmp(account_type, "Nintendo Network ID"))
+            draw_menu_screen(0);
+        else if (strcmp(account_type, "Pretendo Network ID"))
+            draw_menu_screen(1);
     }
 }
 
 
-void switch_account(const char* backupFile, const char* accountType) {
+void switch_account(const char* backup_file, const char* account_type) {
     // Disable the HOME Button temporarily.
     OSEnableHomeButtonMenu(0);
 
     // Print the account type and the switch message.
     WHBLogConsoleSetColor(0x00009900);
-    WHBLogPrintf("Switch: You will be swapped to a %s.", accountType);
+    WHBLogPrintf("Switch: You will be swapped to a %s.", account_type);
     WHBLogPrint("---------------------------------------------------------");
     WHBLogConsoleDraw();
 
-    WHBLogPrintf("Switching account.dat to %s.", accountType);
+    WHBLogPrintf("Switching account.dat to %s.", account_type);
     WHBLogConsoleDraw();
 
     // Open the account.dat file and switch it to the specified account.
-    FILE *backup = fopen(backupFile, "rb");
+    FILE *backup = fopen(backup_file, "rb");
     if (backup == NULL) {
         WHBLogConsoleSetColor(0x99000000);
-        WHBLogPrintf("Error opening %s account backup!", accountType);
+        WHBLogPrintf("Error opening %s account backup!", account_type);
         WHBLogPrint("Have you made a backup of this account yet?");
         WHBLogConsoleDraw();
-        handle_cleanup(backup, NULL, true);
+        handle_cleanup(backup, account_type, NULL, true);
         return;
     }
     else {
         // Open the account.dat file for writing.
-        WHBLogPrintf("%s account backup opened.", accountType);
+        WHBLogPrintf("%s account backup opened.", account_type);
         WHBLogConsoleDraw();
 
         char *buffer = (char *)malloc(BUFFER_SIZE);
@@ -73,7 +77,7 @@ void switch_account(const char* backupFile, const char* accountType) {
             WHBLogConsoleSetColor(0x99000000);
             WHBLogPrint("Error allocating memory!");
             WHBLogConsoleDraw();
-            handle_cleanup(backup, buffer, true);
+            handle_cleanup(backup, account_type, buffer, true);
             return;
 
         } else {
@@ -85,7 +89,7 @@ void switch_account(const char* backupFile, const char* accountType) {
                 WHBLogConsoleSetColor(0x99000000);
                 WHBLogPrint("Error opening system account.dat file!");
                 WHBLogConsoleDraw();
-                handle_cleanup(backup, buffer, true);
+                handle_cleanup(backup, account_type, buffer, true);
                 return;
 
             } else {
@@ -111,10 +115,10 @@ void switch_account(const char* backupFile, const char* accountType) {
                     // Write the network configuration to the file.
                     WHBLogPrint("Inkay config file opened.");
                     WHBLogConsoleDraw();
-                    WHBLogPrintf("Swapping network to %s.", accountType);
+                    WHBLogPrintf("Swapping network to %s.", account_type);
 
                     const char *inkayContent = "{\"storageitems\":{\"connect_to_network\":%d}}";
-                    fprintf(inkay, inkayContent, strcmp(accountType, "Pretendo Network ID") == 0 ? 1 : 0);
+                    fprintf(inkay, inkayContent, strcmp(account_type, "Pretendo Network ID") == 0 ? 1 : 0);
                     fclose(inkay);
                     inkay = NULL;
 
@@ -130,7 +134,7 @@ void switch_account(const char* backupFile, const char* accountType) {
             }
         }
         // Clean-up and exit.
-        handle_cleanup(backup, buffer, false);
+        handle_cleanup(backup, account_type, buffer, false);
         deinitialize();
 
         OSForceFullRelaunch();

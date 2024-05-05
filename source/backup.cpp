@@ -45,7 +45,7 @@ void handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = f
 
     if (is_error) {
         WHBLogPrint("---------------------------------------------------------");
-        print_main_menu();
+        draw_menu_screen(2);
     }
 }
 
@@ -169,7 +169,7 @@ void backup_account() {
                     backup_confirm = false;
 
                     while (WHBProcIsRunning()) {
-                        print_overwrite_menu(backup_path.c_str());
+                        draw_overwrite_menu(backup_path.c_str());
                         int button = read_input();
 
                         if (button == VPAD_BUTTON_A) {
