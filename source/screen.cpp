@@ -120,6 +120,12 @@ void draw_screen_bars() {
     draw_rectangle(0, 940, SCREEN_WIDTH, 140, 125, 0, 125, 255);
     draw_text("Current User: ", 64, 955, 40);
     draw_text(MII_NICKNAME.c_str(), 64 + get_text_width("Current User: ", 40), 955, 40, {176, 176, 176, 255});
+
+    if (INKAY_EXISTS)
+        draw_icon("\ue55c", 64 + get_text_width("Current User: ", 40) + get_text_width(MII_NICKNAME.c_str(), 40) + 16, 960, 40, {176, 176, 176, 255});
+    else
+        draw_icon("\ue560", 64 + get_text_width("Current User: ", 40) + get_text_width(MII_NICKNAME.c_str(), 40) + 16, 960, 40, {176, 176, 176, 255});
+
     draw_text(ACCOUNT_FILE.c_str(), 64, 1005, 40);
 
     draw_text("\ue07d Navigate", SCREEN_WIDTH - 42 - get_text_width("\ue07d Navigate", 50), 975, 50);

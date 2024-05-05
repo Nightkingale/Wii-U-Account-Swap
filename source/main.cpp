@@ -1,4 +1,5 @@
 #include <cstring>
+#include <fstream>
 #include <sstream>
 
 #include <coreinit/launch.h>
@@ -26,6 +27,7 @@
 
 
 unsigned int USER_ID; // The current user persistant ID.
+bool INKAY_EXISTS; // Whether the Inkay plugin config exists.
 std::string NNID_BACKUP; // The backup path to the Nintendo Network ID account.dat.
 std::string PNID_BACKUP; // The backup path to the Pretendo Network ID account.dat.
 std::string MII_NICKNAME; // The current user's Mii nickname.
@@ -57,6 +59,9 @@ void get_user_information() {
     char environment_path_buffer[0x100];
     Mocha_GetEnvironmentPath(environment_path_buffer, sizeof(environment_path_buffer));
     INKAY_CONFIG = std::string(environment_path_buffer) + std::string("/plugins/config/inkay.json");
+
+    // Check if the Inkay configuration file exists.
+    INKAY_EXISTS = std::ifstream(INKAY_CONFIG).good();
 }
 
 
