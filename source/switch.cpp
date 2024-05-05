@@ -16,7 +16,6 @@
 
 
 void handle_cleanup(FILE* backup, const char* account_type, char* buffer, bool is_error = false) {
-    OSSleepTicks(OSMillisecondsToTicks(5000));
     OSEnableHomeButtonMenu(1);
     
     // Free the buffer.

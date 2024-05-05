@@ -92,10 +92,13 @@ void draw_screen_bars() {
 }
 
 
-void draw_confirm_button(const char* text) {
-    draw_rectangle(64, 760, 896, 100, 100, 100, 255, 255);
-    draw_rectangle(69, 765, 886, 90, 0, 0, 0, 255);
-    draw_text(text, 93, 780, 50);
+void draw_confirm_button() {
+    int button_width = get_text_width("Confirm", 50) + 100;
+    int button_x = (1920 - button_width) / 2;
+
+    draw_rectangle(button_x, 760, button_width, 100, 100, 100, 255, 255);
+    draw_rectangle(button_x + 5, 765, button_width - 10, 90, 0, 0, 0, 255);
+    draw_text("Confirm", button_x + 50, 780, 50);
 }
 
 
@@ -107,15 +110,18 @@ void draw_menu_screen(int selected_menu_item) {
         "Switch to Nintendo Network ID",
         "Switch to Pretendo Network ID",
         "Backup Current Account",
-        "Unlink Network ID (Local-Only)"
+        "Unlink Account Locally"
     };
     const int NUM_MENU_ITEMS = sizeof(menu_options) / sizeof(menu_options[0]);
 
     for (int i = 0; i < NUM_MENU_ITEMS; i++) {
         if (i == selected_menu_item) {
-            // Draw black rectangle with blue border behind selected option
-            draw_rectangle(64, 135 + i * 120, 1797, 110, 100, 100, 255, 255); // blue border
-            draw_rectangle(69, 140 + i * 120, 1787, 100, 0, 0, 0, 255); // black rectangle
+            draw_rectangle(64, 135 + i * 120, 1797, 110, 100, 100, 255, 255); // Blue border.
+            draw_rectangle(69, 140 + i * 120, 1787, 100, 0, 0, 0, 255); // Black rectangle.
+
+            draw_text("A", 1800, 160 + i * 120, 50, {100, 100, 255, 255});
+        } else {
+            draw_rectangle(69, 140 + i * 120, 1787, 100, 25, 25, 25, 255); // Gray rectangle.
         }
         draw_text(menu_options[i], 93, 160 + i * 120, 50);
     }
@@ -128,7 +134,7 @@ void draw_unlink_menu() {
     draw_background(16, 16, 16, 255);
     draw_screen_bars();
 
-    draw_text("Unlinking: Please read the following and confirm!", 64, 160, 50, {176, 176, 176, 255});
+    draw_text("Unlinking: Please read the following and confirm!", 64, 160, 50);
 
     draw_text("This will unlink your Network ID from this user.", 64, 270, 50);
     draw_text("You can reattach this account to any user on this Wii U,", 64, 330, 50);
@@ -137,7 +143,7 @@ void draw_unlink_menu() {
     draw_text("However, this unlink will not take place on the server.", 64, 510, 50);
     draw_text("You won't be able to use this account on any other Wii U.", 64, 570, 50);
     
-    draw_confirm_button("Confirm Unlink");
+    draw_confirm_button();
 
     SDL_RenderPresent(renderer);
 }
@@ -147,7 +153,7 @@ void draw_backup_menu() {
     draw_background(16, 16, 16, 255);
     draw_screen_bars();
 
-    draw_text("Backup: Please read the following and confirm!", 64, 160, 50, {176, 176, 176, 255});
+    draw_text("Backup: Please read the following and confirm!", 64, 160, 50);
 
     draw_text("This will backup your current account.dat file.", 64, 270, 50);
     draw_text("The account.dat may contain sensitive personal", 64, 330, 50);
@@ -156,7 +162,7 @@ void draw_backup_menu() {
 
     draw_text("Please do not share these backups with anyone else!", 64, 560, 50);
 
-    draw_confirm_button("Confirm Backup");
+    draw_confirm_button();
 
     SDL_RenderPresent(renderer);
 }
@@ -173,31 +179,30 @@ void draw_overwrite_menu(const char* backup_path) {
 
     draw_text("Are you sure you want to overwrite this file?", 64, 440, 50);
 
-    draw_confirm_button("Confirm Overwrite");
+    draw_confirm_button();
 
     SDL_RenderPresent(renderer);
 }
 
 
 void draw_error_menu(const char* error_message) {
-    draw_background(0, 0, 30, 255);
+    draw_background(90, 10, 10, 255);
     draw_screen_bars();
 
-    draw_text("Error: An error has occurred!", 64, 160, 50, {176, 176, 176, 255});
+    draw_text("An exception has occurred!", 64, 160, 50);
 
     draw_text(error_message, 64, 270, 50);
-
-    draw_text("You will return to the main menu.", 64, 390, 50);
+    draw_text("You will return to the main menu.", 64, 330, 50);
 
     SDL_RenderPresent(renderer);
     OSSleepTicks(OSMillisecondsToTicks(5000));
 }
 
 void draw_success_menu(const char* type, bool inkay_configured = false) {
-    draw_background(0, 30, 0, 255);
+    draw_background(10, 60, 10, 255);
     draw_screen_bars();
 
-    draw_text("Success: The operation was successful!", 64, 160, 50, {176, 176, 176, 255});
+    draw_text("The operation was successful!", 64, 160, 50);
 
     if (strcmp(type, "backup") == 0) {
         draw_text("Your account.dat file has been backed up.", 64, 270, 50);

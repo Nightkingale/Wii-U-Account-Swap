@@ -48,7 +48,7 @@ void handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = f
 }
 
 
-void write_backup(FILE* account, const std::string& backup_path, char* buffer) {
+bool write_backup(FILE* account, const std::string& backup_path, char* buffer) {
     // Create the directories if they don't exist.
     std::filesystem::path dirPath = std::filesystem::path(backup_path).remove_filename();
     std::filesystem::create_directories(dirPath);
@@ -58,7 +58,7 @@ void write_backup(FILE* account, const std::string& backup_path, char* buffer) {
     if (backup == NULL) {
         draw_error_menu("Error opening backup account.dat file!");
         handle_cleanup(account, backup, buffer, true);
-        return;
+        return false;
     }
 
     // Open the backup file and write the account data to it.
@@ -72,6 +72,7 @@ void write_backup(FILE* account, const std::string& backup_path, char* buffer) {
     fclose(backup);
 
     draw_success_menu("backup");
+    return true;
 }
 
 
@@ -142,7 +143,9 @@ bool backup_account() {
         }
         // Write the backup file.
         if (backup_confirm) {
-            write_backup(account, backup_path, buffer);
+            if (write_backup(account, backup_path, buffer))
+                handle_cleanup(account, NULL, buffer, false);
+            return true;
         }
 
         handle_cleanup(account, NULL, buffer, !backup_confirm);

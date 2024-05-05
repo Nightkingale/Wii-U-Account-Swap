@@ -156,6 +156,7 @@ int main() {
             draw_menu_screen(selected_option);
 
         int button = read_input(); // Watch the controllers for input.
+        OSEnableHomeButtonMenu(1);
 
         if (button == VPAD_BUTTON_UP) {
             selected_option--;
@@ -181,6 +182,7 @@ int main() {
                     break;
                 case 2:
                     while (WHBProcIsRunning()) {
+                        OSEnableHomeButtonMenu(0);
                         draw_backup_menu();
                         button = read_input();
 
@@ -192,6 +194,7 @@ int main() {
                     }
                     break;
                 case 3:
+                    OSEnableHomeButtonMenu(0);
                     while (WHBProcIsRunning()) {
                         draw_unlink_menu();
                         button = read_input();
