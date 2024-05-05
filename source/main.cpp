@@ -129,7 +129,7 @@ int main() {
     bool is_initialized = false;
     initialize_program();
 
-    if (initialize_graphics()) {
+    if (!initialize_graphics()) {
         WHBLogConsoleSetColor(0x99000000);
         WHBLogPrint("Failed to initialize SDL2!");
         WHBLogConsoleDraw();
