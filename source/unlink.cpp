@@ -17,9 +17,10 @@
 #include <whb/proc.h>
 
 #include "main.hpp"
+#include "screen.hpp"
 
 
-void unlink_account() {
+bool unlink_account() {
     // The default values to apply to the account.dat file.
     std::map<std::string, std::string> default_values = {
         {"IsMiiUpdated", "1"},
@@ -58,19 +59,11 @@ void unlink_account() {
         {"MiiImageLastModifiedDate", "Sat, 01 Jan 2000 00:00:00 GMT"},
         {"IsCommitted", "1"}
     };
-    
-    // Inform the user that the unlink process has started.
-    WHBLogConsoleSetColor(0x00009900);
-    WHBLogPrintf("Unlinking: Default settings will be applied.");
-    WHBLogPrint("---------------------------------------------------------");
-    WHBLogConsoleDraw();
 
     // Read the entire file into a string.
     std::ifstream account_input(ACCOUNT_FILE);
     std::string file_contents((std::istreambuf_iterator<char>(account_input)), std::istreambuf_iterator<char>());
     account_input.close();
-    WHBLogPrint("System account.dat file read in memory.");
-    WHBLogConsoleDraw();
 
     // Process each line in the string.
     std::istringstream file_contentstream(file_contents);
@@ -85,28 +78,13 @@ void unlink_account() {
         file_contents += line + "\n";
     }
 
-    WHBLogPrint("Account file in memory patched.");
-    WHBLogConsoleDraw();
-
     // Write the string back to the file.
     std::ofstream account_output(ACCOUNT_FILE);
     account_output << file_contents;
     account_output.close();
-    WHBLogPrint("System account.dat file written.");
-    WHBLogConsoleDraw();
 
-    // Inform the user that the unlink was successful.
-    WHBLogConsoleSetColor(0x00990000);
-    WHBLogPrint("---------------------------------------------------------");
-    WHBLogPrint("The account.dat was unlinked successfully!");
-    WHBLogPrint("Your console will restart in 5 seconds...");
-    WHBLogConsoleDraw();
-    WHBLogPrint("---------------------------------------------------------");
-
-    OSSleepTicks(OSMillisecondsToTicks(5000));
+    draw_success_menu("unlink");
     OSEnableHomeButtonMenu(1);
 
-    OSForceFullRelaunch();
-    SYSLaunchMenu();
-    deinitialize();
+    return true;
 }

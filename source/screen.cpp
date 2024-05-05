@@ -2,6 +2,7 @@
 
 #include <coreinit/debug.h>
 #include <coreinit/memory.h>
+#include <coreinit/thread.h>
 #include <nn/act.h>
 #include <padscore/kpad.h>
 #include <SDL2/SDL_ttf.h>
@@ -19,11 +20,13 @@ void draw_background(int r, int g, int b, int a) {
     SDL_RenderClear(renderer);
 }
 
+
 void draw_rectangle(int x, int y, int w, int h, int r, int g, int b, int a) {
     SDL_Rect rect = {x, y, w, h};
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
     SDL_RenderFillRect(renderer, &rect);
 }
+
 
 void draw_text(const char* text, int x, int y, int size, SDL_Color color = {255, 255, 255, 255}) {
     void* font_data = nullptr;
@@ -56,6 +59,7 @@ void draw_text(const char* text, int x, int y, int size, SDL_Color color = {255,
     TTF_CloseFont(font);
 }
 
+
 int get_text_width(const char* text, int size) {
     void* font_data = nullptr;
     uint32_t font_size = 0;
@@ -74,6 +78,7 @@ int get_text_width(const char* text, int size) {
     return width;
 }
 
+
 void draw_screen_bars() {
     draw_rectangle(0, 0, 1920, 90, 125, 0, 125, 255);
     draw_text("Wii U Account Swap", 64, 10, 50);
@@ -86,11 +91,13 @@ void draw_screen_bars() {
     draw_text(ACCOUNT_FILE.c_str(), 64, 1005, 40);
 }
 
+
 void draw_confirm_button(const char* text) {
     draw_rectangle(64, 760, 896, 100, 100, 100, 255, 255);
     draw_rectangle(69, 765, 886, 90, 0, 0, 0, 255);
     draw_text(text, 93, 780, 50);
 }
+
 
 void draw_menu_screen(int selected_menu_item) {
     draw_background(16, 16, 16, 255);
@@ -116,6 +123,7 @@ void draw_menu_screen(int selected_menu_item) {
     SDL_RenderPresent(renderer);
 }
 
+
 void draw_unlink_menu() {
     draw_background(16, 16, 16, 255);
     draw_screen_bars();
@@ -133,6 +141,7 @@ void draw_unlink_menu() {
 
     SDL_RenderPresent(renderer);
 }
+
 
 void draw_backup_menu() {
     draw_background(16, 16, 16, 255);
@@ -152,6 +161,7 @@ void draw_backup_menu() {
     SDL_RenderPresent(renderer);
 }
 
+
 void draw_overwrite_menu(const char* backup_path) {
     draw_background(16, 16, 16, 255);
     draw_screen_bars();
@@ -160,9 +170,52 @@ void draw_overwrite_menu(const char* backup_path) {
 
     draw_text("This will overwrite the existing backup file:", 64, 270, 50);
     draw_text(backup_path, 64, 330, 50);
-    draw_text("Are you sure you want to overwrite this file?", 64, 390, 50);
+
+    draw_text("Are you sure you want to overwrite this file?", 64, 440, 50);
 
     draw_confirm_button("Confirm Overwrite");
 
     SDL_RenderPresent(renderer);
+}
+
+
+void draw_error_menu(const char* error_message) {
+    draw_background(0, 0, 30, 255);
+    draw_screen_bars();
+
+    draw_text("Error: An error has occurred!", 64, 160, 50, {176, 176, 176, 255});
+
+    draw_text(error_message, 64, 270, 50);
+
+    draw_text("You will return to the main menu.", 64, 390, 50);
+
+    SDL_RenderPresent(renderer);
+    OSSleepTicks(OSMillisecondsToTicks(5000));
+}
+
+void draw_success_menu(const char* type, bool inkay_configured = false) {
+    draw_background(0, 30, 0, 255);
+    draw_screen_bars();
+
+    draw_text("Success: The operation was successful!", 64, 160, 50, {176, 176, 176, 255});
+
+    if (strcmp(type, "backup") == 0) {
+        draw_text("Your account.dat file has been backed up.", 64, 270, 50);
+        draw_text("You will return to the main menu.", 64, 330, 50);
+
+    } else if (strcmp(type, "unlink") == 0) {
+        draw_text("Your Network ID has been unlinked from this user.", 64, 270, 50);
+        draw_text("The Wii U will now reboot.", 64, 330, 50);
+
+    } else if (strcmp(type, "switch") == 0) {
+        draw_text("Your account has been switched successfully.", 64, 270, 50);
+        draw_text("The Wii U will now reboot.", 64, 330, 50);
+
+        if (inkay_configured) {
+            draw_text("Inkay was also configured automatically!", 64, 440, 50);
+        }
+    }
+
+    SDL_RenderPresent(renderer);
+    OSSleepTicks(OSMillisecondsToTicks(5000));
 }

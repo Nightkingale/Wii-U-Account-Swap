@@ -1,6 +1,7 @@
 #include <cstring>
 #include <sstream>
 
+#include <coreinit/launch.h>
 #include <coreinit/screen.h>
 #include <coreinit/thread.h>
 #include <coreinit/time.h>
@@ -158,21 +159,25 @@ int main() {
 
         if (button == VPAD_BUTTON_UP) {
             selected_option--;
-            if (selected_option < 0) {
+            if (selected_option < 0)
                 selected_option = NUM_OPTIONS - 1;
-            }
         } else if (button == VPAD_BUTTON_DOWN) {
             selected_option++;
-            if (selected_option >= NUM_OPTIONS) {
+            if (selected_option >= NUM_OPTIONS)
                 selected_option = 0;
-            }
         } else if (button == VPAD_BUTTON_A) {
             switch (selected_option) {
                 case 0:
-                    switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID");
+                    if (switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID")) {
+                        OSForceFullRelaunch();
+                        SYSLaunchMenu();
+                    }
                     break;
                 case 1:
-                    switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID");
+                    if (switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID")) {
+                        OSForceFullRelaunch();
+                        SYSLaunchMenu();
+                    }
                     break;
                 case 2:
                     while (WHBProcIsRunning()) {
@@ -182,9 +187,8 @@ int main() {
                         if (button == VPAD_BUTTON_A) {
                             backup_account();
                             break;
-                        } else if (button == VPAD_BUTTON_B) {
+                        } else if (button == VPAD_BUTTON_B)
                             break;
-                        }
                     }
                     break;
                 case 3:
@@ -193,11 +197,13 @@ int main() {
                         button = read_input();
 
                         if (button == VPAD_BUTTON_A) {
-                            unlink_account();
+                            if (unlink_account()) {
+                                OSForceFullRelaunch();
+                                SYSLaunchMenu();
+                            }
                             break;
-                        } else if (button == VPAD_BUTTON_B) {
+                        } else if (button == VPAD_BUTTON_B)
                             break;
-                        }
                     }
                     break;
             }

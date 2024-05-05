@@ -2,7 +2,7 @@
 #define BACKUP_HPP
 
 
-void backup_account();
+bool backup_account();
 
 
 #endif

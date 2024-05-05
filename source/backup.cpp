@@ -22,7 +22,6 @@ bool backup_confirm = false;
 
 
 void handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = false) {
-    OSSleepTicks(OSMillisecondsToTicks(5000));
     OSEnableHomeButtonMenu(1);
 
     // Free the buffer.
@@ -44,7 +43,6 @@ void handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = f
     }
 
     if (is_error) {
-        WHBLogPrint("---------------------------------------------------------");
         draw_menu_screen(2);
     }
 }
@@ -58,17 +56,10 @@ void write_backup(FILE* account, const std::string& backup_path, char* buffer) {
     // Open the backup file for writing.
     FILE *backup = fopen(backup_path.c_str(), "wb");
     if (backup == NULL) {
-        WHBLogConsoleSetColor(0x99000000);
-        WHBLogPrintf("Error opening backup file.");
-        WHBLogPrintf("%s", backup_path.c_str());
-        WHBLogConsoleDraw();
+        draw_error_menu("Error opening backup account.dat file!");
         handle_cleanup(account, backup, buffer, true);
         return;
     }
-
-    // Print the backup path to the screen.
-    WHBLogPrintf("%s", backup_path.c_str());
-    WHBLogConsoleDraw();
 
     // Open the backup file and write the account data to it.
     rewind(account); // Move the file pointer to the beginning.
@@ -79,91 +70,55 @@ void write_backup(FILE* account, const std::string& backup_path, char* buffer) {
 
     // Close the backup file.
     fclose(backup);
-    WHBLogPrintf("Backup account.dat written.", backup_path);
-    WHBLogConsoleDraw();
 
-    // Wait 5 seconds, then go back to the menu.
-    WHBLogConsoleSetColor(0x00990000);
-    WHBLogPrint("---------------------------------------------------------");
-    WHBLogPrint("The account.dat was backed up successfully!");
-    WHBLogPrint("The main menu will appear in 5 seconds...");
-    WHBLogConsoleDraw();
-    WHBLogPrint("---------------------------------------------------------");
-    fclose(backup);
+    draw_success_menu("backup");
 }
 
 
-void backup_account() {
-    // Inform the user that the backup process has started.
-    WHBLogConsoleSetColor(0x00009900);
-    WHBLogPrintf("Backup: A Network ID backup will be created.");
-    WHBLogPrint("---------------------------------------------------------");
-    WHBLogConsoleDraw();
-
+bool backup_account() {
     // Check if the account.dat file exists.
     std::string backup_path;
     FILE *account = fopen(ACCOUNT_FILE.c_str(), "rb");
     if (account == NULL) {
-        WHBLogConsoleSetColor(0x99000000);
-        WHBLogPrintf("Error opening system account.dat file!");
-        WHBLogConsoleDraw();
+        draw_error_menu("Error opening system account.dat file!");
         handle_cleanup(account, NULL, NULL, true);
-        return;
+        return false;
 
     } else {
-        WHBLogPrintf("System account.dat file opened.");
-        WHBLogConsoleDraw();
-        
         std::string content;
         char *buffer = (char *)malloc(BUFFER_SIZE);
         if (buffer == NULL) {
-            WHBLogConsoleSetColor(0x99000000);
-            WHBLogPrint("Error allocating memory!");
-            WHBLogConsoleDraw();
+            draw_error_menu("Error allocating memory!");
             handle_cleanup(account, NULL, buffer, true);
-            return;
+            return false;
 
         } else {
-            WHBLogPrint("Memory was allocated successfully.");
-            WHBLogConsoleDraw();
             // Read the entire file into a string.
             size_t bytesRead = 0;
             while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, account)) > 0) {
                 content.append(buffer, bytesRead);
             }
 
-            WHBLogPrint("account.dat file read in memory.");
-            WHBLogConsoleDraw();
-
             bool network_account_found = false;
             if (content.find("account.nintendo.net") != std::string::npos) {
                 // Nintendo Network ID is linked to the account.
                 backup_path = NNID_BACKUP;
-                WHBLogPrint("Nintendo Network ID detected.");
-                WHBLogConsoleDraw();
                 network_account_found = true;
 
             } else if (content.find("pretendo-cdn.b-cdn.net") != std::string::npos) {
                 // Pretendo Network ID is linked to the account.
                 backup_path = PNID_BACKUP;
-                WHBLogPrint("Pretendo Network ID detected.");
-                WHBLogConsoleDraw();
                 network_account_found = true;
 
             } else {
                 // The check failed, domain not accounted for?
-                WHBLogConsoleSetColor(0x99000000);
-                WHBLogPrint("Network ID detection failed!");
-                WHBLogPrint("Is this user a local-only account?");
-                WHBLogConsoleDraw();
+                draw_error_menu("No network account found!");
                 handle_cleanup(account, NULL, buffer, true);
+                return false;
             }
 
             if (network_account_found) {
                 // Check if the backup file exists.
-                WHBLogPrintf("Opening backup account.dat for writing.", backup_path.c_str());
-                WHBLogConsoleDraw();
-
                 std::ifstream ifile(backup_path);
                 if (ifile) {
                     backup_confirm = false;
@@ -191,5 +146,6 @@ void backup_account() {
         }
 
         handle_cleanup(account, NULL, buffer, !backup_confirm);
+        return true;
     }
 }
