@@ -4,10 +4,10 @@
 #include "nightkingale_ogg.h"
 
 
-bool play_easter_egg() {
+void play_easter_egg() {
     // Initialize SDL_mixer.
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        return false;
+        return;
     }
 
     // Load the OGG file.
@@ -25,6 +25,4 @@ bool play_easter_egg() {
     // Clean up.
     Mix_FreeMusic(music);
     Mix_CloseAudio();
-
-    return true;
 }
