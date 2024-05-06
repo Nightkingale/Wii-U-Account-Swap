@@ -23,11 +23,11 @@ If the program is placed correctly on an SD card, Wii U Account Swap will appear
 * `Switch to Pretendo Network ID`: Restores the file located at `SD:/wiiu/accounts/[PERSISTENT_ID]/pnid_account.dat`.
     * If you use the [Inkay](https://github.com/PretendoNetwork/Inkay) plugin for the Aroma environment and its configuration is detected (the plugin icon next to your Mii name will have a check), then your configuration will be rewritten automatically to enable Pretendo Network.
     * If a backup does not exist, yet you still try and restore one, you will be prompted with an error requesting you make one.
-* `Backup Current Account`: Saves the user's current `account.dat` file to the SD card.
+* `Backup the account.dat File`: Saves the user's current `account.dat` file to the SD card.
     * If the currently linked account is detected to be a Nintendo Network ID, it will save to `SD:/wiiu/accounts/[PERSISTENT_ID]/nnid_account.dat`.
     * Otherwise, if the currently linked account is detected as a Pretendo Network ID, it will save to `SD:/wiiu/accounts/[PERSISTENT_ID]/pnid_account.dat`.
     * At this time, you cannot backup local accounts (meaning ones without a Network ID attached to it) with this tool.
-* `Unlink Account Locally`: Unlinks your Network ID from a user, essentially making it a local-only user.
+* `Unlink the account.dat File`: Unlinks your Network ID from a user, essentially making it a local-only user.
     * This is done by replacing any Network-related values with default settings. Your user Mii and any local content associated with the user will stay intact.
     * Unlinking will not unlink the account from your Wii U on the server. This means you can reattach the Network ID to any user on the system (including reattaching it to the same one), but the Network ID is still locked to the same console.
 

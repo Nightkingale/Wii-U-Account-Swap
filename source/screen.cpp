@@ -15,8 +15,8 @@ void draw_menu_screen(int selected_menu_item) {
     const char* menu_options[] = {
         "Switch to Nintendo Network ID",
         "Switch to Pretendo Network ID",
-        "Backup Current Account",
-        "Unlink Account Locally"
+        "Backup the account.dat File",
+        "Unlink the account.dat File"
     }; // Menu options.
 
     const char* menu_icons[] = {
@@ -35,7 +35,17 @@ void draw_menu_screen(int selected_menu_item) {
             draw_rectangle(5, 95 + item * 120, 1910, 110, 25, 25, 25, 255); // Gray rectangle.
         }
         draw_text(menu_options[item], 160, 120 + item * 120, 50);
-        draw_icon(menu_icons[item], 64, 125 + item * 120, 50);
+
+        if (item == 0) {
+            // This is the Switch to Nintendo Network ID option.
+            draw_icon(menu_icons[item], 64, 125 + item * 120, 50, {255, 150, 0, 255}); // Orange icon.
+        } else if (item == 1) {
+            // This is the Switch to Pretendo Network ID option.
+            draw_icon(menu_icons[item], 64, 125 + item * 120, 50, {255, 50, 255, 255}); // Purple icon.
+        } else {
+            // Any other option will draw the icon in white.
+            draw_icon(menu_icons[item], 64, 125 + item * 120, 50);
+        }
     }
 
     // Draw the selected menu item.
@@ -46,7 +56,17 @@ void draw_menu_screen(int selected_menu_item) {
             draw_text("\ue000", SCREEN_WIDTH - 110, 115 + item * 120, 50, {100, 100, 255, 255});
         }
         draw_text(menu_options[item], 160, 120 + item * 120, 50);
-        draw_icon(menu_icons[item], 64, 125 + item * 120, 50);
+
+        if (item == 0) {
+            // This is the Switch to Nintendo Network ID option.
+            draw_icon(menu_icons[item], 64, 125 + item * 120, 50, {255, 150, 0, 255}); // Orange icon.
+        } else if (item == 1) {
+            // This is the Switch to Pretendo Network ID option.
+            draw_icon(menu_icons[item], 64, 125 + item * 120, 50, {255, 50, 255, 255}); // Purple icon.
+        } else {
+            // Any other option will draw the icon in white.
+            draw_icon(menu_icons[item], 64, 125 + item * 120, 50);
+        }
     }
 
     SDL_RenderPresent(renderer);
@@ -128,14 +148,17 @@ void draw_success_menu(const char* type, bool inkay_configured = false) {
     draw_text("The operation was successful!", 64, 120, 50);
 
     if (strcmp(type, "backup") == 0) {
+        // backup.cpp will call this function with "backup" as the type.
         draw_text("The account.dat was backed up successfully!", 64, 230, 50);
         draw_text("The main menu will appear in 5 seconds...", 64, 290, 50);
 
     } else if (strcmp(type, "unlink") == 0) {
+        // unlink.cpp will call this function with "unlink" as the type.
         draw_text("The account.dat was unlinked successfully!", 64, 230, 50);
         draw_text("Your console will restart in 5 seconds...", 64, 290, 50);
 
     } else if (strcmp(type, "switch") == 0) {
+        // switch.cpp will call this function with "switch" as the type.
         draw_text("The account.dat was restored successfully!", 64, 230, 50);
         draw_text("Your console will restart in 5 seconds...", 64, 290, 50);
 

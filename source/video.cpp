@@ -109,13 +109,13 @@ int get_text_width(const char* text, int size) {
 
 void draw_screen_bars() {
     // These lines draw the top bar (with title, version, and author).
-    draw_rectangle(0, 0, SCREEN_WIDTH, 90, 125, 0, 125, 255);
+    draw_rectangle(0, 0, SCREEN_WIDTH, 90, 100, 0, 100, 255);
     draw_text("Wii U Account Swap", 64, 10, 50);
     draw_text(APP_VERSION, 64 + get_text_width("Wii U Account Swap", 50) + 16, 10, 50, {176, 176, 176, 255});
     draw_text("Nightkingale", SCREEN_WIDTH - 64 - get_text_width("Nightkingale", 50), 10, 50);
 
     // These lines draw the bottom bar (with current user and account file).
-    draw_rectangle(0, 940, SCREEN_WIDTH, 140, 125, 0, 125, 255);
+    draw_rectangle(0, 940, SCREEN_WIDTH, 140, 100, 0, 100, 255);
     draw_text("Current User: ", 64, 955, 40);
     draw_text(MII_NICKNAME.c_str(), 64 + get_text_width("Current User: ", 40), 955, 40, {176, 176, 176, 255});
 
@@ -134,7 +134,7 @@ void draw_screen_bars() {
 
 void draw_confirm_button() {
     // Draw the confirm and decline buttons over the bottom bar.
-    draw_rectangle(0, 940, SCREEN_WIDTH, 140, 125, 0, 125, 255);
+    draw_rectangle(0, 940, SCREEN_WIDTH, 140, 100, 0, 100, 255);
     draw_text("\ue000 Confirm", 64, 975, 50);
     draw_text("\ue001 Decline", SCREEN_WIDTH - 64 - get_text_width("\ue001 Decline", 50), 975, 50);
     SDL_RenderPresent(renderer);
