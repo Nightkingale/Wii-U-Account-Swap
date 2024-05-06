@@ -1,10 +1,7 @@
 #include <string>
 
-#include <coreinit/debug.h>
 #include <coreinit/memory.h>
-#include <coreinit/thread.h>
 #include <SDL2/SDL_ttf.h>
-#include <vpad/input.h>
 
 #include <fa-solid-900_ttf.h>
 #include "input.hpp"
