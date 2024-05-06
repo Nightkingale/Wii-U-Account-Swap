@@ -117,7 +117,7 @@ void draw_error_menu(const char* error_message) {
     draw_text("You will return to the main menu.", 64, 290, 50);
 
     SDL_RenderPresent(renderer);
-    OSSleepTicks(OSMillisecondsToTicks(5000));
+    SDL_Delay(5000);
 }
 
 void draw_success_menu(const char* type, bool inkay_configured = false) {
@@ -144,5 +144,5 @@ void draw_success_menu(const char* type, bool inkay_configured = false) {
     }
 
     SDL_RenderPresent(renderer);
-    OSSleepTicks(OSMillisecondsToTicks(5000));
+    SDL_Delay(5000);
 }
