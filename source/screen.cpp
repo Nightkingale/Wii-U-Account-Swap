@@ -1,6 +1,5 @@
 #include <string>
 
-#include <coreinit/thread.h>
 #include <SDL2/SDL_ttf.h>
 
 #include "input.hpp"
