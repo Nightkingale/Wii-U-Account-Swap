@@ -128,16 +128,16 @@ void draw_success_menu(const char* type, bool inkay_configured = false) {
     draw_text("The operation was successful!", 64, 120, 50);
 
     if (strcmp(type, "backup") == 0) {
-        draw_text("Your account.dat file has been backed up.", 64, 230, 50);
-        draw_text("You will return to the main menu.", 64, 290, 50);
+        draw_text("The account.dat was backed up successfully!", 64, 230, 50);
+        draw_text("The main menu will appear in 5 seconds...", 64, 290, 50);
 
     } else if (strcmp(type, "unlink") == 0) {
-        draw_text("Your Network ID has been unlinked from this user.", 64, 230, 50);
-        draw_text("The Wii U will now reboot.", 64, 290, 50);
+        draw_text("The account.dat was unlinked successfully!", 64, 230, 50);
+        draw_text("Your console will restart in 5 seconds...", 64, 290, 50);
 
     } else if (strcmp(type, "switch") == 0) {
-        draw_text("Your account has been switched successfully.", 64, 230, 50);
-        draw_text("The Wii U will now reboot.", 64, 290, 50);
+        draw_text("The account.dat was restored successfully!", 64, 230, 50);
+        draw_text("Your console will restart in 5 seconds...", 64, 290, 50);
 
         if (inkay_configured) {
             draw_text("Inkay was also configured automatically!", 64, 400, 50);
