@@ -10,24 +10,25 @@
 
 void draw_menu_screen(int selected_menu_item) {
     draw_background(16, 16, 16, 255);
-    draw_screen_bars();
+    draw_screen_bars(); // This gives us the top and bottom bars.
 
     const char* menu_options[] = {
         "Switch to Nintendo Network ID",
         "Switch to Pretendo Network ID",
         "Backup Current Account",
         "Unlink Account Locally"
-    };
+    }; // Menu options.
 
     const char* menu_icons[] = {
         "\uf0ac",
         "\uf233",
         "\uf0c7",
         "\uf12d"
-    };
+    }; // Font Awesome icons.
 
-    const int NUM_MENU_ITEMS = sizeof(menu_options) / sizeof(menu_options[0]);
+    const int NUM_MENU_ITEMS = sizeof(menu_options) / sizeof(menu_options[0]); // Number of menu items.
 
+    // Draw the unselected menu items.
     for (int item = 0; item < NUM_MENU_ITEMS; item++) {
         if (item != selected_menu_item) {
             draw_rectangle(0, 90 + item * 120, SCREEN_WIDTH, 120, 22, 22, 22, 255); // Gray border.
@@ -37,6 +38,7 @@ void draw_menu_screen(int selected_menu_item) {
         draw_icon(menu_icons[item], 64, 125 + item * 120, 50);
     }
 
+    // Draw the selected menu item.
     for (int item = 0; item < NUM_MENU_ITEMS; item++) {
         if (item == selected_menu_item) {
             draw_rectangle(0, 90 + item * 120, SCREEN_WIDTH, 120, 100, 100, 255, 255); // Blue border.
@@ -90,7 +92,7 @@ void draw_backup_menu() {
 
 
 void draw_overwrite_menu(const char* backup_path) {
-    draw_background(10, 10, 90, 255);
+    draw_background(10, 10, 60, 255); // Blue background.
     draw_screen_bars();
 
     draw_text("Backup: Please read the following and confirm!", 64, 120, 50);
@@ -107,7 +109,7 @@ void draw_overwrite_menu(const char* backup_path) {
 
 
 void draw_error_menu(const char* error_message) {
-    draw_background(90, 10, 10, 255);
+    draw_background(60, 10, 10, 255); // Red background.
     draw_screen_bars();
 
     draw_text("An exception has occurred!", 64, 120, 50);
@@ -120,7 +122,7 @@ void draw_error_menu(const char* error_message) {
 }
 
 void draw_success_menu(const char* type, bool inkay_configured = false) {
-    draw_background(10, 60, 10, 255);
+    draw_background(10, 60, 10, 255); // Green background.
     draw_screen_bars();
 
     draw_text("The operation was successful!", 64, 120, 50);
