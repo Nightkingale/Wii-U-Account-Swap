@@ -61,7 +61,8 @@ CXXFLAGS	:= $(CFLAGS)
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-g $(ARCH) $(RPXSPECS) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lSDL2 -lSDL2_ttf -lfreetype -lharfbuzz -lfreetype -lpng -lbz2 -lz -lmocha -lwut
+LIBS := -lSDL2_mixer -lSDL2 -lSDL2_ttf -lfreetype -lharfbuzz -lfreetype -lpng -lbz2 \
+		-lz -lmodplug -lmpg123 -logg -lmocha -lwut
 
 #-------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level
@@ -188,12 +189,10 @@ $(OFILES_SRC)	: $(HFILES_BIN)
 	@$(bin2o)
 
 #-------------------------------------------------------------------------------
-%.bdf.o	%_bdf.h :	%.bdf
+%.ogg.o	%_ogg.h :	%.ogg
 #-------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)
-
--include $(DEPENDS)
 
 #-------------------------------------------------------------------------------
 endif

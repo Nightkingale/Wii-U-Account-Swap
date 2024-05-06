@@ -18,6 +18,7 @@
 #include <whb/log_console.h>
 #include <whb/proc.h>
 
+#include "audio.hpp"
 #include "backup.hpp"
 #include "input.hpp"
 #include "main.hpp"
@@ -217,6 +218,8 @@ int main() {
                     }
                     break;
             }
+        } else if (button == VPAD_BUTTON_SYNC) {
+            play_easter_egg();
         }
     }
 

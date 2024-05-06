@@ -24,7 +24,8 @@ int read_input() {
         VPAD_BUTTON_A,
         VPAD_BUTTON_B,
         VPAD_BUTTON_UP,
-        VPAD_BUTTON_DOWN
+        VPAD_BUTTON_DOWN,
+        VPAD_BUTTON_SYNC
     };
 
     // Wii Remote buttons.
@@ -32,7 +33,8 @@ int read_input() {
         WPAD_BUTTON_A,
         WPAD_BUTTON_B,
         WPAD_BUTTON_UP,
-        WPAD_BUTTON_DOWN
+        WPAD_BUTTON_DOWN,
+        0 // WPAD_BUTTON_SYNC does not exist.
     };
 
     // Wii Classic Controller buttons.
@@ -40,7 +42,8 @@ int read_input() {
         WPAD_CLASSIC_BUTTON_A,
         WPAD_CLASSIC_BUTTON_B,
         WPAD_CLASSIC_BUTTON_UP,
-        WPAD_CLASSIC_BUTTON_DOWN
+        WPAD_CLASSIC_BUTTON_DOWN,
+        0 // WPAD_CLASSIC_BUTTON_SYNC does not exist.
     };
 
     // Wii U Pro Controller buttons.
@@ -48,7 +51,8 @@ int read_input() {
         WPAD_PRO_BUTTON_A,
         WPAD_PRO_BUTTON_B,
         WPAD_PRO_BUTTON_UP,
-        WPAD_PRO_BUTTON_DOWN
+        WPAD_PRO_BUTTON_DOWN,
+        0 // WPAD_PRO_BUTTON_SYNC does not exist.
     };
 
     // Iterate over all 4 KPAD channels and check for button presses.
