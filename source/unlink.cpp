@@ -1,9 +1,11 @@
+#include <algorithm>
 #include <cstring>
 #include <cstdlib>
 #include <map>
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <unordered_set>
 #include <vector>
 
 #include <coreinit/launch.h>
@@ -21,8 +23,18 @@
 
 
 bool unlink_account() {
+    // The values to leave in the account.dat file.
+    std::vector<std::string> retain_values = {
+        "PersistentId",
+        "TransferableIdBase",
+        "Uuid",
+        "ParentalControlSlotNo",
+        "MiiData",
+        "MiiName"
+    };
+
     // The default values to apply to the account.dat file.
-    std::map<std::string, std::string> default_values = {
+    std::map<std::string, std::string> reset_values = {
         {"IsMiiUpdated", "1"},
         {"AccountId", ""},
         {"BirthYear", "0"},
@@ -65,18 +77,40 @@ bool unlink_account() {
     std::string file_contents((std::istreambuf_iterator<char>(account_input)), std::istreambuf_iterator<char>());
     account_input.close();
 
-    // Process each line in the string.
+    // We need to process the file line by line.
     std::istringstream file_contentstream(file_contents);
     std::string line;
     std::string processed_contents; // New string to hold the processed content.
+    std::unordered_set<std::string> encountered_lines; // Set to store encountered lines.
     while (std::getline(file_contentstream, line)) {
-        size_t pos = line.find('=');
-        if (pos != std::string::npos) {
-            std::string key = line.substr(0, pos);
-            if (default_values.count(key) > 0)
-                line = key + "=" + default_values[key];
+        if (encountered_lines.count(line) > 0) { // Skip duplicate lines.
+            continue;
         }
-        processed_contents += line + "\n"; // Append to processed_contents.
+
+        size_t pos = line.find('=');
+        if (pos == std::string::npos) {
+            if (line == "AccountInstance_20120705") {
+                // This line is a special case, it is best to retain it at the top.
+                processed_contents += line + "\n"; // Append to processed_contents.
+                encountered_lines.insert(line) ; // Insert into encountered_lines.
+            }
+            continue;
+        }
+
+        // We will only keep other lines if they are in one of the sets, to either retain or reset.
+        // This is to fix when the account.dat file appended rather than replaced in the v1.0.0 codebase.
+        // The system would clean up the file but leave some traces. Hopefully this will fix that!
+        std::string key = line.substr(0, pos);
+        if (std::find(retain_values.begin(), retain_values.end(), key) != retain_values.end()) {
+            // It's a value we want to retain (basic Mii information and data).
+            processed_contents += line + "\n";
+            encountered_lines.insert(line);
+        } else if (reset_values.count(key) > 0) {
+            // It's a value we want to reset (anything related to Network ID).
+            line = key + "=" + reset_values[key];
+            processed_contents += line + "\n";
+            encountered_lines.insert(line);
+        }
     }
 
     // Write the string back to the file.
