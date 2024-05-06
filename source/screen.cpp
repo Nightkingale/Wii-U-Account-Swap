@@ -53,7 +53,7 @@ void draw_menu_screen(int selected_menu_item) {
         if (item == selected_menu_item) {
             draw_rectangle(0, 90 + item * 120, SCREEN_WIDTH, 120, 100, 100, 255, 255); // Blue border.
             draw_rectangle(5, 95 + item * 120, 1910, 110, 0, 0, 0, 255); // Black rectangle.
-            draw_text("\ue000", SCREEN_WIDTH - 110, 115 + item * 120, 50, {100, 100, 255, 255});
+            draw_text("\ue000", SCREEN_WIDTH - 64 - get_text_width("\ue000", 50), 115 + item * 120, 50, {100, 100, 255, 255});
         }
         draw_text(menu_options[item], 160, 120 + item * 120, 50);
 
