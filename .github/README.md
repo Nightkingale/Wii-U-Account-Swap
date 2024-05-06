@@ -19,21 +19,23 @@ If the program is placed correctly on an SD card, Wii U Account Swap will appear
 * If Wii U Account Swap doesn't show up on the Wii U Menu, confirm you placed the WUHB file on your SD card correctly and restart your console.
 * `Switch to Nintendo Network ID`: Restores the file located at `SD:/wiiu/accounts/[PERSISTENT_ID]/nnid_account.dat`.
     * If you use the [Inkay](https://github.com/PretendoNetwork/Inkay) plugin for the Aroma environment, your configuration will be rewritten automatically to disable Pretendo Network, allowing you to connect to the Nintendo Network.
+        * If the plugin icon next to your Mii nickname has a check, the configuration has been found and will be rewritten.
     * If a backup does not exist, yet you still try and restore one, you will be prompted with an error requesting you make one.
 * `Switch to Pretendo Network ID`: Restores the file located at `SD:/wiiu/accounts/[PERSISTENT_ID]/pnid_account.dat`.
     * If you use the [Inkay](https://github.com/PretendoNetwork/Inkay) plugin for the Aroma environment, your configuration will be rewritten automatically to enable Pretendo Network.
+        * If the plugin icon next to your Mii nickname has a check, the configuration has been found and will be rewritten.
     * If a backup does not exist, yet you still try and restore one, you will be prompted with an error requesting you make one.
-* `Backup your current account`: Saves the user's current `account.dat` file to the SD card.
+* `Backup Current Account`: Saves the user's current `account.dat` file to the SD card.
     * If the currently linked account is detected to be a Nintendo Network ID, it will save to `SD:/wiiu/accounts/[PERSISTENT_ID]/nnid_account.dat`.
     * Otherwise, if the currently linked account is detected as a Pretendo Network ID, it will save to `SD:/wiiu/accounts/[PERSISTENT_ID]/pnid_account.dat`.
     * At this time, you cannot backup local accounts (meaning ones without a Network ID attached to it) with this tool.
-* `Unlink your account locally`: Unlinks your Network ID from a user, essentially making it a local-only user.
+* `Unlink Account Locally`: Unlinks your Network ID from a user, essentially making it a local-only user.
     * This is done by replacing any Network-related values with default settings. Your user Mii and any local content associated with the user will stay intact.
     * Unlinking will not unlink the account from your Wii U on the server. This means you can reattach the Network ID to any user on the system (including reattaching it to the same one), but the Network ID is still locked to the same console.
 
 ## Credits
 I hope that I am able to express my thanks as much as possible to those who made this repository possible.
-* [GaryOderNichts](https://github.com/GaryOderNichts), for assisting me with obtaining user information such as the Mii name and the persistent ID.
+* [GaryOderNichts](https://github.com/GaryOderNichts), for assisting me with obtaining user information such as the Mii name and the persistent ID, allowing me to recreate his signature user interface in the v2.0.0 release, and especialy for helping me reimplement it.
 * [Lazr1026](https://github.com/Lazr1026), for helping me figure out all of the logistics for the tool, and also stress testing it.
 * [Maschell](https://github.com/Maschell), for all of his work on the Aroma environment.
 * [NinStar](https://github.com/ninstar), who discovered over on [GBAtemp](https://gbatemp.net/threads/deleting-wii-u-user-without-nid-password.493387/page-5) the default values for a local user.
