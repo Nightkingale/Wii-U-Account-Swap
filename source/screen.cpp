@@ -78,11 +78,11 @@ void draw_backup_menu() {
     draw_text("Backup: Please read the following and confirm!", 64, 120, 50);
 
     draw_text("This will backup your current account.dat file.", 64, 230, 50);
-    draw_text("The account.dat may contain sensitive personal", 64, 290, 50);
-    draw_text("information, such as your e-mail address and encrypted", 64, 350, 50);
-    draw_text("cached password (if you have chosen to save it).", 64, 410, 50);
+    draw_text("The account.dat may contain sensitive personal", 64, 340, 50);
+    draw_text("information, such as your e-mail address and encrypted", 64, 400, 50);
+    draw_text("cached password (if you have chosen to save it).", 64, 460, 50);
 
-    draw_text("Please do not share these backups with anyone else!", 64, 520, 50);
+    draw_text("Please do not share these backups with anyone else!", 64, 570, 50);
 
     draw_confirm_button();
 
@@ -96,10 +96,10 @@ void draw_overwrite_menu(const char* backup_path) {
 
     draw_text("Backup: Please read the following and confirm!", 64, 120, 50);
 
-    draw_text("This will overwrite the existing backup file:", 64, 230, 50);
+    draw_text("The backup file already exists!", 64, 230, 50);
     draw_text(backup_path, 64, 290, 50);
 
-    draw_text("Are you sure you want to overwrite this file?", 64, 400, 50);
+    draw_text("Would you like to overwrite it?", 64, 400, 50);
 
     draw_confirm_button();
 
