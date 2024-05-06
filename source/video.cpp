@@ -97,6 +97,7 @@ int get_text_width(const char* text, int size) {
     int width = 0;
     int height = 0;
     TTF_SizeText(font, text, &width, &height);
+    TTF_SizeUTF8(font, text, &width, &height); // This works with unicode characters.
 
     TTF_CloseFont(font);
     return width;
@@ -120,13 +121,13 @@ void draw_screen_bars() {
 
     draw_text(ACCOUNT_FILE.c_str(), 64, 1005, 40);
 
-    draw_text("\ue07d Navigate", SCREEN_WIDTH - 42 - get_text_width("\ue07d Navigate", 50), 975, 50);
+    draw_text("\ue07d Navigate", SCREEN_WIDTH - 64 - get_text_width("\ue07d Navigate", 50), 975, 50);
 }
 
 
 void draw_confirm_button() {
     draw_rectangle(0, 940, SCREEN_WIDTH, 140, 125, 0, 125, 255);
     draw_text("\ue000 Confirm", 64, 975, 50);
-    draw_text("\ue001 Decline", SCREEN_WIDTH - 54 - get_text_width("\ue001 Decline", 50), 975, 50);
+    draw_text("\ue001 Decline", SCREEN_WIDTH - 64 - get_text_width("\ue001 Decline", 50), 975, 50);
     SDL_RenderPresent(renderer);
 }
