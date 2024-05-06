@@ -18,12 +18,10 @@ A Wii U homebrew file will be bundled with each release. It should be placed on 
 If the program is placed correctly on an SD card, Wii U Account Swap will appear on the Wii U Menu alongside any other homebrew applications. It can then be launched just as anything else.
 * If Wii U Account Swap doesn't show up on the Wii U Menu, confirm you placed the WUHB file on your SD card correctly and restart your console.
 * `Switch to Nintendo Network ID`: Restores the file located at `SD:/wiiu/accounts/[PERSISTENT_ID]/nnid_account.dat`.
-    * If you use the [Inkay](https://github.com/PretendoNetwork/Inkay) plugin for the Aroma environment, your configuration will be rewritten automatically to disable Pretendo Network, allowing you to connect to the Nintendo Network.
-        * If the plugin icon next to your Mii nickname has a check, the configuration has been found and will be rewritten.
+    * If you use the [Inkay](https://github.com/PretendoNetwork/Inkay) plugin for the Aroma environment and its configuration is detected (the plugin icon next to your Mii name will have a check), then your configuration will be rewritten automatically to disable Pretendo Network, allowing you to connect to the Nintendo Network.
     * If a backup does not exist, yet you still try and restore one, you will be prompted with an error requesting you make one.
 * `Switch to Pretendo Network ID`: Restores the file located at `SD:/wiiu/accounts/[PERSISTENT_ID]/pnid_account.dat`.
-    * If you use the [Inkay](https://github.com/PretendoNetwork/Inkay) plugin for the Aroma environment, your configuration will be rewritten automatically to enable Pretendo Network.
-        * If the plugin icon next to your Mii nickname has a check, the configuration has been found and will be rewritten.
+    * If you use the [Inkay](https://github.com/PretendoNetwork/Inkay) plugin for the Aroma environment and its configuration is detected (the plugin icon next to your Mii name will have a check), then your configuration will be rewritten automatically to enable Pretendo Network.
     * If a backup does not exist, yet you still try and restore one, you will be prompted with an error requesting you make one.
 * `Backup Current Account`: Saves the user's current `account.dat` file to the SD card.
     * If the currently linked account is detected to be a Nintendo Network ID, it will save to `SD:/wiiu/accounts/[PERSISTENT_ID]/nnid_account.dat`.
@@ -35,9 +33,11 @@ If the program is placed correctly on an SD card, Wii U Account Swap will appear
 
 ## Credits
 I hope that I am able to express my thanks as much as possible to those who made this repository possible.
-* [GaryOderNichts](https://github.com/GaryOderNichts), for assisting me with obtaining user information such as the Mii name and the persistent ID, allowing me to recreate his signature user interface in the v2.0.0 release, and especialy for helping me reimplement it.
+* [GaryOderNichts](https://github.com/GaryOderNichts), for assisting me with obtaining user information such as the Mii name and the persistent ID, allowing me to recreate his signature user interface in the v2.0.0 release, and especially for helping me reimplement it.
 * [Lazr1026](https://github.com/Lazr1026), for helping me figure out all of the logistics for the tool, and also stress testing it.
+* [Luni Moon](https://github.com/luni-moon), for their amazing support on behalf of the [Pretendo server](https://invite.gg/pretendo), and also for exchanging ideas with me on code and concepts.
 * [Maschell](https://github.com/Maschell), for all of his work on the Aroma environment.
 * [NinStar](https://github.com/ninstar), who discovered over on [GBAtemp](https://gbatemp.net/threads/deleting-wii-u-user-without-nid-password.493387/page-5) the default values for a local user.
+* [Font Awesome](https://fontawesome.com/), for their font containing some amazing icons used throughout the user interface starting with the v2.0.0 release.
 * [Pretendo Network](https://github.com/PretendoNetwork/), for their amazing open-source Nintendo Network replacement servers, as well as for the support I've received from their developers after pitching this idea. This release is dedicated to their hard work!
     * You can donate to them [here](https://pretendo.network/account/upgrade) and support their endeavors, especially since they're gaining more traction after the recent shutdown.
