@@ -68,6 +68,7 @@ bool unlink_account() {
     // Process each line in the string.
     std::istringstream file_contentstream(file_contents);
     std::string line;
+    std::string processed_contents; // New string to hold the processed content.
     while (std::getline(file_contentstream, line)) {
         size_t pos = line.find('=');
         if (pos != std::string::npos) {
@@ -75,12 +76,12 @@ bool unlink_account() {
             if (default_values.count(key) > 0)
                 line = key + "=" + default_values[key];
         }
-        file_contents += line + "\n";
+        processed_contents += line + "\n"; // Append to processed_contents.
     }
 
     // Write the string back to the file.
     std::ofstream account_output(ACCOUNT_FILE);
-    account_output << file_contents;
+    account_output << processed_contents; // Write processed_contents to the file.
     account_output.close();
 
     draw_success_menu("unlink");
