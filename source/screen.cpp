@@ -3,7 +3,6 @@
 #include <coreinit/thread.h>
 #include <SDL2/SDL_ttf.h>
 
-#include <fa-solid-900_ttf.h>
 #include "input.hpp"
 #include "main.hpp"
 #include "unlink.hpp"
