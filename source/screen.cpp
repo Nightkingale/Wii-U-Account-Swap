@@ -53,7 +53,7 @@ void draw_menu_screen(int selected_menu_item) {
         if (item == selected_menu_item) {
             draw_rectangle(0, 90 + item * 120, SCREEN_WIDTH, 120, 100, 100, 255, 255); // Blue border.
             draw_rectangle(5, 95 + item * 120, 1910, 110, 0, 0, 0, 255); // Black rectangle.
-            draw_text("\ue000", SCREEN_WIDTH - 64 - get_text_width("\ue000", 50), 115 + item * 120, 50, {100, 100, 255, 255});
+            draw_text("\ue000", SCREEN_WIDTH - 64 - get_text_size("\ue000", 50), 115 + item * 120, 50, {100, 100, 255, 255});
         }
         draw_text(menu_options[item], 160, 120 + item * 120, 50);
 
@@ -75,7 +75,7 @@ void draw_menu_screen(int selected_menu_item) {
 
 void draw_unlink_menu() {
     draw_background(16, 16, 16, 255);
-    draw_screen_bars();
+    draw_screen_bars(true);
 
     draw_text("Before unlinking, please read the following notice!", 64, 120, 50);
 
@@ -87,8 +87,6 @@ void draw_unlink_menu() {
     draw_text("You won't be able to use this account on any other Wii U.", 64, 520, 50);
 
     draw_text("You must confirm to continue the process.", 64, 840, 50);
-    
-    draw_confirm_button();
 
     SDL_RenderPresent(renderer);
 }
@@ -96,7 +94,7 @@ void draw_unlink_menu() {
 
 void draw_backup_menu() {
     draw_background(16, 16, 16, 255);
-    draw_screen_bars();
+    draw_screen_bars(true);
 
     draw_text("Before backing up, please read the following notice!", 64, 120, 50);
 
@@ -109,15 +107,13 @@ void draw_backup_menu() {
 
     draw_text("You must confirm to continue the process.", 64, 840, 50);
 
-    draw_confirm_button();
-
     SDL_RenderPresent(renderer);
 }
 
 
 void draw_overwrite_menu(const char* backup_path) {
     draw_background(10, 10, 60, 255); // Blue background.
-    draw_screen_bars();
+    draw_screen_bars(true);
 
     draw_text("Before backing up, please read the following notice!", 64, 120, 50);
 
@@ -128,15 +124,13 @@ void draw_overwrite_menu(const char* backup_path) {
 
     draw_text("You must confirm to continue the process.", 64, 840, 50);
 
-    draw_confirm_button();
-
     SDL_RenderPresent(renderer);
 }
 
 
 void draw_error_menu(const char* error_message) {
     draw_background(60, 10, 10, 255); // Red background.
-    draw_screen_bars();
+    draw_screen_bars(false, false);
 
     draw_text("An exception has occurred!", 64, 120, 50);
 
@@ -151,7 +145,7 @@ void draw_error_menu(const char* error_message) {
 
 void draw_success_menu(const char* type, bool inkay_configured = false) {
     draw_background(10, 60, 10, 255); // Green background.
-    draw_screen_bars();
+    draw_screen_bars(false, false);
 
     draw_text("The operation was successful!", 64, 120, 50);
 

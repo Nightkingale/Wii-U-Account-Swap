@@ -87,7 +87,7 @@ void draw_icon(const char* icon, int x, int y, int size, SDL_Color color) {
 }
 
 
-int get_text_width(const char* text, int size) {
+int get_text_size(const char* text, int size, bool get_height) {
     void* font_data = nullptr;
     uint32_t font_size = 0;
     // We are essentially recreating the font here.
@@ -103,39 +103,39 @@ int get_text_width(const char* text, int size) {
     TTF_SizeUTF8(font, text, &width, &height); // This works with unicode characters.
 
     TTF_CloseFont(font);
-    return width; // We could return height as well, but we don't need it.
+
+    if (get_height)
+        return height; // We don't usually need the height.
+    
+    return width;
 }
 
 
-void draw_screen_bars() {
+void draw_screen_bars(bool show_confirm, bool show_controls) {
     // These lines draw the top bar (with title, version, and author).
     draw_rectangle(0, 0, SCREEN_WIDTH, 90, 100, 0, 100, 255);
     draw_text("Wii U Account Swap", 64, 10, 50);
-    draw_text(APP_VERSION, 64 + get_text_width("Wii U Account Swap", 50) + 16, 10, 50, {176, 176, 176, 255});
-    draw_text("Nightkingale", SCREEN_WIDTH - 64 - get_text_width("Nightkingale", 50), 10, 50);
+    draw_text(APP_VERSION, 64 + get_text_size("Wii U Account Swap", 50) + 16, 10, 50, {176, 176, 176, 255});
+    draw_text("Nightkingale", SCREEN_WIDTH - 64 - get_text_size("Nightkingale", 50), 10, 50);
 
     // These lines draw the bottom bar (with current user and account file).
     draw_rectangle(0, 940, SCREEN_WIDTH, 140, 100, 0, 100, 255);
     draw_text("Current User: ", 64, 955, 40);
-    draw_text(MII_NICKNAME.c_str(), 64 + get_text_width("Current User: ", 40), 955, 40, {176, 176, 176, 255});
+    draw_text(MII_NICKNAME.c_str(), 64 + get_text_size("Current User: ", 40), 955, 40, {176, 176, 176, 255});
 
     if (INKAY_EXISTS)
         // Draw the plugin checkmark icon next to the name.
-        draw_icon("\ue55c", 64 + get_text_width("Current User: ", 40) + get_text_width(MII_NICKNAME.c_str(), 40) + 16, 960, 40, {176, 176, 176, 255});
+        draw_icon("\ue55c", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) + 16, 960, 40, {176, 176, 176, 255});
     else
         // Draw the plugin exit icon next to the name.
-        draw_icon("\ue560", 64 + get_text_width("Current User: ", 40) + get_text_width(MII_NICKNAME.c_str(), 40) + 16, 960, 40, {176, 176, 176, 255});
+        draw_icon("\ue560", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) + 16, 960, 40, {176, 176, 176, 255});
 
     draw_text(ACCOUNT_FILE.c_str(), 64, 1005, 40);
 
-    draw_text("\ue07d Navigate", SCREEN_WIDTH - 64 - get_text_width("\ue07d Navigate", 50), 975, 50);
-}
-
-
-void draw_confirm_button() {
-    // Draw the confirm and decline buttons over the bottom bar.
-    draw_rectangle(0, 940, SCREEN_WIDTH, 140, 100, 0, 100, 255);
-    draw_text("\ue000 Confirm", 64, 975, 50);
-    draw_text("\ue001 Decline", SCREEN_WIDTH - 64 - get_text_width("\ue001 Decline", 50), 975, 50);
-    SDL_RenderPresent(renderer);
+    if (show_confirm) {
+        draw_rectangle(0, 940, SCREEN_WIDTH, 140, 100, 0, 100, 255);
+        draw_text("\ue000 Confirm", 64, 975, 50);
+        draw_text("\ue001 Decline", SCREEN_WIDTH - 64 - get_text_size("\ue001 Decline", 50), 975, 50);
+    } else if (show_controls)
+        draw_text("\ue07d Navigate", SCREEN_WIDTH - 64 - get_text_size("\ue07d Navigate", 50), 975, 50);
 }
