@@ -56,44 +56,42 @@ switch_account(const char* backup_file, const char* account_type)
         handle_cleanup(backup, account_type, NULL, true);
         return false;
     }
-    else {
-        // Open the account.dat file for writing.
-        char *buffer = (char *)malloc(BUFFER_SIZE);
-        if (buffer == NULL) {
-            draw_error_menu("Error allocating memory!");
-            handle_cleanup(backup, account_type, buffer, true);
-            return false;
 
-        } else {
-            FILE *account = fopen(ACCOUNT_FILE.c_str(), "wb");
-            if (account == NULL) {
-                draw_error_menu("Error opening system account.dat file!");
-                handle_cleanup(backup, account_type, buffer, true);
-                return false;
-
-            } else {
-                size_t bytesRead = 0;
-                while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, backup)) > 0)
-                    fwrite(buffer, 1, bytesRead, account);
-                fclose(account);
-
-                // We'll attempt to automatically swap the network using Inkay's configuration.
-                bool inkay_configured = false;
-                FILE *inkay = fopen(INKAY_CONFIG.c_str(), "wb");
-                if (inkay != NULL) {
-                    // Write the network configuration to the file.
-                    const char *inkay_content = "{\"storageitems\":{\"connect_to_network\":%d}}";
-                    fprintf(inkay, inkay_content, strcmp(account_type, "Pretendo Network ID") == 0 ? 1 : 0);
-                    fclose(inkay);
-                    inkay = NULL;
-                    inkay_configured = true;
-                }
-                draw_success_menu("switch", inkay_configured);
-            }
-        }
-        // Clean-up and exit.
-        handle_cleanup(backup, account_type, buffer, false);
-
-        return true;
+    // Open the account.dat file for writing.
+    char *buffer = (char *)malloc(BUFFER_SIZE);
+    if (buffer == NULL) {
+        draw_error_menu("Error allocating memory!");
+        handle_cleanup(backup, account_type, buffer, true);
+        return false;
     }
+
+    FILE *account = fopen(ACCOUNT_FILE.c_str(), "wb");
+    if (account == NULL) {
+        draw_error_menu("Error opening system account.dat file!");
+        handle_cleanup(backup, account_type, buffer, true);
+        return false;
+    }
+
+    size_t bytesRead = 0;
+    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, backup)) > 0)
+        fwrite(buffer, 1, bytesRead, account);
+    fclose(account);
+
+    // We'll attempt to automatically swap the network using Inkay's configuration.
+    bool inkay_configured = false;
+    FILE *inkay = fopen(INKAY_CONFIG.c_str(), "wb");
+    if (inkay != NULL) {
+        // Write the network configuration to the file.
+        const char *inkay_content = "{\"storageitems\":{\"connect_to_network\":%d}}";
+        fprintf(inkay, inkay_content, strcmp(account_type, "Pretendo Network ID") == 0 ? 1 : 0);
+        fclose(inkay);
+        inkay = NULL;
+        inkay_configured = true;
+    }
+    draw_success_menu("switch", inkay_configured);
+
+    // Clean-up and exit.
+    handle_cleanup(backup, account_type, buffer, false);
+
+    return true;
 }

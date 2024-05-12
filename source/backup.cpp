@@ -59,6 +59,7 @@ write_backup(FILE* account, const std::string& backup_path, char* buffer)
     
     // Open the backup file for writing.
     FILE *backup = fopen(backup_path.c_str(), "wb");
+    
     if (backup == NULL) {
         draw_error_menu("Error opening backup account.dat file!");
         handle_cleanup(account, backup, buffer, true);
@@ -90,71 +91,67 @@ backup_account()
         draw_error_menu("Error opening system account.dat file!");
         handle_cleanup(account, NULL, NULL, true);
         return false;
+    }
 
+    std::string content;
+    char *buffer = (char *)malloc(BUFFER_SIZE);
+    if (buffer == NULL) {
+        draw_error_menu("Error allocating memory!");
+        handle_cleanup(account, NULL, buffer, true);
+        return false;
+    }
+
+    // Read the entire file into a string.
+    size_t bytesRead = 0;
+    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, account)) > 0) {
+        content.append(buffer, bytesRead);
+    }
+
+    bool network_account_found = false;
+    if (content.find("account.nintendo.net") != std::string::npos) {
+        // Nintendo Network ID is linked to the account.
+        backup_path = NNID_BACKUP;
+        network_account_found = true;
+    } else if (content.find("pretendo-cdn.b-cdn.net") != std::string::npos) {
+        // Pretendo Network ID is linked to the account.
+        backup_path = PNID_BACKUP;
+        network_account_found = true;
+    }
+
+    if (!network_account_found) {
+        // The check failed, domain not accounted for?
+        draw_error_menu("No network account found!");
+        handle_cleanup(account, NULL, buffer, true);
+        return false;
+    }
+
+    // Check if the backup file exists.
+    std::ifstream ifile(backup_path);
+    if (ifile) {
+        backup_confirm = false;
+
+        while (WHBProcIsRunning()) {
+            draw_overwrite_menu(backup_path.c_str());
+            int button = read_input();
+
+            if (button == VPAD_BUTTON_A) {
+                backup_confirm = true;
+                break;
+            } else if (button == VPAD_BUTTON_B) {
+                break;
+            }
+        }
     } else {
-        std::string content;
-        char *buffer = (char *)malloc(BUFFER_SIZE);
-        if (buffer == NULL) {
-            draw_error_menu("Error allocating memory!");
-            handle_cleanup(account, NULL, buffer, true);
-            return false;
+        backup_confirm = true;
+    }
 
-        } else {
-            // Read the entire file into a string.
-            size_t bytesRead = 0;
-            while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, account)) > 0) {
-                content.append(buffer, bytesRead);
-            }
-
-            bool network_account_found = false;
-            if (content.find("account.nintendo.net") != std::string::npos) {
-                // Nintendo Network ID is linked to the account.
-                backup_path = NNID_BACKUP;
-                network_account_found = true;
-
-            } else if (content.find("pretendo-cdn.b-cdn.net") != std::string::npos) {
-                // Pretendo Network ID is linked to the account.
-                backup_path = PNID_BACKUP;
-                network_account_found = true;
-
-            } else {
-                // The check failed, domain not accounted for?
-                draw_error_menu("No network account found!");
-                handle_cleanup(account, NULL, buffer, true);
-                return false;
-            }
-
-            if (network_account_found) {
-                // Check if the backup file exists.
-                std::ifstream ifile(backup_path);
-                if (ifile) {
-                    backup_confirm = false;
-
-                    while (WHBProcIsRunning()) {
-                        draw_overwrite_menu(backup_path.c_str());
-                        int button = read_input();
-
-                        if (button == VPAD_BUTTON_A) {
-                            backup_confirm = true;
-                            break;
-                        } else if (button == VPAD_BUTTON_B) {
-                            break;
-                        }
-                    }
-
-                } else {
-                    backup_confirm = true;
-                }
-            }
-        }
-        // Write the backup file.
-        if (backup_confirm) {
-            if (write_backup(account, backup_path, buffer))
-                handle_cleanup(account, NULL, buffer, false);
-            return true;
-        }
-
-        handle_cleanup(account, NULL, buffer, !backup_confirm);
+    // Write the backup file.
+    if (backup_confirm) {
+        if (write_backup(account, backup_path, buffer))
+            handle_cleanup(account, NULL, buffer, false);
         return true;
     }
+
+    handle_cleanup(account, NULL, buffer, !backup_confirm);
+    return true;
 }
