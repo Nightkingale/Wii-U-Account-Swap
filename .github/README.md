@@ -17,10 +17,10 @@ A Wii U homebrew file will be bundled with each release. It should be placed on 
 ## Usage
 If the program is placed correctly on an SD card, Wii U Account Swap will appear on the Wii U Menu alongside any other homebrew applications. It can then be launched just as anything else.
 * If Wii U Account Swap doesn't show up on the Wii U Menu, confirm you placed the WUHB file on your SD card correctly and restart your console.
-* `Switch to Nintendo Network ID`: Restores the file located at `SD:/wiiu/accounts/[PERSISTENT_ID]/nnid_account.dat`.
+* `Swap to Nintendo Network ID`: Restores the file located at `SD:/wiiu/accounts/[PERSISTENT_ID]/nnid_account.dat`.
     * If you use the [Inkay](https://github.com/PretendoNetwork/Inkay) plugin for the Aroma environment and its configuration is detected (the plugin icon next to your Mii name will have a check), then your configuration will be rewritten automatically to disable Pretendo Network, allowing you to connect to the Nintendo Network.
     * If a backup does not exist, yet you still try and restore one, you will be prompted with an error requesting you make one.
-* `Switch to Pretendo Network ID`: Restores the file located at `SD:/wiiu/accounts/[PERSISTENT_ID]/pnid_account.dat`.
+* `Swap to Pretendo Network ID`: Restores the file located at `SD:/wiiu/accounts/[PERSISTENT_ID]/pnid_account.dat`.
     * If you use the [Inkay](https://github.com/PretendoNetwork/Inkay) plugin for the Aroma environment and its configuration is detected (the plugin icon next to your Mii name will have a check), then your configuration will be rewritten automatically to enable Pretendo Network.
     * If a backup does not exist, yet you still try and restore one, you will be prompted with an error requesting you make one.
 * `Backup the account.dat File`: Saves the user's current `account.dat` file to the SD card.

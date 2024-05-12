@@ -44,12 +44,12 @@ handle_cleanup(FILE* backup, const char* account_type, char* buffer, bool is_err
 
 
 bool
-switch_account(const char* backup_file, const char* account_type)
+swap_account(const char* backup_file, const char* account_type)
 {
     // Disable the HOME Button temporarily.
     OSEnableHomeButtonMenu(0);
 
-    // Open the account.dat file and switch it to the specified account.
+    // Open the account.dat file and swap it to the specified account.
     FILE *backup = fopen(backup_file, "rb");
     if (backup == NULL) {
         draw_error_menu("Error opening backup account.dat file!");
@@ -88,7 +88,7 @@ switch_account(const char* backup_file, const char* account_type)
         inkay = NULL;
         inkay_configured = true;
     }
-    draw_success_menu("switch", inkay_configured);
+    draw_success_menu("swap", inkay_configured);
 
     // Clean-up and exit.
     handle_cleanup(backup, account_type, buffer, false);

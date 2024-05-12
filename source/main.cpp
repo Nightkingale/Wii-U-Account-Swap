@@ -23,7 +23,7 @@
 #include "input.hpp"
 #include "main.hpp"
 #include "screens.hpp"
-#include "switch.hpp"
+#include "swap.hpp"
 #include "unlink.hpp"
 
 
@@ -186,14 +186,14 @@ main()
         } else if (button & VPAD_BUTTON_A) {
             switch (selected_option) {
                 case 0:
-                    if (switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID")) {
+                    if (swap_account(NNID_BACKUP.c_str(), "Nintendo Network ID")) {
                         deinitialize();
                         OSForceFullRelaunch();
                         SYSLaunchMenu();
                     }
                     break;
                 case 1:
-                    if (switch_account(PNID_BACKUP.c_str(), "Pretendo Network ID")) {
+                    if (swap_account(PNID_BACKUP.c_str(), "Pretendo Network ID")) {
                         deinitialize();
                         OSForceFullRelaunch();
                         SYSLaunchMenu();

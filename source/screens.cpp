@@ -16,8 +16,8 @@ draw_menu_screen(int selected_menu_item)
     draw_screen_bars(); // This gives us the top and bottom bars.
 
     const char* menu_options[] = {
-        "Switch to Nintendo Network ID",
-        "Switch to Pretendo Network ID",
+        "Swap to Nintendo Network ID",
+        "Swap to Pretendo Network ID",
         "Backup the account.dat File",
         "Unlink the account.dat File"
     }; // Menu options.
@@ -40,10 +40,10 @@ draw_menu_screen(int selected_menu_item)
         draw_text(menu_options[item], 160, 120 + item * 120, 50);
 
         if (item == 0) {
-            // This is the Switch to Nintendo Network ID option.
+            // This is the Swap to Nintendo Network ID option.
             draw_icon(menu_icons[item], 64, 125 + item * 120, 50, {255, 150, 0, 255}); // Orange icon.
         } else if (item == 1) {
-            // This is the Switch to Pretendo Network ID option.
+            // This is the Swap to Pretendo Network ID option.
             draw_icon(menu_icons[item], 64, 125 + item * 120, 50, {255, 50, 255, 255}); // Purple icon.
         } else {
             // Any other option will draw the icon in white.
@@ -62,10 +62,10 @@ draw_menu_screen(int selected_menu_item)
         draw_text(menu_options[item], 160, 120 + item * 120, 50);
 
         if (item == 0) {
-            // This is the Switch to Nintendo Network ID option.
+            // This is the Swap to Nintendo Network ID option.
             draw_icon(menu_icons[item], 64, 125 + item * 120, 50, {255, 150, 0, 255}); // Orange icon.
         } else if (item == 1) {
-            // This is the Switch to Pretendo Network ID option.
+            // This is the Swap to Pretendo Network ID option.
             draw_icon(menu_icons[item], 64, 125 + item * 120, 50, {255, 50, 255, 255}); // Purple icon.
         } else {
             // Any other option will draw the icon in white.
@@ -173,8 +173,8 @@ draw_success_menu(const char* type, bool inkay_configured = false)
         draw_text("The account.dat was unlinked successfully!", 64, 230, 50);
         draw_text("Your console will restart in 5 seconds...", 64, 290, 50);
 
-    } else if (strcmp(type, "switch") == 0) {
-        // switch.cpp will call this function with "switch" as the type.
+    } else if (strcmp(type, "swap") == 0) {
+        // swap.cpp will call this function with "swap" as the type.
         draw_text("The account.dat was restored successfully!", 64, 230, 50);
         draw_text("Your console will restart in 5 seconds...", 64, 290, 50);
 
