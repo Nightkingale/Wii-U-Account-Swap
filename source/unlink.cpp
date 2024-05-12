@@ -76,6 +76,13 @@ unlink_account()
 
     // Read the entire file into a string.
     std::ifstream account_input(ACCOUNT_FILE);
+
+    if (!account_input.is_open()) {
+        draw_error_menu("Error opening system account.dat file!");
+        OSEnableHomeButtonMenu(1);
+        return false;
+    }
+
     std::string file_contents((std::istreambuf_iterator<char>(account_input)), std::istreambuf_iterator<char>());
     account_input.close();
 
