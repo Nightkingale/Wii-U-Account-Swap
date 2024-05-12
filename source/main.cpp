@@ -39,7 +39,9 @@ SDL_Window* window = nullptr; // Global window variable.
 SDL_Renderer* renderer = nullptr; // Global renderer variable.
 
 
-void get_user_information() {
+void
+get_user_information()
+{
     // Grab the user's Mii name and persistent ID.
     nn::act::Initialize();
     int16_t mii_name[256];
@@ -66,7 +68,9 @@ void get_user_information() {
 }
 
 
-void deinitialize() {
+void
+deinitialize()
+{
     // This prevents hangs when called twice.
     static bool is_deinitialized = false;
 
@@ -91,7 +95,9 @@ void deinitialize() {
 }
 
 
-bool initialize_program() {
+bool
+initialize_program()
+{
     WHBProcInit();
     VPADInit(); // Wii U GamePad support.
     KPADInit(); // External controller support.
@@ -115,7 +121,9 @@ bool initialize_program() {
 }
 
 
-bool initialize_graphics() {
+bool
+initialize_graphics()
+{
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
 
@@ -134,7 +142,9 @@ bool initialize_graphics() {
 }
 
 
-bool check_initialization(bool condition, const char* error_message) {
+bool
+check_initialization(bool condition, const char* error_message)
+{
     if (!condition) {
         WHBLogConsoleSetColor(0x99000000);
         WHBLogPrint(error_message);
@@ -147,7 +157,9 @@ bool check_initialization(bool condition, const char* error_message) {
 }
 
 
-int main() {
+int
+main()
+{
     bool error_occurred = false;
 
     error_occurred = check_initialization(initialize_program(), "Error initializing program!") ||

@@ -8,7 +8,9 @@
 #include "video.hpp"
 
 
-void draw_menu_screen(int selected_menu_item) {
+void
+draw_menu_screen(int selected_menu_item)
+{
     draw_background(16, 16, 16, 255);
     draw_screen_bars(); // This gives us the top and bottom bars.
 
@@ -73,7 +75,9 @@ void draw_menu_screen(int selected_menu_item) {
 }
 
 
-void draw_unlink_menu() {
+void
+draw_unlink_menu()
+{
     draw_background(16, 16, 16, 255);
     draw_screen_bars(true);
 
@@ -92,7 +96,9 @@ void draw_unlink_menu() {
 }
 
 
-void draw_backup_menu() {
+void
+draw_backup_menu()
+{
     draw_background(16, 16, 16, 255);
     draw_screen_bars(true);
 
@@ -111,7 +117,9 @@ void draw_backup_menu() {
 }
 
 
-void draw_overwrite_menu(const char* backup_path) {
+void
+draw_overwrite_menu(const char* backup_path)
+{
     draw_background(10, 10, 60, 255); // Blue background.
     draw_screen_bars(true);
 
@@ -128,7 +136,9 @@ void draw_overwrite_menu(const char* backup_path) {
 }
 
 
-void draw_error_menu(const char* error_message) {
+void
+draw_error_menu(const char* error_message)
+{
     draw_background(60, 10, 10, 255); // Red background.
     draw_screen_bars(false, false);
 
@@ -143,7 +153,9 @@ void draw_error_menu(const char* error_message) {
     SDL_Delay(5000);
 }
 
-void draw_success_menu(const char* type, bool inkay_configured = false) {
+void
+draw_success_menu(const char* type, bool inkay_configured = false)
+{
     draw_background(10, 60, 10, 255); // Green background.
     draw_screen_bars(false, false);
 

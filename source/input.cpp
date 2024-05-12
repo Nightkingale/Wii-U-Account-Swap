@@ -4,7 +4,9 @@
 #include <vpad/input.h>
 
 
-int read_input() {
+int
+read_input()
+{
     VPADStatus vpad_input;
     VPADReadError vpad_error;
     KPADStatus kpad_input[4];

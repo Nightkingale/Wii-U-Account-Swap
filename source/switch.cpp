@@ -15,7 +15,9 @@
 #include "screen.hpp"
 
 
-void handle_cleanup(FILE* backup, const char* account_type, char* buffer, bool is_error = false) {
+void
+handle_cleanup(FILE* backup, const char* account_type, char* buffer, bool is_error = false)
+{
     OSEnableHomeButtonMenu(1);
     
     // Free the buffer.
@@ -41,7 +43,9 @@ void handle_cleanup(FILE* backup, const char* account_type, char* buffer, bool i
 }
 
 
-bool switch_account(const char* backup_file, const char* account_type) {
+bool
+switch_account(const char* backup_file, const char* account_type)
+{
     // Disable the HOME Button temporarily.
     OSEnableHomeButtonMenu(0);
 

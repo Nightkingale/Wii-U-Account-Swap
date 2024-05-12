@@ -22,7 +22,9 @@
 #include "screen.hpp"
 
 
-bool unlink_account() {
+bool
+unlink_account()
+{
     // The values to leave in the account.dat file.
     std::vector<std::string> retain_values = {
         "PersistentId",

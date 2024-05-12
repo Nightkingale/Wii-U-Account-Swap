@@ -10,20 +10,26 @@
 #include "video.hpp"
 
 
-void draw_background(int r, int g, int b, int a) {
+void
+draw_background(int r, int g, int b, int a)
+{
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
     SDL_RenderClear(renderer);
 }
 
 
-void draw_rectangle(int x, int y, int w, int h, int r, int g, int b, int a) {
+void
+draw_rectangle(int x, int y, int w, int h, int r, int g, int b, int a)
+{
     SDL_Rect rect = {x, y, w, h};
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
     SDL_RenderFillRect(renderer, &rect);
 }
 
 
-void draw_text(const char* text, int x, int y, int size, SDL_Color color) {
+void
+draw_text(const char* text, int x, int y, int size, SDL_Color color)
+{
     void* font_data = nullptr;
     uint32_t font_size = 0;
     // We will fetch the system font from the shared data.
@@ -57,7 +63,9 @@ void draw_text(const char* text, int x, int y, int size, SDL_Color color) {
     TTF_CloseFont(font);
 }
 
-void draw_icon(const char* icon, int x, int y, int size, SDL_Color color) {
+void
+draw_icon(const char* icon, int x, int y, int size, SDL_Color color)
+{
     // fa-solid-900.ttf is a font file that contains icons. This is a custom font file.
     TTF_Font* font = TTF_OpenFontRW(SDL_RWFromMem((void*)fa_solid_900_ttf, fa_solid_900_ttf_size), 1, size);
     if (font == NULL) {
@@ -87,7 +95,9 @@ void draw_icon(const char* icon, int x, int y, int size, SDL_Color color) {
 }
 
 
-int get_text_size(const char* text, int size, bool get_height) {
+int
+get_text_size(const char* text, int size, bool get_height)
+{
     void* font_data = nullptr;
     uint32_t font_size = 0;
     // We are essentially recreating the font here.
@@ -111,7 +121,9 @@ int get_text_size(const char* text, int size, bool get_height) {
 }
 
 
-void draw_screen_bars(bool show_confirm, bool show_controls) {
+void
+draw_screen_bars(bool show_confirm, bool show_controls)
+{
     // These lines draw the top bar (with title, version, and author).
     draw_rectangle(0, 0, SCREEN_WIDTH, 90, 100, 0, 100, 255);
     draw_text("Wii U Account Swap", 64, 10, 50);

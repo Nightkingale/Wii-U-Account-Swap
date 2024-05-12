@@ -21,7 +21,9 @@
 bool backup_confirm = false;
 
 
-void handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = false) {
+void
+handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = false)
+{
     OSEnableHomeButtonMenu(1);
 
     // Free the buffer.
@@ -48,7 +50,9 @@ void handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = f
 }
 
 
-bool write_backup(FILE* account, const std::string& backup_path, char* buffer) {
+bool
+write_backup(FILE* account, const std::string& backup_path, char* buffer)
+{
     // Create the directories if they don't exist.
     std::filesystem::path dirPath = std::filesystem::path(backup_path).remove_filename();
     std::filesystem::create_directories(dirPath);
@@ -76,7 +80,9 @@ bool write_backup(FILE* account, const std::string& backup_path, char* buffer) {
 }
 
 
-bool backup_account() {
+bool
+backup_account()
+{
     // Check if the account.dat file exists.
     std::string backup_path;
     FILE *account = fopen(ACCOUNT_FILE.c_str(), "rb");
