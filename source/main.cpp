@@ -22,7 +22,7 @@
 #include "easter_egg.hpp"
 #include "input.hpp"
 #include "main.hpp"
-#include "menu_screens.hpp"
+#include "screens.hpp"
 #include "switch.hpp"
 #include "unlink.hpp"
 
