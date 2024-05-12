@@ -4,6 +4,7 @@
 
 #include "input.hpp"
 #include "main.hpp"
+#include "nintendo_glyphs.hpp"
 #include "unlink.hpp"
 #include "video.hpp"
 
@@ -22,10 +23,10 @@ draw_menu_screen(int selected_menu_item)
     }; // Menu options.
 
     const char* menu_icons[] = {
-        "\uf0ac",
-        "\uf233",
-        "\uf0c7",
-        "\uf12d"
+        "\uF0AC", // Network icon
+        "\uF233", // Server icon
+        "\uF0C7", // Save icon
+        "\uF12D" // Unlink icon
     }; // Font Awesome icons.
 
     const int NUM_MENU_ITEMS = sizeof(menu_options) / sizeof(menu_options[0]); // Number of menu items.
@@ -55,7 +56,8 @@ draw_menu_screen(int selected_menu_item)
         if (item == selected_menu_item) {
             draw_rectangle(0, 90 + item * 120, SCREEN_WIDTH, 120, 100, 100, 255, 255); // Blue border.
             draw_rectangle(5, 95 + item * 120, 1910, 110, 0, 0, 0, 255); // Black rectangle.
-            draw_text("\ue000", SCREEN_WIDTH - 64 - get_text_size("\ue000", 50), 115 + item * 120, 50, {100, 100, 255, 255});
+            draw_text(NIN_GLYPH_BTN_A, SCREEN_WIDTH - 64 - get_text_size(NIN_GLYPH_BTN_A, 50),
+                115 + item * 120, 50, {100, 100, 255, 255});
         }
         draw_text(menu_options[item], 160, 120 + item * 120, 50);
 

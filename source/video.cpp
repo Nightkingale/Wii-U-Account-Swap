@@ -6,6 +6,7 @@
 #include <fa-solid-900_ttf.h>
 #include "input.hpp"
 #include "main.hpp"
+#include "nintendo_glyphs.hpp"
 #include "unlink.hpp"
 #include "video.hpp"
 
@@ -137,17 +138,23 @@ draw_screen_bars(bool show_confirm, bool show_controls)
 
     if (INKAY_EXISTS)
         // Draw the plugin checkmark icon next to the name.
-        draw_icon("\ue55c", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) + 16, 960, 40, {176, 176, 176, 255});
+        draw_icon("\uE55C", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) + 16,
+            960, 40, {176, 176, 176, 255});
     else
         // Draw the plugin exit icon next to the name.
-        draw_icon("\ue560", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) + 16, 960, 40, {176, 176, 176, 255});
+        draw_icon("\uE560", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) + 16,
+            960, 40, {176, 176, 176, 255});
 
     draw_text(ACCOUNT_FILE.c_str(), 64, 1005, 40);
 
     if (show_confirm) {
         draw_rectangle(0, 940, SCREEN_WIDTH, 140, 100, 0, 100, 255);
-        draw_text("\ue000 Confirm", 64, 975, 50);
-        draw_text("\ue001 Decline", SCREEN_WIDTH - 64 - get_text_size("\ue001 Decline", 50), 975, 50);
-    } else if (show_controls)
-        draw_text("\ue07d Navigate", SCREEN_WIDTH - 64 - get_text_size("\ue07d Navigate", 50), 975, 50);
+        std::string confirm_text = std::string(NIN_GLYPH_BTN_A) + " Confirm";
+        draw_text(confirm_text.c_str(), 64, 975, 50);
+        std::string decline_text = std::string(NIN_GLYPH_BTN_B) + " Decline";
+        draw_text(decline_text.c_str(), SCREEN_WIDTH - 64 - get_text_size(decline_text.c_str(), 50), 975, 50);
+    } else if (show_controls) {
+        std::string navigate_text = std::string(NIN_GLYPH_BTN_DPAD_UP_DOWN) + " Navigate";
+        draw_text(navigate_text.c_str(), SCREEN_WIDTH - 64 - get_text_size(navigate_text.c_str(), 50), 975, 50);
+    }
 }
