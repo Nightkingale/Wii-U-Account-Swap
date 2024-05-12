@@ -138,14 +138,14 @@ draw_screen_bars(bool show_confirm, bool show_controls)
 
     if (INKAY_EXISTS)
         // Draw the plugin checkmark icon next to the name.
-        draw_icon("\uE55C", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) + 16,
-            960, 40, {176, 176, 176, 255});
+        draw_icon("\uE55C", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) \
+            + 16, 960, 40);
     else
         // Draw the plugin exit icon next to the name.
-        draw_icon("\uE560", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) + 16,
-            960, 40, {176, 176, 176, 255});
+        draw_icon("\uE560", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) \
+            + 16, 960, 40);
 
-    draw_text(ACCOUNT_FILE.c_str(), 64, 1005, 40);
+    draw_text(ACCOUNT_FILE.c_str(), 64, 1005, 40, {176, 176, 176, 255});
 
     if (show_confirm) {
         draw_rectangle(0, 940, SCREEN_WIDTH, 140, 100, 0, 100, 255);
