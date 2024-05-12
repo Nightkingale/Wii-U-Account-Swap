@@ -8,7 +8,7 @@
 #include "main.hpp"
 #include "nintendo_glyphs.hpp"
 #include "unlink.hpp"
-#include "video.hpp"
+#include "draw_utils.hpp"
 
 
 void

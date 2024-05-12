@@ -1,5 +1,5 @@
-#ifndef VIDEO_HPP
-#define VIDEO_HPP
+#ifndef DRAW_UTILS_HPP
+#define DRAW_UTILS_HPP
 
 #include <SDL2/SDL.h>
 
