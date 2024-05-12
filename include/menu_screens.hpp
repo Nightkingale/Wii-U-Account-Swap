@@ -1,5 +1,5 @@
-#ifndef SCREEN_HPP
-#define SCREEN_HPP
+#ifndef MENU_SCREENS_HPP
+#define MENU_SCREENS_HPP
 
 
 void draw_menu_screen(int selected_menu_item);

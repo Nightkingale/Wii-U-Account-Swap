@@ -12,7 +12,7 @@
 #include <whb/proc.h>
 
 #include "main.hpp"
-#include "screen.hpp"
+#include "menu_screens.hpp"
 
 
 void
