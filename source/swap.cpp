@@ -35,9 +35,9 @@ handle_cleanup(FILE* backup, const char* account_type, char* buffer, bool is_err
     // If there was an error, return to the menu.
     if (is_error) {
         // Print the main menu.
-        if (strcmp(account_type, "Nintendo Network ID"))
+        if (strcmp(account_type, "Nintendo"))
             draw_menu_screen(0);
-        else if (strcmp(account_type, "Pretendo Network ID"))
+        else if (strcmp(account_type, "Pretendo"))
             draw_menu_screen(1);
     }
 }
@@ -83,7 +83,7 @@ swap_account(const char* backup_file, const char* account_type)
     if (inkay != NULL) {
         // Write the network configuration to the file.
         const char *inkay_content = "{\"storageitems\":{\"connect_to_network\":%d}}";
-        fprintf(inkay, inkay_content, strcmp(account_type, "Pretendo Network ID") == 0 ? 1 : 0);
+        fprintf(inkay, inkay_content, strcmp(account_type, "Pretendo") == 0 ? 1 : 0);
         fclose(inkay);
         inkay = NULL;
         inkay_configured = true;

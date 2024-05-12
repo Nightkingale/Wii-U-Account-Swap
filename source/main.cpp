@@ -130,7 +130,8 @@ initialize_graphics()
     const int SCREEN_WIDTH = 1920;
     const int SCREEN_HEIGHT = 1080;
 
-    window = SDL_CreateWindow("Wii U Account Swap", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+    window = SDL_CreateWindow("Wii U Account Swap", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, \
+        SCREEN_WIDTH, SCREEN_HEIGHT, 0);
     if (!window)
         return false;
 
@@ -186,14 +187,14 @@ main()
         } else if (button & VPAD_BUTTON_A) {
             switch (selected_option) {
                 case 0:
-                    if (swap_account(NNID_BACKUP.c_str(), "Nintendo Network ID")) {
+                    if (swap_account(NNID_BACKUP.c_str(), "Nintendo")) {
                         deinitialize();
                         OSForceFullRelaunch();
                         SYSLaunchMenu();
                     }
                     break;
                 case 1:
-                    if (swap_account(PNID_BACKUP.c_str(), "Pretendo Network ID")) {
+                    if (swap_account(PNID_BACKUP.c_str(), "Pretendo")) {
                         deinitialize();
                         OSForceFullRelaunch();
                         SYSLaunchMenu();
