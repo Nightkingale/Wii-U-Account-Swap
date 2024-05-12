@@ -59,7 +59,7 @@ write_backup(FILE* account, const std::string& backup_path, char* buffer)
     
     // Open the backup file for writing.
     FILE *backup = fopen(backup_path.c_str(), "wb");
-    
+
     if (backup == NULL) {
         draw_error_menu("Error opening backup account.dat file!");
         handle_cleanup(account, backup, buffer, true);
@@ -134,10 +134,10 @@ backup_account()
             draw_overwrite_menu(backup_path.c_str());
             int button = read_input();
 
-            if (button == VPAD_BUTTON_A) {
+            if (button & VPAD_BUTTON_A) {
                 backup_confirm = true;
                 break;
-            } else if (button == VPAD_BUTTON_B) {
+            } else if (button & VPAD_BUTTON_B) {
                 break;
             }
         }

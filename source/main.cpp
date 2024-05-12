@@ -175,15 +175,15 @@ main()
         int button = read_input(); // Watch the controllers for input.
         OSEnableHomeButtonMenu(1);
 
-        if (button == VPAD_BUTTON_UP) {
+        if (button & VPAD_BUTTON_UP) {
             selected_option--;
             if (selected_option < 0)
                 selected_option = NUM_OPTIONS - 1;
-        } else if (button == VPAD_BUTTON_DOWN) {
+        } else if (button & VPAD_BUTTON_DOWN) {
             selected_option++;
             if (selected_option >= NUM_OPTIONS)
                 selected_option = 0;
-        } else if (button == VPAD_BUTTON_A) {
+        } else if (button & VPAD_BUTTON_A) {
             switch (selected_option) {
                 case 0:
                     if (switch_account(NNID_BACKUP.c_str(), "Nintendo Network ID")) {
@@ -205,10 +205,10 @@ main()
                         draw_backup_menu();
                         button = read_input();
 
-                        if (button == VPAD_BUTTON_A) {
+                        if (button & VPAD_BUTTON_A) {
                             backup_account();
                             break;
-                        } else if (button == VPAD_BUTTON_B)
+                        } else if (button & VPAD_BUTTON_B)
                             break;
                     }
                     break;
@@ -218,19 +218,19 @@ main()
                         draw_unlink_menu();
                         button = read_input();
 
-                        if (button == VPAD_BUTTON_A) {
+                        if (button & VPAD_BUTTON_A) {
                             if (unlink_account()) {
                                 deinitialize();
                                 OSForceFullRelaunch();
                                 SYSLaunchMenu();
                             }
                             break;
-                        } else if (button == VPAD_BUTTON_B)
+                        } else if (button & VPAD_BUTTON_B)
                             break;
                     }
                     break;
             }
-        } else if (button == VPAD_BUTTON_SYNC) {
+        } else if (button & VPAD_BUTTON_SYNC) {
             play_easter_egg();
         }
     }
