@@ -91,14 +91,12 @@ draw_text(const char* text, int x, int y, int size, SDL_Color color)
     // UTF8 allows us to render all the special system characters.
     SDL_Surface* surface = TTF_RenderUTF8_Blended(font, text, color);
     if (surface == NULL) {
-        TTF_CloseFont(font);
         return;
     }
 
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     if (texture == NULL) {
         SDL_FreeSurface(surface);
-        TTF_CloseFont(font);
         return;
     }
 
@@ -120,14 +118,12 @@ draw_icon(const char* icon, int x, int y, int size, SDL_Color color)
 
     SDL_Surface* surface = TTF_RenderUTF8_Blended(font, icon, color);
     if (surface == NULL) {
-        TTF_CloseFont(font);
         return;
     }
 
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     if (texture == NULL) {
         SDL_FreeSurface(surface);
-        TTF_CloseFont(font);
         return;
     }
 
@@ -151,7 +147,6 @@ get_text_size(const char* text, int size, bool get_height)
     int height = 0;
     TTF_SizeUTF8(font, text, &width, &height); // This works with unicode characters.
 
-    TTF_CloseFont(font);
 
     if (get_height)
         return height; // We don't usually need the height.
@@ -166,10 +161,11 @@ close_fonts()
     for (auto& pair : text_font_cache) {
         TTF_CloseFont(pair.second);
     }
+    text_font_cache.clear();
+    
     for (auto& pair : icon_font_cache) {
         TTF_CloseFont(pair.second);
     }
-    text_font_cache.clear();
     icon_font_cache.clear();
 }
 
