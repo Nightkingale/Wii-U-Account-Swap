@@ -1,3 +1,4 @@
+#include <map>
 #include <string>
 
 #include <coreinit/memory.h>
@@ -9,6 +10,10 @@
 #include "nintendo_glyphs.hpp"
 #include "unlink.hpp"
 #include "utils.hpp"
+
+
+std::map<int, TTF_Font*> text_font_cache;
+std::map<int, TTF_Font*> icon_font_cache;
 
 
 void
@@ -28,15 +33,57 @@ draw_rectangle(int x, int y, int w, int h, int r, int g, int b, int a)
 }
 
 
+TTF_Font*
+get_text_font(int size)
+{
+    // Check if the font is already in the cache.
+    if (text_font_cache.find(size) != text_font_cache.end()) {
+        return text_font_cache[size];
+    }
+
+    // If not, create a new font.
+    void* font_data = nullptr;
+    uint32_t font_size = 0;
+    OSGetSharedData(OS_SHAREDDATATYPE_FONT_STANDARD, 0, &font_data, &font_size);
+    TTF_Font* font = TTF_OpenFontRW(SDL_RWFromMem((void*)font_data, font_size), 1, size);
+
+    if (font == NULL) {
+        return NULL;
+    }
+
+    // Add the new font to the cache.
+    text_font_cache[size] = font;
+
+    return font;
+}
+
+
+TTF_Font*
+get_icon_font(int size)
+{
+    // Check if the font is already in the cache.
+    if (icon_font_cache.find(size) != icon_font_cache.end()) {
+        return icon_font_cache[size];
+    }
+
+    // If not, create a new font. fa-solid-900.ttf is a custom font file that contains icons.
+    TTF_Font* font = TTF_OpenFontRW(SDL_RWFromMem((void*)fa_solid_900_ttf, fa_solid_900_ttf_size), 1, size);
+
+    if (font == NULL) {
+        return NULL;
+    }
+
+    // Add the new font to the cache.
+    icon_font_cache[size] = font;
+    
+    return font;
+}
+
+
 void
 draw_text(const char* text, int x, int y, int size, SDL_Color color)
 {
-    void* font_data = nullptr;
-    uint32_t font_size = 0;
-    // We will fetch the system font from the shared data.
-    OSGetSharedData(OS_SHAREDDATATYPE_FONT_STANDARD, 0, &font_data, &font_size);
-
-    TTF_Font* font = TTF_OpenFontRW(SDL_RWFromMem((void*)font_data, font_size), 1, size);
+    TTF_Font* font = get_text_font(size);
     if (font == NULL) {
         return;
     }
@@ -58,17 +105,15 @@ draw_text(const char* text, int x, int y, int size, SDL_Color color)
     SDL_Rect rect = {x, y, surface->w, surface->h};
     SDL_RenderCopy(renderer, texture, NULL, &rect);
 
-    // This is bad practice. We are creating and destroying the font every time we draw text.
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
-    TTF_CloseFont(font);
 }
+
 
 void
 draw_icon(const char* icon, int x, int y, int size, SDL_Color color)
 {
-    // fa-solid-900.ttf is a font file that contains icons. This is a custom font file.
-    TTF_Font* font = TTF_OpenFontRW(SDL_RWFromMem((void*)fa_solid_900_ttf, fa_solid_900_ttf_size), 1, size);
+    TTF_Font* font = get_icon_font(size);
     if (font == NULL) {
         return;
     }
@@ -89,22 +134,15 @@ draw_icon(const char* icon, int x, int y, int size, SDL_Color color)
     SDL_Rect rect = {x, y, surface->w, surface->h};
     SDL_RenderCopy(renderer, texture, NULL, &rect);
 
-    // Again, bad practice. I'll fix this later on.
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
-    TTF_CloseFont(font);
 }
 
 
 int
 get_text_size(const char* text, int size, bool get_height)
 {
-    void* font_data = nullptr;
-    uint32_t font_size = 0;
-    // We are essentially recreating the font here.
-    OSGetSharedData(OS_SHAREDDATATYPE_FONT_STANDARD, 0, &font_data, &font_size);
-
-    TTF_Font* font = TTF_OpenFontRW(SDL_RWFromMem((void*)font_data, font_size), 1, size);
+    TTF_Font* font = get_text_font(size);
     if (font == NULL) {
         return 0;
     }
@@ -119,6 +157,20 @@ get_text_size(const char* text, int size, bool get_height)
         return height; // We don't usually need the height.
     
     return width;
+}
+
+
+void
+close_fonts()
+{
+    for (auto& pair : text_font_cache) {
+        TTF_CloseFont(pair.second);
+    }
+    for (auto& pair : icon_font_cache) {
+        TTF_CloseFont(pair.second);
+    }
+    text_font_cache.clear();
+    icon_font_cache.clear();
 }
 
 

@@ -25,6 +25,7 @@
 #include "screens.hpp"
 #include "swap.hpp"
 #include "unlink.hpp"
+#include "utils.hpp"
 
 
 unsigned int USER_ID; // The current user persistant ID.
@@ -87,7 +88,10 @@ deinitialize()
             SDL_DestroyRenderer(renderer);
         if (window != nullptr)
             SDL_DestroyWindow(window);
+        
+        close_fonts();
 
+        TTF_Quit();
         SDL_Quit();
 
         is_deinitialized = true;
@@ -126,9 +130,6 @@ initialize_graphics()
 {
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
-
-    const int SCREEN_WIDTH = 1920;
-    const int SCREEN_HEIGHT = 1080;
 
     window = SDL_CreateWindow("Wii U Account Swap", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, \
         SCREEN_WIDTH, SCREEN_HEIGHT, 0);
