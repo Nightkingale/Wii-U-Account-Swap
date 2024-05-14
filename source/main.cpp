@@ -39,6 +39,8 @@ std::string INKAY_CONFIG; // The path to the Inkay configuration file.
 SDL_Window* window = nullptr; // Global window variable.
 SDL_Renderer* renderer = nullptr; // Global renderer variable.
 
+int client_handle = 0; // The client handle for flushing the filesystem.
+
 
 void
 get_user_information()
@@ -76,6 +78,9 @@ deinitialize()
     static bool is_deinitialized = false;
 
     if (!is_deinitialized) {
+        FSAFlushVolume(client_handle, "storage_mlc");
+        FSADelClient(client_handle);
+
         nn::act::Finalize();
         Mocha_UnmountFS("storage_mlc");
         Mocha_DeInitLibrary();
@@ -106,18 +111,21 @@ initialize_program()
     VPADInit(); // Wii U GamePad support.
     KPADInit(); // External controller support.
     WPADEnableURCC(1); // Allow Pro Controller input.
+    WHBLogConsoleInit(); // Initialize the log console.
+    FSAInit(); // Allows for flushing the filesystem.
     AXInit(); // Disable playing audio.
-
-    // Set up the log console for use.
-    WHBLogConsoleInit();
-    WHBLogConsoleSetColor(0x00009900);
 
     // Initialize the Mocha library.
     if (Mocha_InitLibrary() != MOCHA_RESULT_SUCCESS) {
         return false;
     }
 
-    // Mount the storage device differently depending on Tiramisu or Aroma.
+    // Initialize the FSA handler to flush the filesystem.
+    client_handle = FSAAddClient(NULL);
+    if (client_handle == 0) {
+        return false;
+    }
+
     Mocha_MountFS("storage_mlc", NULL, "/vol/storage_mlc01");
     get_user_information();
 
