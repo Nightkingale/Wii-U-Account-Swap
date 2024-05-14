@@ -74,10 +74,8 @@ get_user_information()
 void
 deinitialize()
 {
-    // fs probably doesn't need to be flushed, but it doesn't hurt.
-    FSAFlushVolume(client_handle, "fs");
-    // storage_mlc will need to be flushed, or else changes might not save.
-    FSAFlushVolume(client_handle, "storage_mlc");
+    FSAFlushVolume(client_handle, "/vol/external01"); // Probably not necessary, but doesn't hurt.
+    FSAFlushVolume(client_handle, "/vol/storage_mlc01"); // MLC actually does need to be flushed.
     FSADelClient(client_handle);
 
     nn::act::Finalize();
