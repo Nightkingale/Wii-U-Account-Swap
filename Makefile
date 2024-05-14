@@ -21,8 +21,15 @@ include $(DEVKITPRO)/wut/share/wut_rules
 
 #-------------------------------------------------------------------------------
 # APP_VERSION sets the version of the application
+# DEBUG_FLAG sets the debug flag for the application
 #-------------------------------------------------------------------------------
-APP_VERSION 	:= 	v2.0.0
+APP_VERSION	:=  v2.0.1
+DEBUG_FLAG	:=  0
+
+ifeq ($(DEBUG_FLAG), 1)
+GIT_HASH := $(shell git rev-parse --short HEAD)
+APP_VERSION := $(APP_VERSION)-$(GIT_HASH)
+endif
 
 #-------------------------------------------------------------------------------
 # TARGET is the name of the output
@@ -43,9 +50,6 @@ INCLUDES	:=	include
 ICON		:=	assets/icon.png
 TV_SPLASH	:=	assets/tv_splash.png
 DRC_SPLASH	:=	assets/drc_splash.png
-
-# Be verbose by default.
-V ?= 1
 
 #-------------------------------------------------------------------------------
 # options for code generation
@@ -150,7 +154,7 @@ all: $(BUILD)
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@$(MAKE) -C $(BUILD) -f $(CURDIR)/Makefile V=$(V)
+	@$(MAKE) -C $(BUILD) -f $(CURDIR)/Makefile V=$(DEBUG_FLAG)
 
 #-------------------------------------------------------------------------------
 clean:
