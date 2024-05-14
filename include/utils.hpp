@@ -13,7 +13,7 @@ void draw_rectangle(int x, int y, int w, int h, int r, int g, int b, int a);
 void draw_text(const char* text, int x, int y, int size, SDL_Color color = {255, 255, 255, 255});
 void draw_icon(const char* icon, int x, int y, int size, SDL_Color color = {255, 255, 255, 255});
 int get_text_size(const char* text, int size, bool get_height = false);
-void close_fonts();
+void clean_font_caches();
 void draw_screen_bars(bool show_confirm = false, bool show_controls = true);
 
 

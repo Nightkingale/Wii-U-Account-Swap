@@ -156,7 +156,7 @@ get_text_size(const char* text, int size, bool get_height)
 
 
 void
-close_fonts()
+clean_font_caches()
 {
     for (auto& pair : text_font_cache) {
         TTF_CloseFont(pair.second);

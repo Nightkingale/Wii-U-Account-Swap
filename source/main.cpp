@@ -91,7 +91,7 @@ deinitialize()
     if (window != nullptr)
         SDL_DestroyWindow(window);
     
-    close_fonts();
+    clean_font_caches();
 
     TTF_Quit();
     SDL_Quit();
