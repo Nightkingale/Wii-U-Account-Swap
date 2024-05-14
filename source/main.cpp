@@ -74,33 +74,27 @@ get_user_information()
 void
 deinitialize()
 {
-    // This prevents hangs when called twice.
-    static bool is_deinitialized = false;
+    FSAFlushVolume(client_handle, "storage_mlc");
+    FSAFlushVolume(client_handle, "");
+    FSADelClient(client_handle);
 
-    if (!is_deinitialized) {
-        FSAFlushVolume(client_handle, "storage_mlc");
-        FSADelClient(client_handle);
+    nn::act::Finalize();
+    Mocha_UnmountFS("storage_mlc");
+    Mocha_DeInitLibrary();
+    WHBLogConsoleFree();
+    VPADShutdown();
+    KPADShutdown();
+    AXQuit();
 
-        nn::act::Finalize();
-        Mocha_UnmountFS("storage_mlc");
-        Mocha_DeInitLibrary();
-        WHBLogConsoleFree();
-        VPADShutdown();
-        KPADShutdown();
-        AXQuit();
+    if (renderer != nullptr)
+        SDL_DestroyRenderer(renderer);
+    if (window != nullptr)
+        SDL_DestroyWindow(window);
+    
+    close_fonts();
 
-        if (renderer != nullptr)
-            SDL_DestroyRenderer(renderer);
-        if (window != nullptr)
-            SDL_DestroyWindow(window);
-        
-        close_fonts();
-
-        TTF_Quit();
-        SDL_Quit();
-
-        is_deinitialized = true;
-    }
+    TTF_Quit();
+    SDL_Quit();
 }
 
 
@@ -197,14 +191,12 @@ main()
             switch (selected_option) {
                 case 0:
                     if (swap_account(NNID_BACKUP.c_str(), "Nintendo")) {
-                        deinitialize();
                         OSForceFullRelaunch();
                         SYSLaunchMenu();
                     }
                     break;
                 case 1:
                     if (swap_account(PNID_BACKUP.c_str(), "Pretendo")) {
-                        deinitialize();
                         OSForceFullRelaunch();
                         SYSLaunchMenu();
                     }
@@ -230,7 +222,6 @@ main()
 
                         if (button & VPAD_BUTTON_A) {
                             if (unlink_account()) {
-                                deinitialize();
                                 OSForceFullRelaunch();
                                 SYSLaunchMenu();
                             }
