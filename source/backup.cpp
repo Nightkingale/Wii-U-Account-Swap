@@ -15,7 +15,8 @@
 
 #include "input.hpp"
 #include "main.hpp"
-#include "screens.hpp"
+#include "start_screen.hpp"
+#include "sub_screens.hpp"
 
 
 bool backup_confirm = false;
@@ -45,7 +46,7 @@ handle_cleanup(FILE* account, FILE* backup, char* buffer, bool is_error = false)
     }
 
     if (is_error) {
-        draw_menu_screen(2);
+        draw_start_screen(2);
     }
 }
 

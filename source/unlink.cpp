@@ -19,7 +19,7 @@
 #include <whb/proc.h>
 
 #include "main.hpp"
-#include "screens.hpp"
+#include "sub_screens.hpp"
 
 
 bool

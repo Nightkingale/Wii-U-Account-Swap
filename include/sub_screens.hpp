@@ -1,8 +1,7 @@
-#ifndef SCREENS_HPP
-#define SCREENS_HPP
+#ifndef SUB_SCREENS_HPP
+#define SUB_SCREENS_HPP
 
 
-void draw_menu_screen(int selected_menu_item);
 void draw_unlink_menu();
 void draw_backup_menu();
 void draw_overwrite_menu(const char* backup_path);

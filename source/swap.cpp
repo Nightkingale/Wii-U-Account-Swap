@@ -12,7 +12,8 @@
 #include <whb/proc.h>
 
 #include "main.hpp"
-#include "screens.hpp"
+#include "start_screen.hpp"
+#include "sub_screens.hpp"
 
 
 void
@@ -36,9 +37,9 @@ handle_cleanup(FILE* backup, const char* account_type, char* buffer, bool is_err
     if (is_error) {
         // Print the main menu.
         if (strcmp(account_type, "Nintendo"))
-            draw_menu_screen(0);
+            draw_start_screen(0);
         else if (strcmp(account_type, "Pretendo"))
-            draw_menu_screen(1);
+            draw_start_screen(1);
     }
 }
 

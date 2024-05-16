@@ -22,7 +22,8 @@
 #include "easter_egg.hpp"
 #include "input.hpp"
 #include "main.hpp"
-#include "screens.hpp"
+#include "start_screen.hpp"
+#include "sub_screens.hpp"
 #include "swap.hpp"
 #include "unlink.hpp"
 #include "utils.hpp"
@@ -169,71 +170,9 @@ main()
     error_occurred = check_initialization(initialize_program(), "Error initializing program!") ||
         check_initialization(initialize_graphics(), "Error initializing graphics!");
 
-    int selected_option = 0;
-    const int NUM_OPTIONS = 4;
-
     while (WHBProcIsRunning()) {
         if (!error_occurred)
-            draw_menu_screen(selected_option);
-
-        int button = read_input(); // Watch the controllers for input.
-        OSEnableHomeButtonMenu(1);
-
-        if (button & VPAD_BUTTON_UP) {
-            selected_option--;
-            if (selected_option < 0)
-                selected_option = NUM_OPTIONS - 1;
-        } else if (button & VPAD_BUTTON_DOWN) {
-            selected_option++;
-            if (selected_option >= NUM_OPTIONS)
-                selected_option = 0;
-        } else if (button & VPAD_BUTTON_A) {
-            switch (selected_option) {
-                case 0:
-                    if (swap_account(NNID_BACKUP.c_str(), "Nintendo")) {
-                        OSForceFullRelaunch();
-                        SYSLaunchMenu();
-                    }
-                    break;
-                case 1:
-                    if (swap_account(PNID_BACKUP.c_str(), "Pretendo")) {
-                        OSForceFullRelaunch();
-                        SYSLaunchMenu();
-                    }
-                    break;
-                case 2:
-                    while (WHBProcIsRunning()) {
-                        OSEnableHomeButtonMenu(0);
-                        draw_backup_menu();
-                        button = read_input();
-
-                        if (button & VPAD_BUTTON_A) {
-                            backup_account();
-                            break;
-                        } else if (button & VPAD_BUTTON_B)
-                            break;
-                    }
-                    break;
-                case 3:
-                    OSEnableHomeButtonMenu(0);
-                    while (WHBProcIsRunning()) {
-                        draw_unlink_menu();
-                        button = read_input();
-
-                        if (button & VPAD_BUTTON_A) {
-                            if (unlink_account()) {
-                                OSForceFullRelaunch();
-                                SYSLaunchMenu();
-                            }
-                            break;
-                        } else if (button & VPAD_BUTTON_B)
-                            break;
-                    }
-                    break;
-            }
-        } else if (button & VPAD_BUTTON_SYNC) {
-            play_easter_egg();
-        }
+            process_start_screen();
     }
 
     deinitialize();
