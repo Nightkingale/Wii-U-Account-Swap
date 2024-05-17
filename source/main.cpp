@@ -172,7 +172,7 @@ main()
 
     while (WHBProcIsRunning()) {
         if (!error_occurred)
-            process_start_screen();
+            process_screens();
     }
 
     deinitialize();

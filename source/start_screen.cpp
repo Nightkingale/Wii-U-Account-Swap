@@ -30,7 +30,7 @@
 
 int selected_option = 0;
 const int NUM_OPTIONS = 4;
-
+Screens CurrentScreen = Start;
 
 bool
 swap_account_action(const char* account_backup, const char* account_type)
@@ -40,6 +40,9 @@ swap_account_action(const char* account_backup, const char* account_type)
         SYSLaunchMenu();
         return true;
     }
+
+    CurrentScreen = Start;
+
     return false;
 }
 
@@ -47,17 +50,19 @@ swap_account_action(const char* account_backup, const char* account_type)
 bool
 backup_account_action()
 {
-    while (WHBProcIsRunning()) {
         OSEnableHomeButtonMenu(0);
         draw_backup_menu();
         int button = read_input();
 
         if (button & VPAD_BUTTON_A) {
             backup_account();
+            CurrentScreen = Start;
             return true;
         } else if (button & VPAD_BUTTON_B)
+        {
+            CurrentScreen = Start;
             return true;
-    }
+        }
     return false;
 }
 
@@ -66,18 +71,20 @@ bool
 unlink_account_action()
 {
     OSEnableHomeButtonMenu(0);
-    while (WHBProcIsRunning()) {
-        draw_unlink_menu();
-        int button = read_input();
+    draw_unlink_menu();
+    int button = read_input();
 
-        if (button & VPAD_BUTTON_A) {
-            if (unlink_account()) {
-                OSForceFullRelaunch();
-                SYSLaunchMenu();
-                return true;
-            }
-        } else if (button & VPAD_BUTTON_B)
+    if (button & VPAD_BUTTON_A) {
+        if (unlink_account()) {
+            OSForceFullRelaunch();
+            SYSLaunchMenu();
             return true;
+        }
+    }
+    else if (button & VPAD_BUTTON_B)
+    {
+        CurrentScreen = Start;
+        return true;
     }
     return false;
 }
@@ -147,19 +154,51 @@ process_start_screen()
     } else if (button & VPAD_BUTTON_A) {
         switch (selected_option) {
             case 0:
-                swap_account_action(NNID_BACKUP.c_str(), "Nintendo");
+                CurrentScreen = Swap;
+                //swap_account_action(NNID_BACKUP.c_str(), "Nintendo");
                 break;
             case 1:
-                swap_account_action(PNID_BACKUP.c_str(), "Pretendo");
+                CurrentScreen = Swap;
+                //swap_account_action(PNID_BACKUP.c_str(), "Pretendo");
                 break;
             case 2:
-                backup_account_action();
+                CurrentScreen = Backup;
+                //backup_account_action();
                 break;
             case 3:
-                unlink_account_action();
+                CurrentScreen = Unlink;
+                //unlink_account_action();
                 break;
         }
     } else if (button & VPAD_BUTTON_SYNC) {
         play_easter_egg();
+    }
+}
+
+void process_screens()
+{
+    switch(CurrentScreen)
+    {
+        case Start:
+            process_start_screen();
+            break;
+        case Unlink:
+            unlink_account_action();
+            break;
+        case Swap:
+            if(selected_option == 0)
+            {
+                swap_account_action(NNID_BACKUP.c_str(), "Nintendo");
+            }
+            else
+            {
+                swap_account_action(PNID_BACKUP.c_str(), "Pretendo");
+            }
+            break;
+        case Backup:
+            backup_account_action();
+            break;
+        case Overwrite:
+            break;
     }
 }

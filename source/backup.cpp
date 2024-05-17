@@ -128,17 +128,23 @@ backup_account()
 
     // Check if the backup file exists.
     std::ifstream ifile(backup_path);
+
+    CurrentScreen = Overwrite;
+
     if (ifile) {
         backup_confirm = false;
+        bool selected = false;
 
-        while (WHBProcIsRunning()) {
+        while (!selected) {
             draw_overwrite_menu(backup_path.c_str());
             int button = read_input();
 
             if (button & VPAD_BUTTON_A) {
                 backup_confirm = true;
+                selected = true;
                 break;
             } else if (button & VPAD_BUTTON_B) {
+                selected = true;
                 break;
             }
         }
@@ -146,13 +152,21 @@ backup_account()
         backup_confirm = true;
     }
 
+    CurrentScreen = Backup;
+
     // Write the backup file.
     if (backup_confirm) {
         if (write_backup(account, backup_path, buffer))
+        {
             handle_cleanup(account, NULL, buffer, false);
+            CurrentScreen = Start;
+        }
         return true;
     }
 
     handle_cleanup(account, NULL, buffer, !backup_confirm);
+    CurrentScreen = Start;
     return true;
+
+
 }
