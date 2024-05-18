@@ -1,31 +1,21 @@
-#include <cstring>
-#include <fstream>
-#include <sstream>
+#include <filesystem>
 
-#include <coreinit/launch.h>
 #include <coreinit/screen.h>
 #include <coreinit/thread.h>
-#include <coreinit/time.h>
 #include <mocha/mocha.h>
 #include <nn/act.h>
-#include <padscore/kpad.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <sndcore2/core.h>
 #include <sysapp/launch.h>
-#include <vpad/input.h>
 #include <whb/log.h>
 #include <whb/log_console.h>
 #include <whb/proc.h>
 
-#include "backup.hpp"
-#include "easter_egg.hpp"
 #include "input.hpp"
 #include "main.hpp"
 #include "start_screen.hpp"
 #include "sub_screens.hpp"
-#include "swap.hpp"
-#include "unlink.hpp"
 #include "utils.hpp"
 
 

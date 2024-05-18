@@ -1,17 +1,6 @@
 #include <filesystem>
-#include <fstream>
-#include <iostream>
 
-#include <coreinit/launch.h>
-#include <coreinit/screen.h>
 #include <coreinit/thread.h>
-#include <coreinit/time.h>
-#include <mocha/mocha.h>
-#include <sysapp/launch.h>
-#include <vpad/input.h>
-#include <whb/log.h>
-#include <whb/log_console.h>
-#include <whb/proc.h>
 
 #include "input.hpp"
 #include "main.hpp"

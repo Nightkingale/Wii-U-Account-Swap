@@ -4,8 +4,8 @@
 #include <SDL2/SDL.h>
 
 
-const int SCREEN_WIDTH = 1920; // 1920px (HD)
-const int SCREEN_HEIGHT = 1080; // 1080px (HD) 
+const int SCREEN_WIDTH = 1920; // 1920px. (HD)
+const int SCREEN_HEIGHT = 1080; // 1080px. (HD) 
 
 
 void draw_background(int r, int g, int b, int a);

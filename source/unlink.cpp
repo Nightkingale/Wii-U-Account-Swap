@@ -1,22 +1,12 @@
 #include <algorithm>
-#include <cstring>
-#include <cstdlib>
-#include <map>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <unordered_set>
 #include <vector>
 
-#include <coreinit/launch.h>
-#include <coreinit/screen.h>
-#include <coreinit/time.h>
-#include <coreinit/thread.h>
 #include <mocha/mocha.h>
-#include <sysapp/launch.h>
-#include <whb/log.h>
-#include <whb/log_console.h>
-#include <whb/proc.h>
 
 #include "main.hpp"
 #include "sub_screens.hpp"
