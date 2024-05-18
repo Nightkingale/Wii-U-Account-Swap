@@ -126,7 +126,7 @@ unlink_account()
     std::ofstream account_output(ACCOUNT_FILE);
     account_output << processed_contents; // Write processed_contents to the file.
 
-    if (!account_output.bad()) {
+    if (account_output.bad()) {
         draw_error_menu("Error writing to system account.dat file!");
         OSEnableHomeButtonMenu(1);
         return false;
