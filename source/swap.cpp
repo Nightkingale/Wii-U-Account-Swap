@@ -54,7 +54,8 @@ swap_account(const char* backup_file, account account_type)
     // Open the account.dat file and swap it to the specified account.
     FILE *backup = fopen(backup_file, "rb");
     if (backup == NULL) {
-        draw_error_menu("Error opening backup account.dat file!", true);
+        draw_error_menu("Error opening backup account.dat file!", \
+                        "Have you made a backup for this user and account?");
         handle_cleanup(backup, account_type, NULL, true);
         return false;
     }
