@@ -72,7 +72,7 @@ draw_overwrite_menu(const char* backup_path)
 
 
 void
-draw_error_menu(const char* error_message, const char* hint_message)
+draw_error_menu(const char* error_message)
 {
     draw_background(60, 10, 10, 255); // Red background.
     draw_screen_bars(false, false);
@@ -81,9 +81,6 @@ draw_error_menu(const char* error_message, const char* hint_message)
 
     draw_text(error_message, 64, 230, 50);
     draw_text("You will return to the main menu.", 64, 290, 50);
-
-    if (hint_message != nullptr)
-        draw_text(hint_message, 64, 400, 50);
 
     draw_text("If you believe this to be a bug, please report it.", 64, 840, 50);
 

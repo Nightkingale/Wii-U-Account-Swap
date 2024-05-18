@@ -128,8 +128,7 @@ backup_account()
 
     if (!network_account_found) {
         // The check failed, domain not accounted for?
-        draw_error_menu("No network account found!", \
-                        "Do you have a Network ID linked to this user?");
+        draw_error_menu("Do you have a Network ID linked to this user?");
         handle_cleanup(account, NULL, buffer, true);
         return false;
     }
