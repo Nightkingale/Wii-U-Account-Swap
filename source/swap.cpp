@@ -74,9 +74,21 @@ swap_account(const char* backup_file, account account_type)
         return false;
     }
 
-    size_t bytesRead = 0;
-    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, backup)) > 0)
-        fwrite(buffer, 1, bytesRead, account);
+    size_t bytes_read = 0;
+    while ((bytes_read = fread(buffer, 1, BUFFER_SIZE, backup)) > 0) {
+        if (ferror(backup)) {
+            draw_error_menu("Error reading from backup account.dat file!");
+            handle_cleanup(backup, account_type, buffer, true);
+            return false;
+        }
+
+        fwrite(buffer, 1, bytes_read, account);
+        if (ferror(account)) {
+            draw_error_menu("Error writing to system account.dat file!");
+            handle_cleanup(backup, account_type, buffer, true);
+            return false;
+        }
+    }
     fclose(account);
 
     // We'll attempt to automatically swap the network using Inkay's configuration.

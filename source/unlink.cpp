@@ -125,6 +125,13 @@ unlink_account()
     // Write the string back to the file.
     std::ofstream account_output(ACCOUNT_FILE);
     account_output << processed_contents; // Write processed_contents to the file.
+
+    if (!account_output.bad()) {
+        draw_error_menu("Error writing to system account.dat file!");
+        OSEnableHomeButtonMenu(1);
+        return false;
+    }
+
     account_output.close();
 
     draw_success_menu(success::unlink); // Draw the success menu.

@@ -70,9 +70,16 @@ write_backup(FILE* account, const std::string& backup_path, char* buffer)
     // Open the backup file and write the account data to it.
     rewind(account); // Move the file pointer to the beginning.
 
-    size_t bytesRead = 0;
-    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, account)) > 0)
-        fwrite(buffer, 1, bytesRead, backup);
+    size_t bytes_read = 0;
+    while ((bytes_read = fread(buffer, 1, BUFFER_SIZE, account)) > 0)
+        fwrite(buffer, 1, bytes_read, backup);
+
+    // Check if there was an error when writing.
+    if (ferror(backup)) {
+        draw_error_menu("Error writing to backup account.dat file!");
+        handle_cleanup(account, backup, buffer, true);
+        return false;
+    }
 
     // Close the backup file.
     fclose(backup);
