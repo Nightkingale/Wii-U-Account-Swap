@@ -23,7 +23,7 @@ include $(DEVKITPRO)/wut/share/wut_rules
 # APP_VERSION sets the version of the application
 # DEBUG_FLAG sets the debug flag for the application
 #-------------------------------------------------------------------------------
-APP_VERSION	:=  v2.0.1
+APP_VERSION	:=  v2.0.2
 DEBUG_FLAG	:=  0
 
 ifeq ($(DEBUG_FLAG), 1)
