@@ -14,10 +14,11 @@
 #include "main.hpp"
 #include "start_screen.hpp"
 #include "sub_screens.hpp"
+#include "swap.hpp"
 
 
 void
-handle_cleanup(FILE* backup, const char* account_type, char* buffer, bool is_error = false)
+handle_cleanup(FILE* backup, account account_type, char* buffer, bool is_error = false)
 {
     OSEnableHomeButtonMenu(1);
     
@@ -36,16 +37,16 @@ handle_cleanup(FILE* backup, const char* account_type, char* buffer, bool is_err
     // If there was an error, return to the menu.
     if (is_error) {
         // Print the main menu.
-        if (strcmp(account_type, "Nintendo"))
+        if (account_type == account::nintendo_network_id)
             draw_start_screen(0);
-        else if (strcmp(account_type, "Pretendo"))
+        else if (account_type == account::pretendo_network_id)
             draw_start_screen(1);
     }
 }
 
 
 bool
-swap_account(const char* backup_file, const char* account_type)
+swap_account(const char* backup_file, account account_type)
 {
     // Disable the HOME Button temporarily.
     OSEnableHomeButtonMenu(0);
@@ -84,12 +85,12 @@ swap_account(const char* backup_file, const char* account_type)
     if (inkay != NULL) {
         // Write the network configuration to the file.
         const char *inkay_content = "{\"storageitems\":{\"connect_to_network\":%d}}";
-        fprintf(inkay, inkay_content, strcmp(account_type, "Pretendo") == 0 ? 1 : 0);
+        fprintf(inkay, inkay_content, account_type == account::pretendo_network_id ? 1 : 0);
         fclose(inkay);
         inkay = NULL;
         inkay_configured = true;
     }
-    draw_success_menu("swap", inkay_configured);
+    draw_success_menu(success::swap, inkay_configured);
 
     // Clean-up and exit.
     handle_cleanup(backup, account_type, buffer, false);

@@ -55,8 +55,8 @@ bool
 write_backup(FILE* account, const std::string& backup_path, char* buffer)
 {
     // Create the directories if they don't exist.
-    std::filesystem::path dirPath = std::filesystem::path(backup_path).remove_filename();
-    std::filesystem::create_directories(dirPath);
+    std::filesystem::path dir_path = std::filesystem::path(backup_path).remove_filename();
+    std::filesystem::create_directories(dir_path);
     
     // Open the backup file for writing.
     FILE *backup = fopen(backup_path.c_str(), "wb");
@@ -77,7 +77,7 @@ write_backup(FILE* account, const std::string& backup_path, char* buffer)
     // Close the backup file.
     fclose(backup);
 
-    draw_success_menu("backup");
+    draw_success_menu(success::backup);
     return true;
 }
 
@@ -103,9 +103,9 @@ backup_account()
     }
 
     // Read the entire file into a string.
-    size_t bytesRead = 0;
-    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, account)) > 0) {
-        content.append(buffer, bytesRead);
+    size_t bytes_read = 0;
+    while ((bytes_read = fread(buffer, 1, BUFFER_SIZE, account)) > 0) {
+        content.append(buffer, bytes_read);
     }
 
     bool network_account_found = false;
@@ -129,7 +129,7 @@ backup_account()
     // Check if the backup file exists.
     std::ifstream ifile(backup_path);
 
-    current_screen = OVERWRITE_SCREEN;
+    current_screen = overwrite_screen;
 
     if (ifile) {
         backup_confirm = false;
@@ -152,20 +152,20 @@ backup_account()
         backup_confirm = true;
     }
 
-    current_screen = BACKUP_SCREEN;
+    current_screen = backup_screen;
 
     // Write the backup file.
     if (backup_confirm) {
         if (write_backup(account, backup_path, buffer))
         {
             handle_cleanup(account, NULL, buffer, false);
-            current_screen = START_SCREEN;
+            current_screen = start_screen;
         }
         return true;
     }
 
     handle_cleanup(account, NULL, buffer, !backup_confirm);
-    current_screen = START_SCREEN;
+    current_screen = start_screen;
     return true;
 
 

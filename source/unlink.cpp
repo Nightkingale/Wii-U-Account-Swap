@@ -127,7 +127,7 @@ unlink_account()
     account_output << processed_contents; // Write processed_contents to the file.
     account_output.close();
 
-    draw_success_menu("unlink");
+    draw_success_menu(success::unlink); // Draw the success menu.
     OSEnableHomeButtonMenu(1);
 
     return true;

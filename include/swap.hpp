@@ -2,7 +2,13 @@
 #define SWAP_HPP
 
 
-bool swap_account(const char* backup_file, const char* account_type);
+enum class account {
+    nintendo_network_id,
+    pretendo_network_id
+};
+
+
+bool swap_account(const char* backup_file, account account_type);
 
 
 #endif

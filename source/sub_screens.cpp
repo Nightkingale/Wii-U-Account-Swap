@@ -5,6 +5,7 @@
 #include "input.hpp"
 #include "main.hpp"
 #include "nintendo_glyphs.hpp"
+#include "sub_screens.hpp"
 #include "unlink.hpp"
 #include "utils.hpp"
 
@@ -88,31 +89,32 @@ draw_error_menu(const char* error_message)
 }
 
 void
-draw_success_menu(const char* type, bool inkay_configured = false)
+draw_success_menu(success type, bool inkay_configured)
 {
     draw_background(10, 60, 10, 255); // Green background.
     draw_screen_bars(false, false);
 
     draw_text("The operation was successful!", 64, 120, 50);
 
-    if (strcmp(type, "backup") == 0) {
-        // backup.cpp will call this function with "backup" as the type.
-        draw_text("The account.dat was backed up successfully!", 64, 230, 50);
-        draw_text("The main menu will appear in 5 seconds...", 64, 290, 50);
+    switch (type) {
+        case success::backup:
+            draw_text("The account.dat was backed up successfully!", 64, 230, 50);
+            draw_text("The main menu will appear in 5 seconds...", 64, 290, 50);
+            break;
 
-    } else if (strcmp(type, "unlink") == 0) {
-        // unlink.cpp will call this function with "unlink" as the type.
-        draw_text("The account.dat was unlinked successfully!", 64, 230, 50);
-        draw_text("Your console will restart in 5 seconds...", 64, 290, 50);
+        case success::unlink:
+            draw_text("The account.dat was unlinked successfully!", 64, 230, 50);
+            draw_text("Your console will restart in 5 seconds...", 64, 290, 50);
+            break;
 
-    } else if (strcmp(type, "swap") == 0) {
-        // swap.cpp will call this function with "swap" as the type.
-        draw_text("The account.dat was restored successfully!", 64, 230, 50);
-        draw_text("Your console will restart in 5 seconds...", 64, 290, 50);
+        case success::swap:
+            draw_text("The account.dat was restored successfully!", 64, 230, 50);
+            draw_text("Your console will restart in 5 seconds...", 64, 290, 50);
 
-        if (inkay_configured) {
-            draw_text("Please note that Inkay was configured automatically.", 64, 840, 50);
-        }
+            if (inkay_configured) {
+                draw_text("Please note that Inkay was configured automatically.", 64, 840, 50);
+            }
+            break;
     }
 
     SDL_RenderPresent(renderer);

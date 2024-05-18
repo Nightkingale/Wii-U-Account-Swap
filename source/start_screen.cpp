@@ -30,10 +30,11 @@
 
 int selected_option = 0;
 const int NUM_OPTIONS = 4;
-screens current_screen = START_SCREEN;
+screen current_screen = start_screen;
+
 
 bool
-swap_account_action(const char* account_backup, const char* account_type)
+swap_account_action(const char* account_backup, account account_type)
 {
     if (swap_account(account_backup, account_type)) {
         OSForceFullRelaunch();
@@ -41,7 +42,7 @@ swap_account_action(const char* account_backup, const char* account_type)
         return true;
     }
 
-    current_screen = START_SCREEN;
+    current_screen = start_screen;
 
     return false;
 }
@@ -56,11 +57,11 @@ backup_account_action()
 
         if (button & VPAD_BUTTON_A) {
             backup_account();
-            current_screen = START_SCREEN;
+            current_screen = start_screen;
             return true;
         } else if (button & VPAD_BUTTON_B)
         {
-            current_screen = START_SCREEN;
+            current_screen = start_screen;
             return true;
         }
     return false;
@@ -83,7 +84,7 @@ unlink_account_action()
     }
     else if (button & VPAD_BUTTON_B)
     {
-        current_screen = START_SCREEN;
+        current_screen = start_screen;
         return true;
     }
     return false;
@@ -102,10 +103,10 @@ draw_start_screen(int selected_menu_item)
     };
 
     const menu_item choices[] = {
-        {"\uF0AC", "Swap to Nintendo Network ID"}, // Network icon
-        {"\uF233", "Swap to Pretendo Network ID"}, // Server icon
-        {"\uF0C7", "Backup the account.dat File"}, // Save icon
-        {"\uF12D", "Unlink the account.dat File"}  // Unlink icon
+        {"\uF0AC", "Swap to Nintendo Network ID"}, // Network icon.
+        {"\uF233", "Swap to Pretendo Network ID"}, // Server icon.
+        {"\uF0C7", "Backup the account.dat File"}, // Save icon.
+        {"\uF12D", "Unlink the account.dat File"}  // Unlink icon.
     };
 
     const int NUM_MENU_ITEMS = sizeof(choices) / sizeof(choices[0]);
@@ -154,20 +155,20 @@ process_start_screen()
     } else if (button & VPAD_BUTTON_A) {
         switch (selected_option) {
             case 0:
-                current_screen = SWAP_SCREEN;
-                //swap_account_action(NNID_BACKUP.c_str(), "Nintendo");
+                current_screen = swap_screen;
+                // swap_account_action(NNID_BACKUP.c_str(), "Nintendo");
                 break;
             case 1:
-                current_screen = SWAP_SCREEN;
-                //swap_account_action(PNID_BACKUP.c_str(), "Pretendo");
+                current_screen = swap_screen;
+                // swap_account_action(PNID_BACKUP.c_str(), "Pretendo");
                 break;
             case 2:
-                current_screen = BACKUP_SCREEN;
-                //backup_account_action();
+                current_screen = backup_screen;
+                // backup_account_action();
                 break;
             case 3:
-                current_screen = UNLINK_SCREEN;
-                //unlink_account_action();
+                current_screen = unlink_screen;
+                // unlink_account_action();
                 break;
         }
     } else if (button & VPAD_BUTTON_SYNC) {
@@ -175,26 +176,28 @@ process_start_screen()
     }
 }
 
-void process_screens()
+
+void
+process_screens()
 {
     switch(current_screen)
     {
-        case START_SCREEN:
+        case start_screen:
             process_start_screen();
             break;
-        case UNLINK_SCREEN:
+        case unlink_screen:
             unlink_account_action();
             break;
-        case SWAP_SCREEN:
+        case swap_screen:
             if(selected_option == 0)
-                swap_account_action(NNID_BACKUP.c_str(), "Nintendo");
+                swap_account_action(NNID_BACKUP.c_str(), account::nintendo_network_id);
             else
-                swap_account_action(PNID_BACKUP.c_str(), "Pretendo");
+                swap_account_action(PNID_BACKUP.c_str(), account::pretendo_network_id);
             break;
-        case BACKUP_SCREEN:
+        case backup_screen:
             backup_account_action();
             break;
-        case OVERWRITE_SCREEN:
+        case overwrite_screen:
             break;
     }
 }

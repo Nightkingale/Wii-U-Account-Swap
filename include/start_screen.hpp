@@ -2,17 +2,17 @@
 #define START_SCREEN_HPP
 
 
-enum screens
+enum screen
 {
-    START_SCREEN,
-    UNLINK_SCREEN,
-    BACKUP_SCREEN,
-    SWAP_SCREEN,
-    OVERWRITE_SCREEN
+    start_screen,
+    unlink_screen,
+    backup_screen,
+    swap_screen,
+    overwrite_screen
 };
 
 
-extern screens current_screen;
+extern screen current_screen;
 
 
 void draw_start_screen(int selected_menu_item);
