@@ -129,7 +129,7 @@ backup_account()
     // Check if the backup file exists.
     std::ifstream ifile(backup_path);
 
-    CurrentScreen = Overwrite;
+    current_screen = OVERWRITE_SCREEN;
 
     if (ifile) {
         backup_confirm = false;
@@ -152,20 +152,20 @@ backup_account()
         backup_confirm = true;
     }
 
-    CurrentScreen = Backup;
+    current_screen = BACKUP_SCREEN;
 
     // Write the backup file.
     if (backup_confirm) {
         if (write_backup(account, backup_path, buffer))
         {
             handle_cleanup(account, NULL, buffer, false);
-            CurrentScreen = Start;
+            current_screen = START_SCREEN;
         }
         return true;
     }
 
     handle_cleanup(account, NULL, buffer, !backup_confirm);
-    CurrentScreen = Start;
+    current_screen = START_SCREEN;
     return true;
 
 

@@ -30,7 +30,7 @@
 
 int selected_option = 0;
 const int NUM_OPTIONS = 4;
-Screens CurrentScreen = Start;
+screens current_screen = START_SCREEN;
 
 bool
 swap_account_action(const char* account_backup, const char* account_type)
@@ -41,7 +41,7 @@ swap_account_action(const char* account_backup, const char* account_type)
         return true;
     }
 
-    CurrentScreen = Start;
+    current_screen = START_SCREEN;
 
     return false;
 }
@@ -56,11 +56,11 @@ backup_account_action()
 
         if (button & VPAD_BUTTON_A) {
             backup_account();
-            CurrentScreen = Start;
+            current_screen = START_SCREEN;
             return true;
         } else if (button & VPAD_BUTTON_B)
         {
-            CurrentScreen = Start;
+            current_screen = START_SCREEN;
             return true;
         }
     return false;
@@ -83,7 +83,7 @@ unlink_account_action()
     }
     else if (button & VPAD_BUTTON_B)
     {
-        CurrentScreen = Start;
+        current_screen = START_SCREEN;
         return true;
     }
     return false;
@@ -154,19 +154,19 @@ process_start_screen()
     } else if (button & VPAD_BUTTON_A) {
         switch (selected_option) {
             case 0:
-                CurrentScreen = Swap;
+                current_screen = SWAP_SCREEN;
                 //swap_account_action(NNID_BACKUP.c_str(), "Nintendo");
                 break;
             case 1:
-                CurrentScreen = Swap;
+                current_screen = SWAP_SCREEN;
                 //swap_account_action(PNID_BACKUP.c_str(), "Pretendo");
                 break;
             case 2:
-                CurrentScreen = Backup;
+                current_screen = BACKUP_SCREEN;
                 //backup_account_action();
                 break;
             case 3:
-                CurrentScreen = Unlink;
+                current_screen = UNLINK_SCREEN;
                 //unlink_account_action();
                 break;
         }
@@ -177,28 +177,24 @@ process_start_screen()
 
 void process_screens()
 {
-    switch(CurrentScreen)
+    switch(current_screen)
     {
-        case Start:
+        case START_SCREEN:
             process_start_screen();
             break;
-        case Unlink:
+        case UNLINK_SCREEN:
             unlink_account_action();
             break;
-        case Swap:
+        case SWAP_SCREEN:
             if(selected_option == 0)
-            {
                 swap_account_action(NNID_BACKUP.c_str(), "Nintendo");
-            }
             else
-            {
                 swap_account_action(PNID_BACKUP.c_str(), "Pretendo");
-            }
             break;
-        case Backup:
+        case BACKUP_SCREEN:
             backup_account_action();
             break;
-        case Overwrite:
+        case OVERWRITE_SCREEN:
             break;
     }
 }
