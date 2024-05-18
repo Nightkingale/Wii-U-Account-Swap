@@ -72,7 +72,7 @@ draw_overwrite_menu(const char* backup_path)
 
 
 void
-draw_error_menu(const char* error_message)
+draw_error_menu(const char* error_message, bool no_backup)
 {
     draw_background(60, 10, 10, 255); // Red background.
     draw_screen_bars(false, false);
@@ -82,11 +82,15 @@ draw_error_menu(const char* error_message)
     draw_text(error_message, 64, 230, 50);
     draw_text("You will return to the main menu.", 64, 290, 50);
 
+    if (no_backup)
+        draw_text("Have you made a backup for this user and account yet?", 64, 400, 50);
+
     draw_text("If you believe this to be a bug, please report it.", 64, 840, 50);
 
     SDL_RenderPresent(renderer);
     SDL_Delay(5000);
 }
+
 
 void
 draw_success_menu(success type, bool inkay_configured)
