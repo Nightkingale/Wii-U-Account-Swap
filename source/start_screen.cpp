@@ -81,6 +81,8 @@ unlink_account_action()
             SYSLaunchMenu();
             return true;
         }
+        current_screen = start_screen;
+        return false;
     }
     else if (button & VPAD_BUTTON_B)
     {
