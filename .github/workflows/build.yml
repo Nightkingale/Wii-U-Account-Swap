@@ -8,11 +8,13 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Build Binary
       run: |
         docker build -t builder .
-        docker run --rm -v ${PWD}:/project builder make
+        docker run --rm -v ${PWD}:/project builder make DEBUG_BUILD=1
 
     - name: Upload Wii_U_Account_Swap.rpx
       uses: actions/upload-artifact@v4

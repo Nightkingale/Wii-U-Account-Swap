@@ -21,12 +21,12 @@ include $(DEVKITPRO)/wut/share/wut_rules
 
 #-------------------------------------------------------------------------------
 # APP_VERSION sets the version of the application
-# DEBUG_FLAG sets the debug flag for the application
+# DEBUG_BUILD sets the debug flag for the application
 #-------------------------------------------------------------------------------
 APP_VERSION	:=  v2.0.2
-DEBUG_FLAG	:=  0
+DEBUG_BUILD	:=  0
 
-ifeq ($(DEBUG_FLAG), 1)
+ifeq ($(DEBUG_BUILD), 1)
 GIT_HASH := $(shell git rev-parse --short HEAD)
 APP_VERSION := $(APP_VERSION)-$(GIT_HASH)
 endif
@@ -154,7 +154,7 @@ all: $(BUILD)
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@$(MAKE) -C $(BUILD) -f $(CURDIR)/Makefile V=$(DEBUG_FLAG)
+	@$(MAKE) -C $(BUILD) -f $(CURDIR)/Makefile V=$(DEBUG_BUILD)
 
 #-------------------------------------------------------------------------------
 clean:
