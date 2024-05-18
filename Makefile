@@ -23,8 +23,8 @@ include $(DEVKITPRO)/wut/share/wut_rules
 # APP_VERSION sets the version of the application
 # DEBUG_BUILD sets the debug flag for the application
 #-------------------------------------------------------------------------------
-APP_VERSION	:=  v2.0.2
-DEBUG_BUILD	:=  0
+APP_VERSION	:=	v2.0.2
+DEBUG_BUILD	:=	0
 
 ifeq ($(DEBUG_BUILD), 1)
 GIT_HASH := $(shell git rev-parse --short HEAD)
