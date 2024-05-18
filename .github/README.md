@@ -35,7 +35,7 @@ If the program is placed correctly on an SD card, Wii U Account Swap will appear
 I hope that I am able to express my thanks as much as possible to those who made this repository possible.
 * [GaryOderNichts](https://github.com/GaryOderNichts), for assisting me with obtaining user information such as the Mii name and the persistent ID, allowing me to recreate his signature user interface in the v2.0.0 release, and especially for helping me reimplement it.
 * [Lazr1026](https://github.com/Lazr1026), for helping me figure out all of the logistics for the tool, and also stress testing it.
-* [Luni Moon](https://github.com/luni-moon), for their amazing support on behalf of the [Pretendo server](https://invite.gg/pretendo), and also for exchanging ideas with me on code and concepts.
+* [luni-moon](https://github.com/luni-moon), for their amazing support on behalf of the [Pretendo server](https://invite.gg/pretendo), and also for exchanging ideas with me on code and concepts.
 * [Maschell](https://github.com/Maschell), for all of his work on the Aroma environment.
 * [NinStar](https://github.com/ninstar), who discovered over on [GBAtemp](https://gbatemp.net/threads/deleting-wii-u-user-without-nid-password.493387/page-5) the default values for a local user.
 * [Font Awesome](https://fontawesome.com/), for their font containing some amazing icons used throughout the user interface starting with the v2.0.0 release.
