@@ -133,25 +133,20 @@ backup_account()
         return false;
     }
 
-    // Check if the backup file exists.
-    std::ifstream ifile(backup_path);
-
     current_screen = overwrite_screen;
 
-    if (ifile) {
+    // Check if the backup file exists.
+    if (std::filesystem::exists(backup_path)) {
         backup_confirm = false;
-        bool selected = false;
 
-        while (!selected) {
+        while (true) {
             draw_overwrite_menu(backup_path.c_str());
             int button = read_input();
 
             if (button & VPAD_BUTTON_A) {
                 backup_confirm = true;
-                selected = true;
                 break;
             } else if (button & VPAD_BUTTON_B) {
-                selected = true;
                 break;
             }
         }
