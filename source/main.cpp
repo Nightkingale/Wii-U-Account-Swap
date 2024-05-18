@@ -58,7 +58,7 @@ get_user_information()
     INKAY_CONFIG = std::string(environment_path_buffer) + std::string("/plugins/config/inkay.json");
 
     // Check if the Inkay configuration file exists.
-    INKAY_EXISTS = std::ifstream(INKAY_CONFIG).good();
+    INKAY_EXISTS = std::filesystem::exists(INKAY_CONFIG);
 }
 
 
