@@ -9,38 +9,42 @@ endif
 TOPDIR ?= $(CURDIR)
 
 #-------------------------------------------------------------------------------
-# APP_NAME sets the long name of the application
-# APP_SHORTNAME sets the short name of the application
-# APP_AUTHOR sets the author of the application
+# APP_NAME sets the long name of the application.
+# APP_SHORTNAME sets the short name of the application.
+# APP_AUTHOR sets the author of the application.
+# APP_VERSION sets the version of the application.
 #-------------------------------------------------------------------------------
 APP_NAME		:=  Wii U Account Swap
 APP_SHORTNAME	:=  Wii U Account Swap
 APP_AUTHOR		:=  Nightkingale
+APP_VERSION		:=	v2.0.2
 
 include $(DEVKITPRO)/wut/share/wut_rules
 
 #-------------------------------------------------------------------------------
-# APP_VERSION sets the version of the application
-# DEBUG_BUILD sets the debug flag for the application
+# DEBUG sets the debug flag for the application.
+# This should be 0 for release builds, and 1 for development/workflow builds.
+# * The version string will be appended with the git hash.
+# * Compiling will produce verbose logs.
 #-------------------------------------------------------------------------------
-APP_VERSION	:=	v2.0.2
-DEBUG_BUILD	:=	0
+DEBUG := 0
 
-ifeq ($(DEBUG_BUILD), 1)
-GIT_HASH := $(shell git rev-parse --short HEAD)
-APP_VERSION := $(APP_VERSION)-$(GIT_HASH)
+# This appends the git hash to the version string.
+ifeq ($(DEBUG), 1)
+	GIT_HASH := $(shell git rev-parse --short HEAD)
+	APP_VERSION := $(APP_VERSION)-$(GIT_HASH)
 endif
 
 #-------------------------------------------------------------------------------
-# TARGET is the name of the output
-# BUILD is the directory where object files & intermediate files will be placed
-# SOURCES is a list of directories containing source code
-# DATA is a list of directories containing data files
-# INCLUDES is a list of directories containing header files
-# CONTENT is the path to the bundled folder that will be mounted as /vol/content/
-# ICON is the game icon, leave blank to use default rule
-# TV_SPLASH is the image displayed during bootup on the TV, leave blank to use default rule
-# DRC_SPLASH is the image displayed during bootup on the DRC, leave blank to use default rule
+# TARGET is the name of the output.
+# BUILD is the directory where object files & intermediate files will be placed.
+# SOURCES is a list of directories containing source code.
+# DATA is a list of directories containing data files.
+# INCLUDES is a list of directories containing header files.
+# CONTENT is the path to the bundled folder that will be mounted as /vol/content/.
+# ICON is the game icon, leave blank to use default rule.
+# TV_SPLASH is the image displayed during bootup on the TV, leave blank to use default rule.
+# DRC_SPLASH is the image displayed during bootup on the DRC, leave blank to use default rule.
 #-------------------------------------------------------------------------------
 TARGET		:=	Wii_U_Account_Swap
 BUILD		:=	build
@@ -154,7 +158,7 @@ all: $(BUILD)
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@$(MAKE) -C $(BUILD) -f $(CURDIR)/Makefile V=$(DEBUG_BUILD)
+	@$(MAKE) -C $(BUILD) -f $(CURDIR)/Makefile V=$(DEBUG)
 
 #-------------------------------------------------------------------------------
 clean:

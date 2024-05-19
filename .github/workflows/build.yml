@@ -14,7 +14,7 @@ jobs:
     - name: Build Binary
       run: |
         docker build -t builder .
-        docker run --rm -v ${PWD}:/project builder make DEBUG_BUILD=1
+        docker run --rm -v ${PWD}:/project builder make DEBUG=1
 
     - name: Upload Wii_U_Account_Swap.rpx
       uses: actions/upload-artifact@v4
