@@ -2,12 +2,13 @@
 #include <mocha/mocha.h>
 #include <sysapp/launch.h>
 
+#include "start_screen.hpp"
+
 #include "backup.hpp"
 #include "easter_egg.hpp"
 #include "input.hpp"
 #include "main.hpp"
 #include "nintendo_glyphs.hpp"
-#include "start_screen.hpp"
 #include "sub_screens.hpp"
 #include "swap.hpp"
 #include "unlink.hpp"

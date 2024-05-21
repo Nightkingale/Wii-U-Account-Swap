@@ -11,10 +11,11 @@
 #include <whb/log_console.h>
 #include <whb/proc.h>
 
+#include "swap.hpp"
+
 #include "main.hpp"
 #include "start_screen.hpp"
 #include "sub_screens.hpp"
-#include "swap.hpp"
 
 
 void

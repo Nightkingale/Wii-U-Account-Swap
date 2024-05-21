@@ -2,10 +2,11 @@
 
 #include <SDL2/SDL_ttf.h>
 
+#include "sub_screens.hpp"
+
 #include "input.hpp"
 #include "main.hpp"
 #include "nintendo_glyphs.hpp"
-#include "sub_screens.hpp"
 #include "unlink.hpp"
 #include "utils.hpp"
 

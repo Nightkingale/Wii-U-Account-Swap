@@ -12,8 +12,9 @@
 #include <whb/log_console.h>
 #include <whb/proc.h>
 
-#include "input.hpp"
 #include "main.hpp"
+
+#include "input.hpp"
 #include "start_screen.hpp"
 #include "sub_screens.hpp"
 #include "utils.hpp"

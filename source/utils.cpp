@@ -5,9 +5,11 @@
 #include <SDL2/SDL_ttf.h>
 
 #include <fa-solid-900_ttf.h>
+
+#include "utils.hpp"
+
 #include "main.hpp"
 #include "nintendo_glyphs.hpp"
-#include "utils.hpp"
 
 
 std::map<int, TTF_Font*> text_font_cache;
