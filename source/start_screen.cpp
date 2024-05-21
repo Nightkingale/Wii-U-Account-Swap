@@ -23,8 +23,7 @@ bool
 swap_account_action(const char* account_backup, account account_type)
 {
     if (swap_account(account_backup, account_type)) {
-        OSForceFullRelaunch();
-        SYSLaunchMenu();
+        OSLaunchTitlel(OS_TITLE_ID_REBOOT, 0);
         return true;
     }
 
@@ -63,8 +62,7 @@ unlink_account_action()
 
     if (button & VPAD_BUTTON_A) {
         if (unlink_account()) {
-            OSForceFullRelaunch();
-            SYSLaunchMenu();
+            OSLaunchTitlel(OS_TITLE_ID_REBOOT, 0);
             return true;
         }
         current_screen = start_screen;
