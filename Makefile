@@ -17,7 +17,7 @@ TOPDIR ?= $(CURDIR)
 APP_NAME		:=  Wii U Account Swap
 APP_SHORTNAME	:=  Wii U Account Swap
 APP_AUTHOR		:=  Nightkingale
-APP_VERSION		:=	v2.0.2
+APP_VERSION		:=	v2.0.3
 
 include $(DEVKITPRO)/wut/share/wut_rules
 
