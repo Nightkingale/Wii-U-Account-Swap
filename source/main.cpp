@@ -25,6 +25,7 @@ bool INKAY_EXISTS; // Whether the Inkay plugin config exists.
 std::string NNID_BACKUP; // The backup path to the Nintendo Network ID account.dat.
 std::string PNID_BACKUP; // The backup path to the Pretendo Network ID account.dat.
 std::string MII_NICKNAME; // The current user's Mii nickname.
+std::string ACCOUNT_NAME; // The current user's account name.
 std::string ACCOUNT_FILE; // The path to the current account.dat.
 std::string INKAY_CONFIG; // The path to the Inkay configuration file.
 
@@ -37,23 +38,30 @@ int client_handle = 0; // The client handle for flushing the filesystem.
 void
 get_user_information()
 {
-    // Grab the user's Mii name and persistent ID.
+    // Grab the user's Mii name.
     nn::act::Initialize();
     int16_t mii_name[256];
     nn::act::GetMiiName(mii_name);
     MII_NICKNAME = std::string(mii_name, mii_name + sizeof(mii_name) / sizeof(mii_name[0]));
-    USER_ID = nn::act::GetPersistentId();
+    
+    // Grab the user's account ID (username).
+    char account_name[256];
+    nn::act::GetAccountId(account_name);
+    ACCOUNT_NAME = std::string(account_name);
 
-    // Set the account file path.
+    // Get the user's persistent ID.
+    USER_ID = nn::act::GetPersistentId();
     char user_id_hex[9];
     sprintf(user_id_hex, "%08x", USER_ID);
+
+    // Set the account file path.
     ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/" + std::string(user_id_hex) + "/account.dat";
 
     // Set the backup file paths.
     NNID_BACKUP = "fs:/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/nnid_account.dat";
     PNID_BACKUP = "fs:/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/pnid_account.dat";
 
-    // Set the Inkay configuration file path.
+    // Get the environment path and set the Inkay configuration file path.
     char environment_path_buffer[0x100];
     Mocha_GetEnvironmentPath(environment_path_buffer, sizeof(environment_path_buffer));
     INKAY_CONFIG = std::string(environment_path_buffer) + std::string("/plugins/config/inkay.json");
