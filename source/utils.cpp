@@ -184,14 +184,24 @@ draw_screen_bars(bool show_confirm, bool show_controls)
     draw_text("Current User: ", 64, 955, 40);
     draw_text(MII_NICKNAME.c_str(), 64 + get_text_size("Current User: ", 40), 955, 40, {176, 176, 176, 255});
 
+    // If the account ID is not empty, display it in parentheses.
+    std::string account_display;
+    if (!ACCOUNT_ID.empty())
+        account_display = " (" + ACCOUNT_ID + ")";
+    else
+        account_display = " (Local User)";
+
+    draw_text(account_display.c_str(), 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40), \
+        955, 40, {176, 176, 176, 255});
+
     if (INKAY_EXISTS)
         // Draw the plugin checkmark icon next to the name.
         draw_icon("\uE55C", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) \
-            + 16, 960, 40);
+            + get_text_size(account_display.c_str(), 40) + 16, 960, 40);
     else
         // Draw the plugin exit icon next to the name.
         draw_icon("\uE560", 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) \
-            + 16, 960, 40);
+            + get_text_size(account_display.c_str(), 40) + 16, 960, 40);
 
     draw_text(ACCOUNT_FILE.c_str(), 64, 1005, 40, {176, 176, 176, 255});
 
