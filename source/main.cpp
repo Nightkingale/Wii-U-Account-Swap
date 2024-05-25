@@ -20,12 +20,12 @@
 #include "utils.hpp"
 
 
-unsigned int USER_ID; // The current user persistant ID.
+unsigned int PERSISTENT_ID; // The current user persistant ID.
 bool INKAY_EXISTS; // Whether the Inkay plugin config exists.
 std::string NNID_BACKUP; // The backup path to the Nintendo Network ID account.dat.
 std::string PNID_BACKUP; // The backup path to the Pretendo Network ID account.dat.
 std::string MII_NICKNAME; // The current user's Mii nickname.
-std::string ACCOUNT_NAME; // The current user's account name.
+std::string ACCOUNT_ID; // The current user's account name.
 std::string ACCOUNT_FILE; // The path to the current account.dat.
 std::string INKAY_CONFIG; // The path to the Inkay configuration file.
 
@@ -44,22 +44,22 @@ get_user_information()
     nn::act::GetMiiName(mii_name);
     MII_NICKNAME = std::string(mii_name, mii_name + sizeof(mii_name) / sizeof(mii_name[0]));
     
-    // Grab the user's account ID (username).
-    char account_name[256];
-    nn::act::GetAccountId(account_name);
-    ACCOUNT_NAME = std::string(account_name);
+    // Grab the user's account ID.
+    char account_id[256];
+    nn::act::GetAccountId(account_id);
+    ACCOUNT_ID = std::string(account_id);
 
     // Get the user's persistent ID.
-    USER_ID = nn::act::GetPersistentId();
-    char user_id_hex[9];
-    sprintf(user_id_hex, "%08x", USER_ID);
+    PERSISTENT_ID = nn::act::GetPersistentId();
+    char persistent_id_hex[9];
+    sprintf(persistent_id_hex, "%08x", PERSISTENT_ID);
 
     // Set the account file path.
-    ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/" + std::string(user_id_hex) + "/account.dat";
+    ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/" + std::string(persistent_id_hex) + "/account.dat";
 
     // Set the backup file paths.
-    NNID_BACKUP = "fs:/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/nnid_account.dat";
-    PNID_BACKUP = "fs:/vol/external01/wiiu/accounts/" + std::string(user_id_hex) + "/pnid_account.dat";
+    NNID_BACKUP = "fs:/vol/external01/wiiu/accounts/" + std::string(persistent_id_hex) + "/nnid_account.dat";
+    PNID_BACKUP = "fs:/vol/external01/wiiu/accounts/" + std::string(persistent_id_hex) + "/pnid_account.dat";
 
     // Get the environment path and set the Inkay configuration file path.
     char environment_path_buffer[0x100];
