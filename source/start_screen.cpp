@@ -15,8 +15,10 @@
 #include "utils.hpp"
 
 
-int selected_option = 0;
-const int NUM_OPTIONS = 4;
+int selected_option = 0; // The currently selected menu item.
+const int NUM_OPTIONS = 4; // The number of menu items.
+bool reboot_initiated = false; // Whether a reboot has been initiated.
+
 screen current_screen = start_screen;
 
 
@@ -56,12 +58,14 @@ bool
 unlink_account_action()
 {
     OSEnableHomeButtonMenu(0);
-    draw_unlink_menu();
+    if (!reboot_initiated)
+        draw_unlink_menu();
     int button = read_input();
 
     if (button & VPAD_BUTTON_A) {
         if (unlink_account()) {
             OSLaunchTitlel(OS_TITLE_ID_REBOOT, 0);
+            reboot_initiated = true;
             return true;
         }
         current_screen = start_screen;
