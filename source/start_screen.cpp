@@ -27,9 +27,7 @@ swap_account_action(const char* account_backup, account account_type)
         OSLaunchTitlel(OS_TITLE_ID_REBOOT, 0);
         return true;
     }
-
     current_screen = start_screen;
-
     return false;
 }
 
@@ -37,19 +35,19 @@ swap_account_action(const char* account_backup, account account_type)
 bool
 backup_account_action()
 {
-        OSEnableHomeButtonMenu(0);
-        draw_backup_menu();
-        int button = read_input();
+    OSEnableHomeButtonMenu(0);
+    draw_backup_menu();
+    int button = read_input();
 
-        if (button & VPAD_BUTTON_A) {
-            backup_account();
-            current_screen = start_screen;
-            return true;
-        } else if (button & VPAD_BUTTON_B)
-        {
-            current_screen = start_screen;
-            return true;
-        }
+    if (button & VPAD_BUTTON_A) {
+        backup_account();
+        current_screen = start_screen;
+        return true;
+    } else if (button & VPAD_BUTTON_B)
+    {
+        current_screen = start_screen;
+        return true;
+    }
     return false;
 }
 
