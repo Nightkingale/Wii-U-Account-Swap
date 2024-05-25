@@ -135,6 +135,14 @@ draw_icon(const char* icon, int x, int y, int size, SDL_Color color)
 }
 
 
+void
+draw_button(const std::string& glyph, const std::string& text, int x, int y, int size)
+{
+    std::string full_text = glyph + " " + text;
+    draw_text(full_text.c_str(), x - get_text_size(full_text.c_str(), size), y, size);
+}
+
+
 int
 get_text_size(const char* text, int size, bool get_height)
 {
@@ -203,12 +211,9 @@ draw_screen_bars(bool show_confirm, bool show_controls)
 
     if (show_confirm) {
         draw_rectangle(0, 940, SCREEN_WIDTH, 140, 100, 0, 100, 255);
-        std::string confirm_text = std::string(NIN_GLYPH_BTN_A) + " Confirm";
-        draw_text(confirm_text.c_str(), 64, 975, 50);
-        std::string decline_text = std::string(NIN_GLYPH_BTN_B) + " Decline";
-        draw_text(decline_text.c_str(), SCREEN_WIDTH - 64 - get_text_size(decline_text.c_str(), 50), 975, 50);
+        draw_button(NIN_GLYPH_BTN_A, "Confirm", 336, 975, 50);
+        draw_button(NIN_GLYPH_BTN_B, "Decline", SCREEN_WIDTH - 64, 975, 50);
     } else if (show_controls) {
-        std::string navigate_text = std::string(NIN_GLYPH_BTN_DPAD_UP_DOWN) + " Navigate";
-        draw_text(navigate_text.c_str(), SCREEN_WIDTH - 64 - get_text_size(navigate_text.c_str(), 50), 975, 50);
+        draw_button(NIN_GLYPH_BTN_DPAD_UP_DOWN, "Navigate", SCREEN_WIDTH - 64, 975, 50);
     }
 }
