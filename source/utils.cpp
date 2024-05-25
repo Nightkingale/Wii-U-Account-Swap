@@ -199,10 +199,10 @@ draw_screen_bars(bool show_confirm, bool show_controls)
     // Calculate the common x-coordinate offset for the text and icon.
     int offset = 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) + 32;
 
-    // If the account ID is not empty, display "Account ID: (ID)" next to the name.
+    // If the account ID is not empty, display "Network ID: (ID)" next to the name.
     std::string account_display = ACCOUNT_ID.empty() ? "n/a" : ACCOUNT_ID;
-    draw_text("Account ID: ", offset, 955, 40);
-    offset += get_text_size("Account ID: ", 40);
+    draw_text("Network ID: ", offset, 955, 40);
+    offset += get_text_size("Network ID: ", 40);
     draw_text(account_display.c_str(), offset, 955, 40, {176, 176, 176, 255});
 
     // Draw the plugin icon next to the name.
