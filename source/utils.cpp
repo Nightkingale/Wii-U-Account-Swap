@@ -200,14 +200,14 @@ draw_screen_bars(bool show_confirm, bool show_controls)
     int offset = 64 + get_text_size("Current User: ", 40) + get_text_size(MII_NICKNAME.c_str(), 40) + 32;
 
     // If the account ID is not empty, display "Network ID: (ID)" next to the name.
-    std::string account_display = ACCOUNT_ID.empty() ? "n/a" : ACCOUNT_ID;
+    std::string account_display = ACCOUNT_ID.empty() ? "N/A" : ACCOUNT_ID;
     draw_text("Network ID: ", offset, 955, 40);
     offset += get_text_size("Network ID: ", 40);
     draw_text(account_display.c_str(), offset, 955, 40, {176, 176, 176, 255});
 
     // Draw the plugin icon next to the name.
     std::string icon = INKAY_EXISTS ? "\uE55C" : "\uE560";
-    offset += get_text_size(account_display.c_str(), 40) + 32;  // Only add the size of the account ID
+    offset += get_text_size(account_display.c_str(), 40) + 32; // Only add the size of the account ID.
     draw_icon(icon.c_str(), offset, 960, 40);
 
     // Draw the account file name.
