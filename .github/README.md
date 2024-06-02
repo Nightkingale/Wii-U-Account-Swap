@@ -11,6 +11,14 @@ Note that if you're trying to use a Pretendo Network ID with the same username a
 **Please be aware that an `account.dat` that's linked to a Network ID will have sensitive personal information in it. This includes both e-mail addresses and encrypted cached passwords (if you chose to save them). These will all be stored on your SD Card if you choose to back them up, so please do not share them with anybody!**
 
 ## Installation
+For convenience, it is recommended that you download Wii U Account Swap from the [Homebrew App Store](https://hb-app.store/wiiu/Wii-U-Account-Swap). Both are maintained by me, and I ensure that the mirror is updated instantaneously after a new release.
+
+<p align="center">
+  <a href="https://hb-app.store/wiiu/Wii-U-Account-Swap">
+    <img src="appstore.png" alt="Get it on the Homebrew App Store!">
+  </a>
+</p>
+
 A Wii U homebrew file will be bundled with each release. It should be placed on your SD card, particularly in `wiiu/apps/`.
 * It's important to have the Aroma environment installed for Wii U Account Swap to work. Please visit our [hacking guide](https://wiiu.hacks.guide/) and the [Aroma webpage](https://aroma.foryour.cafe/) if you would like to softmod your Wii U console.
 
