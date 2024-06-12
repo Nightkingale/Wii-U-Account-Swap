@@ -15,7 +15,7 @@ For convenience, it is recommended that you download Wii U Account Swap from the
 
 <p align="center">
   <a href="https://hb-app.store/wiiu/Wii-U-Account-Swap">
-    <img src="appstore.png" alt="Get it on the Homebrew App Store!">
+    <img src="appstore.png" alt="Get it on the Homebrew App Store!" width="50%" height="50%">
   </a>
 </p>
 
