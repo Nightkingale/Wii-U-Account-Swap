@@ -67,7 +67,7 @@ I described the best method for initial setup [here](https://github.com/Nightkin
 
 **3. Help! All the games I purchased from Nintendo eShop no longer work!**
 
-Since you are swapping between accounts on one user (meaning the Nintendo Network ID is effectively taken off your console), the system believes that the Nintendo Network ID was deleted. If you happen to run into this issue, you'll need [signature patches](https://github.com/marco-calautti/SigpatchesModuleWiiU) installed.
+Since you are swapping between accounts on one user (meaning the Nintendo Network ID is effectively taken off your console), the system believes that the Nintendo Network ID was deleted. If you happen to run into this issue, you'll need [signature patches](https://github.com/marco-calautti/SigpatchesModuleWiiU) installed as long as you are using your Pretendo Network ID. Swapping back to your Nintendo Network ID will rectify the issue as well.
 
 ## Compilation
 You should have [wut](https://github.com/devkitPro/wut) installed. Following the [devkitPro Getting Started guide](https://devkitpro.org/wiki/Getting_Started) will set you up with it and all other basic dependancies. Additionally, you will need the following dependancies:
