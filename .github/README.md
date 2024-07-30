@@ -2,6 +2,8 @@
 
 A tool to manage a user's account.dat, particularly for Network IDs.
 
+> ⚠️ **Disclaimer:** While Wii U Account Swap is meant to serve as an alternative to needing multiple users, per the [Pretendo Network installation guide](https://pretendo.network/docs/install/wiiu), having seperate users is still currently the recommended method of utilizing Pretendo Network services on Wii U. If you are still interested in using this tool, see [here](https://github.com/Nightkingale/Wii-U-Account-Swap/issues/3#issuecomment-2075667254) for an example of the setup process. If you run into issues, the best place to ask for help is on the [Nightkingale Studios](https://discord.nightkingale.com/) Discord server. The #chat-hangout channel is okay for inquiries related to my software.
+
 Wii U Account Swap is an elaborate tool that allows the management of a Wii U user's `account.dat` file, located in `storage_mlc:/usr/save/system/act/[PERSISTENT_ID]/`. This allows you to create a backup of (and of course, swap between) both a Nintendo Network ID and Pretendo Network ID. An unlinking feature is also provided for convienence, which will *locally* remove the currently attached Network ID from a user, all without deleting the user or Network ID itself.
 
 Theoretically, this swap would limit needing two user accounts to use both services. That being said, the cost to this is that you may temporarily lose Nintendo eShop purchases, as the system believes that the Nintendo Network ID was deleted. If you happen to run into this issue, you'll need [signature patches](https://github.com/marco-calautti/SigpatchesModuleWiiU) installed.
