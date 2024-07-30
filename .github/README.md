@@ -15,15 +15,9 @@ A tool to manage a user's account.dat, particularly for Network IDs.
 </p>
 
 
-Wii U Account Swap is an elaborate tool that allows the management of a Wii U user's `account.dat` file, located in `storage_mlc:/usr/save/system/act/[PERSISTENT_ID]/`. 
+Wii U Account Swap is an elaborate Aroma tool that allows the management of a user's `account.dat` file, located in `storage_mlc:/usr/save/system/act/[PERSISTENT_ID]/`.
 
-This allows you to create a backup of (and of course, swap between) both a Nintendo Network ID and Pretendo Network ID. An unlinking feature is also provided for convienence, which will *locally* remove the currently attached Network ID from a user, all without deleting the user or Network ID itself.
-
-Theoretically, this swap would limit needing two user accounts to use both services. That being said, the cost to this is that you may temporarily lose Nintendo eShop purchases, as the system believes that the Nintendo Network ID was deleted. If you happen to run into this issue, you'll need [signature patches](https://github.com/marco-calautti/SigpatchesModuleWiiU) installed.
-
-Note that if you're trying to use a Pretendo Network ID with the same username as an existing Nintendo Network ID, this tool makes it possible. You will not be able to do the same on a Nintendo 3DS, however, without a similar tool on there, such as [FriendsAccountSwitcher.gm9](https://github.com/MatthewL246/pretendo-docker/blob/main/console-files/FriendsAccountSwitcher.gm9) by [MatthewL246](https://github.com/MatthewL246).
-
-Please be aware that an `account.dat` that's linked to a Network ID will have sensitive personal information in it. This includes both e-mail addresses and encrypted cached passwords (if you chose to save them). These will all be stored on your SD Card if you choose to back them up, so please do not share them with anybody!
+> ⚠️ **Disclaimer:** Please be aware that an `account.dat` that's linked to a Network ID will have sensitive personal information in it. This includes both e-mail addresses and encrypted cached passwords (if you chose to save them). These will all be stored on your SD Card if you choose to back them up, so please do not share them with anybody!
 
 ## Installation
 For convenience, it is recommended that you download Wii U Account Swap from the [Homebrew App Store](https://hb-app.store/wiiu/Wii-U-Account-Swap). Both are maintained by me, and I ensure that the mirror is updated instantaneously after a new release.
@@ -70,6 +64,10 @@ Realistically, Pretendo Network's developers are much smarter than I am. That's 
 **2. Wii U Account Swap is very confusing! How do I set it up?**
 
 I described the best method for initial setup [here](https://github.com/Nightkingale/Wii-U-Account-Swap/issues/3#issuecomment-2075667254), which you will only need to do once per user. I am open to suggestions on how things could be streamlined, so if you have any ideas, leave an issue with feedback or give me a shout!
+
+**3. Help! All the games I purchased from Nintendo eShop no longer work!**
+
+Since you are swapping between accounts on one user (meaning the Nintendo Network ID is effectively taken off your console), the system believes that the Nintendo Network ID was deleted. If you happen to run into this issue, you'll need [signature patches](https://github.com/marco-calautti/SigpatchesModuleWiiU) installed.
 
 ## Compilation
 You should have [wut](https://github.com/devkitPro/wut) installed. Following the [devkitPro Getting Started guide](https://devkitpro.org/wiki/Getting_Started) will set you up with it and all other basic dependancies. Additionally, you will need the following dependancies:
