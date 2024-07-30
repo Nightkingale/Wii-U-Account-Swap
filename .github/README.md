@@ -2,15 +2,28 @@
 
 A tool to manage a user's account.dat, particularly for Network IDs.
 
-> ⚠️ **Disclaimer:** While Wii U Account Swap is meant to serve as an alternative to needing multiple users, per the [Pretendo Network installation guide](https://pretendo.network/docs/install/wiiu), having seperate users is still currently the recommended method of utilizing Pretendo Network services on Wii U. If you are still interested in using this tool, see [here](https://github.com/Nightkingale/Wii-U-Account-Swap/issues/3#issuecomment-2075667254) for an example of the setup process. If you run into issues, the best place to ask for help is on the [Nightkingale Studios](https://discord.nightkingale.com/) Discord server. The #chat-hangout channel is okay for inquiries related to my software.
+<p align="left">
+  <a href="https://discord.nightkingale.com/">
+    <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join us!" width="10%" height="10%">
+  </a>
+  <a href="https://donate.nightkingale.com/">
+    <img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="Thank you!" width="10%" height="10%">
+  </a>
+  <a href="https://nightkingale.com/">
+    <img src="https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white" alt="Visit us!" width="10%" height="10%">
+  </a>
+</p>
 
-Wii U Account Swap is an elaborate tool that allows the management of a Wii U user's `account.dat` file, located in `storage_mlc:/usr/save/system/act/[PERSISTENT_ID]/`. This allows you to create a backup of (and of course, swap between) both a Nintendo Network ID and Pretendo Network ID. An unlinking feature is also provided for convienence, which will *locally* remove the currently attached Network ID from a user, all without deleting the user or Network ID itself.
+
+Wii U Account Swap is an elaborate tool that allows the management of a Wii U user's `account.dat` file, located in `storage_mlc:/usr/save/system/act/[PERSISTENT_ID]/`. 
+
+This allows you to create a backup of (and of course, swap between) both a Nintendo Network ID and Pretendo Network ID. An unlinking feature is also provided for convienence, which will *locally* remove the currently attached Network ID from a user, all without deleting the user or Network ID itself.
 
 Theoretically, this swap would limit needing two user accounts to use both services. That being said, the cost to this is that you may temporarily lose Nintendo eShop purchases, as the system believes that the Nintendo Network ID was deleted. If you happen to run into this issue, you'll need [signature patches](https://github.com/marco-calautti/SigpatchesModuleWiiU) installed.
 
 Note that if you're trying to use a Pretendo Network ID with the same username as an existing Nintendo Network ID, this tool makes it possible. You will not be able to do the same on a Nintendo 3DS, however, without a similar tool on there, such as [FriendsAccountSwitcher.gm9](https://github.com/MatthewL246/pretendo-docker/blob/main/console-files/FriendsAccountSwitcher.gm9) by [MatthewL246](https://github.com/MatthewL246).
 
-**Please be aware that an `account.dat` that's linked to a Network ID will have sensitive personal information in it. This includes both e-mail addresses and encrypted cached passwords (if you chose to save them). These will all be stored on your SD Card if you choose to back them up, so please do not share them with anybody!**
+Please be aware that an `account.dat` that's linked to a Network ID will have sensitive personal information in it. This includes both e-mail addresses and encrypted cached passwords (if you chose to save them). These will all be stored on your SD Card if you choose to back them up, so please do not share them with anybody!
 
 ## Installation
 For convenience, it is recommended that you download Wii U Account Swap from the [Homebrew App Store](https://hb-app.store/wiiu/Wii-U-Account-Swap). Both are maintained by me, and I ensure that the mirror is updated instantaneously after a new release.
@@ -27,6 +40,8 @@ A Wii U homebrew file will be bundled with each release. It should be placed on 
 ## Usage
 If the program is placed correctly on an SD card, Wii U Account Swap will appear on the Wii U Menu alongside any other homebrew applications. It can then be launched just as anything else.
 * If Wii U Account Swap doesn't show up on the Wii U Menu, confirm you placed the WUHB file on your SD card correctly and restart your console.
+
+### Configuration
 * `Swap to Nintendo Network ID`: Restores the file located at `SD:/wiiu/accounts/[PERSISTENT_ID]/nnid_account.dat`.
     * If you use the [Inkay](https://github.com/PretendoNetwork/Inkay) plugin for the Aroma environment and its configuration is detected (the plugin icon next to your Mii name will have a check), then your configuration will be rewritten automatically to disable Pretendo Network, allowing you to connect to the Nintendo Network.
     * If a backup does not exist, yet you still try and restore one, you will be prompted with an error requesting you make one.
@@ -40,6 +55,34 @@ If the program is placed correctly on an SD card, Wii U Account Swap will appear
 * `Unlink the account.dat File`: Unlinks your Network ID from a user, essentially making it a local-only user.
     * This is done by replacing any Network-related values with default settings. Your user Mii and any local content associated with the user will stay intact.
     * Unlinking will not unlink the account from your Wii U on the server. This means you can reattach the Network ID to any user on the system (including reattaching it to the same one), but the Network ID is still locked to the same console.
+
+## Assistance
+If you encounter bugs, the best place to report them would be the [Issues](https://github.com/Nightkingale/Wii-U-Account-Swap/issues) tab. This allows for easy tracking and reference, though please check for duplicates first and comment there if possible!
+
+For assistance or other inquiries, the best place to reach out would be the [Nightkingale Studios](https://discord.nightkingale.com/) Discord server ([#chat-hangout](https://discord.com/channels/450846070025748480/1127657272315740260) is okay). I am active in many other Wii U homebrew Discord servers as well.
+
+### Frequently Asked Questions
+
+**1. Why should I use this instead of separate users like Pretendo Network recommends?**
+
+Realistically, Pretendo Network's developers are much smarter than I am. That's why I believe that as long as the [Pretendo Network installation guide](https://pretendo.network/docs/install/wiiu) recommends what it does, that should be the primary method. However, should you still want to use this (either for convienence or using the same name for both Network IDs), it does serve as an alternative method. Please do your research beforehand.
+
+**2. Wii U Account Swap is very confusing! How do I set it up?**
+
+I described the best method for initial setup [here](https://github.com/Nightkingale/Wii-U-Account-Swap/issues/3#issuecomment-2075667254), which you will only need to do once per user. I am open to suggestions on how things could be streamlined, so if you have any ideas, leave an issue with feedback or give me a shout!
+
+## Compilation
+You should have [wut](https://github.com/devkitPro/wut) installed. Following the [devkitPro Getting Started guide](https://devkitpro.org/wiki/Getting_Started) will set you up with it and all other basic dependancies. Additionally, you will need the following dependancies:
+
+* [wiiu-sdl2](https://github.com/yawut/SDL)
+* [wiiu-sdl2_mixer](https://github.com/yawut/SDL)
+* [wiiu-sdl2_ttf](https://github.com/yawut/SDL)
+* [libmocha](https://github.com/wiiu-env/libmocha)
+
+After all dependancies have been installed, you can just run `make`.
+
+* In addition, you can pass `DEBUG=1` as an argument, which will include the commit hash as part of the version string inside the binary. All products produced by [workflows](https://github.com/Nightkingale/Wii-U-Account-Swap/actions) utilize this.
+* The resulting binaries will be a `.rpx` file (not typically distributed for releases) and a `.wuhb` file. You can use these the same way as a release binary.
 
 ## Credits
 I hope that I am able to express my thanks as much as possible to those who made this repository possible.
