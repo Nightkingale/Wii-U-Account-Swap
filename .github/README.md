@@ -74,10 +74,10 @@ I described the best method for initial setup [here](https://github.com/Nightkin
 ## Compilation
 You should have [wut](https://github.com/devkitPro/wut) installed. Following the [devkitPro Getting Started guide](https://devkitpro.org/wiki/Getting_Started) will set you up with it and all other basic dependancies. Additionally, you will need the following dependancies:
 
+* [libmocha](https://github.com/wiiu-env/libmocha)
 * [wiiu-sdl2](https://github.com/yawut/SDL)
 * [wiiu-sdl2_mixer](https://github.com/yawut/SDL)
 * [wiiu-sdl2_ttf](https://github.com/yawut/SDL)
-* [libmocha](https://github.com/wiiu-env/libmocha)
 
 After all dependancies have been installed, you can just run `make`.
 
