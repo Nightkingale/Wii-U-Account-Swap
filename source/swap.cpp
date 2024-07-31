@@ -45,6 +45,45 @@ handle_cleanup(FILE* backup, account account_type, char* buffer, bool is_error =
     }
 }
 
+bool
+user_check(FILE* backup, account account_type)
+{
+    char *buffer = (char *)malloc(BUFFER_SIZE);
+    size_t bytes_read = 0;
+    if (buffer == NULL) {
+        draw_error_menu("Error allocating memory!");
+        handle_cleanup(backup, account_type, buffer, true);
+        return false;
+    }
+
+    // Prepare the search string, including the user's persistent ID.
+    char persistent_id_hex[9];
+    sprintf(persistent_id_hex, "%08x", PERSISTENT_ID);
+    std::string search_string = "PersistentId=" + std::string(persistent_id_hex);
+    bool found = false;
+    rewind(backup);
+
+    while ((bytes_read = fread(buffer, 1, BUFFER_SIZE, backup)) > 0) {
+        if (ferror(backup)) {
+            draw_error_menu("Error reading from backup account.dat file!");
+            handle_cleanup(backup, account_type, buffer, true);
+            return false;
+        }
+
+        if (strstr(buffer, search_string.c_str()) != NULL) {
+            found = true; // The user's persistent ID was found.
+            break;
+        }
+    }
+
+    if (!found) {
+        // The persistent ID probably does not match the user's, so block the swap.
+        // This means that the end-user probably tried moving backups around.
+        draw_error_menu("The account.dat does not match the current user!");
+        handle_cleanup(backup, account_type, buffer, true);
+    }
+    return found;
+}
 
 bool
 swap_account(const char* backup_file, account account_type)
@@ -60,7 +99,14 @@ swap_account(const char* backup_file, account account_type)
         return false;
     }
 
+    // This is a fix to prevent users from using account.dat files that aren't made for it.
+    // Moving around backups was an oversight people abused, which led to broken users and bricks.
+    if (!user_check(backup, account_type)) {
+        return false;
+    }
+
     // Open the account.dat file for writing.
+    rewind(backup); // Maybe not necessary but just in case?
     char *buffer = (char *)malloc(BUFFER_SIZE);
     if (buffer == NULL) {
         draw_error_menu("Error allocating memory!");
