@@ -57,9 +57,7 @@ user_check(FILE* backup, account account_type)
     }
 
     // Prepare the search string, including the user's persistent ID.
-    char persistent_id_hex[9];
-    snprintf(persistent_id_hex, sizeof persistent_id_hex, "%08x", PERSISTENT_ID);
-    std::string search_string = "PersistentId=" + std::string(persistent_id_hex);
+    std::string search_string = "PersistentId=" + PERSISTENT_ID;
     bool found = false;
     rewind(backup);
 
