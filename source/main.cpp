@@ -52,7 +52,7 @@ get_user_information()
     // Get the user's persistent ID.
     PERSISTENT_ID = nn::act::GetPersistentId();
     char persistent_id_hex[9];
-    sprintf(persistent_id_hex, "%08x", PERSISTENT_ID);
+    snprintf(persistent_id_hex, sizeof persistent_id_hex, "%08x", PERSISTENT_ID);
 
     // Set the account file path.
     ACCOUNT_FILE = "storage_mlc:/usr/save/system/act/" + std::string(persistent_id_hex) + "/account.dat";
