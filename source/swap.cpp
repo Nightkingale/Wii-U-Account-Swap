@@ -76,7 +76,7 @@ user_check(FILE* backup, account account_type)
 
     if (!found) {
         // The persistent ID probably does not match the user's, so block the swap.
-        // This means that the end-user probably tried moving backups around.
+        // This means that the end-user probably tried moving backups around. BRICK BLOCKED!
         draw_error_menu("The account.dat does not match the current user!");
         handle_cleanup(backup, account_type, buffer, true);
     }
