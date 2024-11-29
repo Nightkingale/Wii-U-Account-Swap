@@ -1,4 +1,4 @@
-FROM ghcr.io/wiiu-env/devkitppc:20240704
+FROM ghcr.io/wiiu-env/devkitppc:20241128
 
 COPY --from=ghcr.io/wiiu-env/libmocha:20230621 /artifacts $DEVKITPRO
 
