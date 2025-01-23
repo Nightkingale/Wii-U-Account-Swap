@@ -1,4 +1,6 @@
 #include <filesystem>
+#include <sstream>
+#include <string>
 
 #include <coreinit/thread.h>
 
@@ -105,14 +107,23 @@ backup_account()
     }
 
     bool network_account_found = false;
-    if (content.find("nintendo") != std::string::npos) {
-        // Nintendo Network ID is linked to the account.
-        backup_path = NNID_BACKUP;
-        network_account_found = true;
-    } else if (content.find("pretendo") != std::string::npos) {
-        // Pretendo Network ID is linked to the account.
-        backup_path = PNID_BACKUP;
-        network_account_found = true;
+    std::istringstream file_contentstream(content);
+    std::string line;
+
+    while (std::getline(file_contentstream, line)) {
+        if (line.find("MiiImageUrl") != std::string::npos) {
+            if (line.find("nintendo") != std::string::npos) {
+                // Nintendo Network ID is linked to the account.
+                backup_path = NNID_BACKUP;
+                network_account_found = true;
+                break;
+            } else if (line.find("pretendo") != std::string::npos) {
+                // Pretendo Network ID is linked to the account.
+                backup_path = PNID_BACKUP;
+                network_account_found = true;
+                break;
+            }
+        }
     }
 
     if (!network_account_found) {
