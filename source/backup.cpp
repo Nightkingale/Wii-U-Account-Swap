@@ -105,11 +105,11 @@ backup_account()
     }
 
     bool network_account_found = false;
-    if (content.find("account.nintendo.net") != std::string::npos) {
+    if (content.find("nintendo") != std::string::npos) {
         // Nintendo Network ID is linked to the account.
         backup_path = NNID_BACKUP;
         network_account_found = true;
-    } else if (content.find("pretendo-cdn.b-cdn.net") != std::string::npos) {
+    } else if (content.find("pretendo") != std::string::npos) {
         // Pretendo Network ID is linked to the account.
         backup_path = PNID_BACKUP;
         network_account_found = true;
