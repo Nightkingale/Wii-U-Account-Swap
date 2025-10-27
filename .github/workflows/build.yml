@@ -17,14 +17,14 @@ jobs:
         docker run --rm -v ${PWD}:/project builder make DEBUG=1
 
     - name: Upload Wii_U_Account_Swap.rpx
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: Wii_U_Account_Swap.rpx
         path: "*.rpx"
         if-no-files-found: error
 
     - name: Upload Wii_U_Account_Swap.wuhb
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: Wii_U_Account_Swap.wuhb
         path: "*.wuhb"
