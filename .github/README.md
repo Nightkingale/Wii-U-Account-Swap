@@ -72,7 +72,6 @@ Since you are swapping between accounts on one user (meaning the Nintendo Networ
 ## Compilation
 You should have [wut](https://github.com/devkitPro/wut) installed. Following the [devkitPro Getting Started guide](https://devkitpro.org/wiki/Getting_Started) will set you up with it and all other basic dependancies. Additionally, you will need the following dependancies:
 
-* [libmocha](https://github.com/wiiu-env/libmocha)
 * [wiiu-sdl2](https://github.com/yawut/SDL)
 * [wiiu-sdl2_mixer](https://github.com/yawut/SDL)
 * [wiiu-sdl2_ttf](https://github.com/yawut/SDL)

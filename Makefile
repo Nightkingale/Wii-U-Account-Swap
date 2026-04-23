@@ -8,6 +8,8 @@ endif
 
 TOPDIR ?= $(CURDIR)
 
+LIBMOCHA_DIR := $(TOPDIR)/external/libmocha
+
 #-------------------------------------------------------------------------------
 # APP_NAME sets the long name of the application.
 # APP_SHORTNAME sets the short name of the application.
@@ -69,14 +71,14 @@ CXXFLAGS	:= $(CFLAGS)
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-g $(ARCH) $(RPXSPECS) -Wl,-Map,$(notdir $*.map)
 
-LIBS := -lSDL2_mixer -lSDL2 -lSDL2_ttf -lfreetype -lharfbuzz -lfreetype -lpng -lbz2 \
-		-lz -lmodplug -lmpg123 -logg -lmocha -lwut
+LIBS := -lSDL2_mixer -lSDL2 -lSDL2_ttf -lfreetype -lharfbuzz -lbrotlidec -lbrotlienc \
+		-lbrotlicommon -lpng -lbz2 -lz -lmodplug -lmpg123 -logg -lmocha -lwut
 
 #-------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level
 # containing include and lib
 #-------------------------------------------------------------------------------
-LIBDIRS	:= $(PORTLIBS) $(WUT_ROOT) $(WUT_ROOT)/usr
+LIBDIRS	:= $(PORTLIBS) $(WUT_ROOT) $(LIBMOCHA_DIR)
 
 #-------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -157,6 +159,7 @@ endif
 all: $(BUILD)
 
 $(BUILD):
+	@$(MAKE) -C $(LIBMOCHA_DIR) TOPDIR=$(LIBMOCHA_DIR)
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) -C $(BUILD) -f $(CURDIR)/Makefile V=$(DEBUG)
 
@@ -164,6 +167,7 @@ $(BUILD):
 clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).wuhb $(TARGET).rpx $(TARGET).elf
+	@$(MAKE) -C $(LIBMOCHA_DIR) clean TOPDIR=$(LIBMOCHA_DIR)
 
 #-------------------------------------------------------------------------------
 else
