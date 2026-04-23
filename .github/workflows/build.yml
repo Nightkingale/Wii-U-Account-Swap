@@ -9,7 +9,8 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v6
       with:
-        fetch-depth: 0
+        fetch-depth: 1
+        submodules: recursive
 
     - name: Build Binary
       run: |
