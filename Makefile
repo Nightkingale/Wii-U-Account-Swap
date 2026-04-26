@@ -60,9 +60,13 @@ DRC_SPLASH	:=	assets/drc_splash.png
 #-------------------------------------------------------------------------------
 # options for code generation
 #-------------------------------------------------------------------------------
+SDL_CFLAGS := $(shell $(PREFIX)pkg-config --cflags sdl2 SDL2_ttf SDL2_mixer)
+SDL_LIBS := $(shell $(PREFIX)pkg-config --libs sdl2 SDL2_ttf SDL2_mixer)
+
 CFLAGS	:=	-Wall -Wextra -Wundef -Wshadow -Wpointer-arith -Wcast-align \
 			-O2 -fipa-pta -pipe -ffunction-sections \
-			$(MACHDEP)
+			$(MACHDEP) \
+			$(SDL_CFLAGS)
 
 CFLAGS	+=	$(INCLUDE) -D__WIIU__ -D__WUT__ -DAPP_VERSION=\"$(APP_VERSION)\"
 
@@ -71,8 +75,7 @@ CXXFLAGS	:= $(CFLAGS)
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-g $(ARCH) $(RPXSPECS) -Wl,-Map,$(notdir $*.map)
 
-LIBS := -lSDL2_mixer -lSDL2 -lSDL2_ttf -lfreetype -lharfbuzz -lbrotlidec -lbrotlienc \
-		-lbrotlicommon -lpng -lbz2 -lz -lmodplug -lmpg123 -logg -lmocha -lwut
+LIBS :=		$(SDL_LIBS) -lmocha -lwut
 
 #-------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level
@@ -116,7 +119,7 @@ endif
 
 export OFILES_BIN	:=	$(addsuffix .o,$(BINFILES))
 export OFILES_SRC	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
-export OFILES 	:=	$(OFILES_BIN) $(OFILES_SRC)
+export OFILES	:=	$(OFILES_BIN) $(OFILES_SRC)
 export HFILES_BIN	:=	$(addsuffix .h,$(subst .,_,$(BINFILES)))
 
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
