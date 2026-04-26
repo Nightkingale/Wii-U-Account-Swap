@@ -35,14 +35,33 @@ SDL_Renderer* renderer = nullptr; // Global renderer variable.
 int client_handle = 0; // The client handle for flushing the filesystem.
 
 
+static
+size_t
+utf16len(const int16_t* str)
+{
+    size_t result = 0;
+    while (*str++)
+        ++result;
+    return result;
+}
+
+
 void
 get_user_information()
 {
     // Grab the user's Mii name.
     nn::act::Initialize();
-    int16_t mii_name[256];
+    int16_t mii_name[nn::act::MiiNameSize] = {};
     nn::act::GetMiiName(mii_name);
-    MII_NICKNAME = std::string(mii_name, mii_name + sizeof(mii_name) / sizeof(mii_name[0]));
+    size_t mii_name_len = utf16len(mii_name);
+    if (char* s = SDL_iconv_string("UTF-8", "UTF-16",
+                                   reinterpret_cast<const char*>(mii_name),
+                                   sizeof(int16_t) * mii_name_len)) {
+        MII_NICKNAME = s;
+        SDL_free(s);
+    } else {
+        MII_NICKNAME = "<ERROR!>";
+    }
     
     // Grab the user's account ID.
     char account_id[256];
